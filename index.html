@@ -22,7 +22,11 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
   </div>
   <div class="flex items-center gap-3">
     <label class="font-bold text-on-surface uppercase tracking-widest text-xs whitespace-nowrap" for="naam">Deelnemer:</label>
-    <input class="bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-on-surface text-sm w-48 sm:w-56 focus:ring-2 focus:ring-primary-container focus:border-transparent outline-none transition-all placeholder:opacity-40" id="naam" placeholder="Jouw naam..." type="text"/>
+    <div class="flex flex-col gap-1.5">
+      <input class="bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-on-surface text-sm w-48 sm:w-56 focus:ring-2 focus:ring-primary-container focus:border-transparent outline-none transition-all placeholder:opacity-40" id="naam" placeholder="Jouw naam..." type="text"/>
+      <input class="bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-on-surface text-sm w-48 sm:w-56 focus:ring-2 focus:ring-primary-container focus:border-transparent outline-none transition-all placeholder:opacity-40" id="email" placeholder="jouw@email.nl" type="email"/>
+    </div>
+    <span class="auto-ok" id="ok-saved"><span class="material-symbols-outlined text-sm">check_circle</span> Opgeslagen</span>
   </div>
 </div>
 </header>
@@ -32,7 +36,9 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
   <div><strong style="font-size:12pt">WK 2026 POULE</strong>
   <span style="font-size:8pt;margin-left:6mm;color:#555">VS · Canada · Mexico · 11 juni – 19 juli 2026</span></div>
   <div style="font-size:9pt"><strong>Deelnemer:</strong>
-  <span id="print-naam" style="border-bottom:1px solid #333;min-width:40mm;display:inline-block;margin-left:2mm"></span></div>
+  <span id="print-naam" style="border-bottom:1px solid #333;min-width:40mm;display:inline-block;margin-left:2mm"></span>
+  &nbsp;&nbsp;<strong>E-mail:</strong>
+  <span id="print-email" style="border-bottom:1px solid #333;min-width:50mm;display:inline-block;margin-left:2mm"></span></div>
 </div>
 
 <main class="max-w-[1200px] mx-auto px-6 py-14 space-y-20">

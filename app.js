@@ -228,6 +228,7 @@ function setDrawWinner(btn){
     btnA.textContent = '✓ ' + (ta?.value||'Uit');
     btnH.textContent = th?.value||'Thuis';
   }
+  saveState();
 }
 
 function setFilled(id,val){
@@ -574,6 +575,7 @@ function rebuildRanks(list, g) {
     if (rk<=2) { const s=document.createElement('span');s.className='standing-badge badge-through';s.textContent='✓ Door';arrowDiv?row.insertBefore(s,arrowDiv):row.appendChild(s); }
     else if (rk===3) { const s=document.createElement('span');s.className='standing-badge badge-third';s.textContent='? 3e';arrowDiv?row.insertBefore(s,arrowDiv):row.appendChild(s); }
   });
+  saveState();
 }
 
 function initDrag(list, g) {
@@ -634,11 +636,118 @@ function triggerStandings(){
   flashOk('ok-standings');
 }
 
+// ── PERSISTENCE ──────────────────────────────────────────────────────────────
+const LS_KEY = 'wk2026';
+let _loadingState = false;
+
+function saveState() {
+  if (_loadingState) return;
+  const state = {
+    naam: document.getElementById('naam')?.value || '',
+    email: document.getElementById('email')?.value || '',
+    kampioen: document.getElementById('kampioen-vrijkeuze')?.value || '',
+    scores: {},
+    koFields: {},
+    manualOrder: {...manualOrder},
+    drawWinners: {...drawWinners},
+  };
+  document.querySelectorAll('input[data-i][data-side]').forEach(el => {
+    if (el.value !== '') state.scores[`${el.dataset.i}-${el.dataset.side}`] = el.value;
+  });
+  document.querySelectorAll('#kocont input').forEach(el => {
+    if (el.id && el.value !== '') state.koFields[el.id] = el.value;
+  });
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
+  flashOk('ok-saved');
+}
+
+function loadState() {
+  let state;
+  try { state = JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch {}
+  if (!state) return;
+  _loadingState = true;
+
+  const naam = document.getElementById('naam');
+  if (naam && state.naam) {
+    naam.value = state.naam;
+    const pn = document.getElementById('print-naam');
+    if (pn) pn.textContent = state.naam;
+  }
+  const email = document.getElementById('email');
+  if (email && state.email) {
+    email.value = state.email;
+    const pe = document.getElementById('print-email');
+    if (pe) pe.textContent = state.email;
+  }
+
+  if (state.scores) {
+    Object.entries(state.scores).forEach(([key, val]) => {
+      const [i, side] = key.split('-');
+      const el = document.querySelector(`input[data-i="${i}"][data-side="${side}"]`);
+      if (el) { el.value = val; el.classList.add('filled'); }
+    });
+  }
+
+  if (state.manualOrder && Object.keys(state.manualOrder).length) {
+    Object.assign(manualOrder, state.manualOrder);
+    renderStandings();
+  }
+
+  if (state.koFields) {
+    // Set all values first (names before scores so onScoreChange reads correct names)
+    Object.entries(state.koFields).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) { el.value = val; el.classList.toggle('filled', true); }
+    });
+    // Trigger score change handlers after both _sh and _sa are populated
+    Object.keys(state.koFields).forEach(id => {
+      if (!id.endsWith('_sh')) return;
+      const el = document.getElementById(id);
+      if (el) onScoreChange(el);
+    });
+  }
+
+  if (state.drawWinners) {
+    Object.assign(drawWinners, state.drawWinners);
+    const winnerStyle = 'font-size:.85rem;font-weight:700;padding:.6rem 1rem;border-radius:.6rem;border:2px solid #2e7d32;background:#e8f5e9;color:#1b5e20;cursor:pointer;text-align:left;width:100%;transition:all .2s';
+    const loserStyle  = 'font-size:.85rem;font-weight:400;padding:.6rem 1rem;border-radius:.6rem;border:1.5px solid #e0e0e0;background:#f5f5f5;color:#bbb;cursor:pointer;text-align:left;width:100%;transition:all .2s;text-decoration:line-through';
+    Object.entries(state.drawWinners).forEach(([id, winner]) => {
+      const btnH = document.getElementById(id+'_dwh');
+      const btnA = document.getElementById(id+'_dwa');
+      const th   = document.getElementById(id+'_h');
+      const ta   = document.getElementById(id+'_a');
+      if (!btnH || !btnA) return;
+      if (winner === (th?.value || '')) {
+        btnH.style.cssText = winnerStyle; btnH.textContent = '✓ ' + winner;
+        btnA.style.cssText = loserStyle;  btnA.textContent = ta?.value || 'Uit';
+      } else {
+        btnA.style.cssText = winnerStyle; btnA.textContent = '✓ ' + winner;
+        btnH.style.cssText = loserStyle;  btnH.textContent = th?.value || 'Thuis';
+      }
+    });
+  }
+
+  if (state.kampioen) {
+    const el = document.getElementById('kampioen-vrijkeuze');
+    const champ = document.getElementById('champion');
+    if (el) el.value = state.kampioen;
+    if (champ) { champ.textContent = state.kampioen; champ.classList.add('text-primary'); }
+  }
+
+  _loadingState = false;
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 buildMatches();
 buildKO();
 renderStandings();
+loadState();
 document.getElementById('naam').addEventListener('input',function(){
   const el=document.getElementById('print-naam');
   if(el) el.textContent=this.value;
 });
+document.getElementById('email').addEventListener('input',function(){
+  const el=document.getElementById('print-email');
+  if(el) el.textContent=this.value;
+});
+document.addEventListener('input', saveState);
