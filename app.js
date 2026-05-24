@@ -750,4 +750,31 @@ document.getElementById('email').addEventListener('input',function(){
   const el=document.getElementById('print-email');
   if(el) el.textContent=this.value;
 });
+// ── SCORE INPUT VALIDATION ────────────────────────────────────────────────────
+function isScoreInput(el) {
+  return el.tagName === 'INPUT' && el.type === 'number' &&
+    !!(el.closest('#mgrid') || el.closest('#kocont'));
+}
+
+// Capture phase: runs before saveState and onScoreChange bubble handlers
+document.addEventListener('keydown', e => {
+  if (!isScoreInput(e.target)) return;
+  if (['e','E','-','+','.'].includes(e.key)) e.preventDefault();
+}, true);
+
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (!isScoreInput(el)) return;
+  // Strip any non-digit characters, limit to 2 digits
+  const cleaned = el.value.replace(/\D/g, '').slice(0, 2);
+  if (el.value !== cleaned) el.value = cleaned;
+}, true);
+
+document.addEventListener('focusout', e => {
+  const el = e.target;
+  if (!isScoreInput(el) || el.value === '') return;
+  const n = parseInt(el.value, 10);
+  el.value = isNaN(n) ? '' : String(Math.min(99, Math.max(0, n)));
+});
+
 document.addEventListener('input', saveState);
