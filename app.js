@@ -636,6 +636,51 @@ function triggerStandings(){
   flashOk('ok-standings');
 }
 
+// ── PDF DOWNLOAD ─────────────────────────────────────────────────────────────
+async function savePDF() {
+  const naam = (document.getElementById('naam').value || 'deelnemer').trim();
+  const btn = document.getElementById('btn-pdf');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-base">hourglass_empty</span> BEZIG...';
+
+  // cloneNode copies HTML attributes, not live DOM properties — sync first
+  document.querySelectorAll('input').forEach(el => {
+    if (el.value !== '') el.setAttribute('value', el.value);
+  });
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:fixed;top:0;left:-9999px;width:1100px;background:white;padding:10mm 8mm;box-sizing:border-box;';
+
+  const ph = document.querySelector('.print-header').cloneNode(true);
+  ph.style.display = 'flex';
+  wrap.appendChild(ph);
+
+  const mainClone = document.querySelector('main').cloneNode(true);
+  mainClone.style.paddingTop = '8mm';
+  mainClone.style.paddingBottom = '0';
+  mainClone.querySelectorAll('.no-print').forEach(el => el.remove());
+  wrap.appendChild(mainClone);
+
+  document.body.appendChild(wrap);
+
+  try {
+    await html2pdf()
+      .set({
+        margin: 0,
+        filename: `WK2026-Poule-${naam}.pdf`,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: 1100 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      })
+      .from(wrap)
+      .save();
+  } finally {
+    document.body.removeChild(wrap);
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-base">download</span> PDF OPSLAAN';
+  }
+}
+
 // ── SUBMISSION ───────────────────────────────────────────────────────────────
 const ADMIN_EMAIL = 'VERVANG_DIT@jouwmail.nl'; // ← vul hier jouw e-mailadres in
 
