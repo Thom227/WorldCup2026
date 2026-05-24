@@ -434,7 +434,7 @@ function buildKO(){
     sec.innerHTML=`
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div class="flex items-center gap-6">
-          <span class="bg-white border-2 border-primary-container px-8 py-3 rounded-xl text-2xl font-bold text-primary shadow-sm">${title}</span>
+          <span class="ko-round-title bg-white border-2 border-primary-container px-8 py-3 rounded-xl text-2xl font-bold text-primary shadow-sm">${title}</span>
           <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em] opacity-50">${date}</span>
         </div>
         ${triggerFn?`<div class="flex items-center gap-4 no-print">
