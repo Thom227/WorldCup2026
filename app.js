@@ -615,9 +615,9 @@ function renderStandings(){
     card.className='bg-white rounded-2xl overflow-hidden border border-outline-variant shadow-sm'+(isNL?' nl-highlight':'');
     card.dataset.group=g;
     const hdr=document.createElement('div');
-    hdr.className='bg-surface-container-low px-6 py-4 flex justify-between items-center border-b border-outline-variant';
-    hdr.innerHTML=`<h3 class="text-xl font-bold tracking-tight">GROEP ${g}</h3>
-      <span class="text-[10px] font-bold tracking-[0.2em] opacity-40 uppercase">${GROUPS[g].join(' · ')}</span>`;
+    hdr.className='bg-surface-container-low px-6 py-4 border-b border-outline-variant';
+    hdr.innerHTML=`<h3 class="text-sm font-bold tracking-widest uppercase text-on-surface">GROEP ${g}</h3>
+      <p class="text-[10px] font-semibold tracking-[0.15em] opacity-50 uppercase mt-1.5">${GROUPS[g].join(' · ')}</p>`;
     card.appendChild(hdr);
     const list=document.createElement('div');
     list.className='sortable-list';
