@@ -1,0 +1,119 @@
+body{font-family:'Inter',sans-serif;background-color:#f8f9fa;color:#191c1d}
+h1,h2,h3{font-family:'Noto Serif',serif}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#f3f4f5}
+::-webkit-scrollbar-thumb{background:#d0c5af;border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:#d4af37}
+input[type="number"]{-moz-appearance:textfield;appearance:textfield}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.filled{background-color:rgba(212,175,55,.1)!important;border-color:#d4af37!important;color:#735c00!important}
+.nl-highlight{background-color:rgba(115,92,0,.03)!important;border-color:#d4af37!important}
+.nl-text{color:#735c00!important;font-weight:700}
+.auto-ok{display:none;font-size:.75rem;color:#735c00;animation:fadeIn .3s ease-out}
+.auto-ok.show{display:inline-flex;align-items:center;gap:4px}
+#ok-saved{position:fixed;bottom:5.5rem;right:1.5rem;z-index:150;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:1px solid #d4af37;border-radius:.75rem;padding:.5rem .9rem;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.table-zebra tr:nth-child(even){background-color:rgba(0,0,0,.02)}
+.pbox{background:#fff;border:1px solid #e1e3e4;border-radius:.75rem;padding:1.25rem;margin-bottom:2rem;box-shadow:0 4px 6px -1px rgb(0 0 0/.05)}
+.pbox-title{font-family:'Noto Serif',serif;font-size:.875rem;font-weight:700;color:#735c00;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.05em}
+.pbox-grid{display:flex;flex-wrap:wrap;gap:.75rem}
+.pitem{background:#f8f9fa;border-radius:.5rem;padding:.75rem 1rem;text-align:center;min-width:100px;border:1px solid #e1e3e4}
+.pitem .val{font-family:'Noto Serif',serif;font-size:1.25rem;font-weight:700;color:#735c00;line-height:1}
+.pitem .lbl{font-size:.7rem;color:#4d4635;margin-top:.25rem;text-transform:uppercase;font-weight:600}
+.pbox-note{font-size:.75rem;color:#4d4635;margin-top:1rem;padding-top:1rem;border-top:1px solid #e1e3e4;line-height:1.5}
+.pbox-note strong{color:#735c00}
+
+/* DRAG & DROP */
+.standing-row{display:flex;align-items:center;gap:10px;padding:9px 14px;background:white;border-bottom:1px solid #e1e3e4;cursor:grab;user-select:none;transition:background .15s}
+.standing-row:last-child{border-bottom:none}
+.standing-row:hover{background:#f3f4f5}
+.standing-row.dragging{opacity:.35;cursor:grabbing}
+.standing-row.drag-over{background:rgba(212,175,55,.12);border-top:2px solid #d4af37}
+.drag-handle{color:rgba(0,0,0,.2);font-size:.85rem;flex-shrink:0;cursor:grab;line-height:1}
+.rank-badge-s{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0}
+.rs1{background:#d4af37;color:#fff}
+.rs2{background:#a8b8c8;color:#fff}
+.rs3{background:rgba(205,127,50,.5);color:#fff}
+.rs4{background:#e1e3e4;color:#7f7663}
+.standing-team-name{flex:1;font-size:.85rem;font-weight:600;color:#191c1d}
+.standing-stats{display:flex;align-items:center;gap:4px;font-size:.75rem;flex-shrink:0;margin-right:2px}
+.stat-pts{font-weight:700;color:#735c00;min-width:18px;text-align:right}
+.stat-sep{color:rgba(0,0,0,.2);font-size:.65rem}
+.stat-gd{color:#7f7663;min-width:26px;font-variant-numeric:tabular-nums}
+.standing-badge{font-size:.62rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}
+.badge-through{color:#2e7d32}
+.badge-third{color:#735c00}
+.arrow-btns{display:flex;flex-direction:column;gap:1px;flex-shrink:0}
+.arrow-btn{background:#e1e3e4;border:none;color:#7f7663;width:18px;height:16px;border-radius:3px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;line-height:1}
+.arrow-btn:hover{background:rgba(212,175,55,.25);color:#735c00}
+
+/* PRINT */
+@media print{
+  .no-print{display:none!important}
+  header{display:none!important}
+  @page{size:A4 portrait;margin:10mm 8mm}
+  body{background:white!important;color:#111!important;font-size:8pt!important}
+  main{padding:0!important}
+  section{margin-bottom:4mm!important}
+  .print-header{display:flex!important;justify-content:space-between;align-items:center;border-bottom:1.5px solid #333;padding-bottom:2mm;margin-bottom:4mm;font-size:9pt}
+  h2{font-size:10pt!important;margin-bottom:2mm!important;page-break-after:avoid}
+  .pbox{border:.5px solid #ccc!important;background:#f9f9f9!important;padding:2mm 3mm!important;margin-bottom:2mm!important;page-break-inside:avoid;box-shadow:none!important}
+  .pbox-title{font-size:7pt!important;margin-bottom:1mm!important}
+  .pbox-grid{gap:3mm!important}
+  .pitem{padding:1mm 2mm!important;min-width:0!important}
+  .pitem .val{font-size:9pt!important;color:#333!important}
+  .pitem .lbl{font-size:6pt!important}
+  .pbox-note{font-size:6.5pt!important;margin-top:1.5mm!important;padding-top:1.5mm!important}
+  #mgrid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:3mm!important}
+  #sgrid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:3mm!important}
+  .bg-white,.bg-surface-container-low{background:white!important;border:.5px solid #ccc!important;border-radius:0!important;box-shadow:none!important}
+  .nl-highlight{border:1px solid #bbb!important;background:#fffde7!important}
+  .bg-surface-container-low.px-6{background:#f0f0f0!important}
+  h3{font-size:8pt!important}
+  .p-5{padding:1mm 2mm!important}
+  .gap-4,.gap-3{gap:1mm!important}
+  .text-sm{font-size:7pt!important}
+  .text-\[10px\]{font-size:6pt!important}
+  input[type="number"],input[type="text"]{border:.8px solid #999!important;background:white!important;color:#111!important;font-size:7pt!important;padding:.5mm 1mm!important;height:auto!important}
+  .w-10{width:7mm!important;height:6mm!important}
+  .w-12{width:8mm!important;height:7mm!important}
+  table{font-size:7pt!important}
+  th,td{padding:.8mm 1.5mm!important;font-size:7pt!important}
+  .drag-handle,.arrow-btns{display:none!important}
+  .standing-row{cursor:default!important;padding:1.5mm 2mm!important;border-bottom:.3px solid #ddd!important}
+  .standing-team-name{font-size:7pt!important}
+  .stat-pts{color:#333!important}
+  .space-y-6>*+*,.space-y-16>*+*{margin-top:3mm!important}
+  .p-6{padding:2mm!important}
+  .rounded-2xl{border-radius:0!important}
+  .kti{font-size:7pt!important;padding:1mm 2mm!important;border:.5px solid #999!important;background:white!important;color:#111!important}
+  .ksi{width:8mm!important;height:6mm!important;font-size:8pt!important;border:.5px solid #999!important;background:white!important;color:#111!important}
+  /* Draw winner selector - volledig inline gestyled, geen CSS conflicten */
+  .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4{grid-template-columns:repeat(4,1fr)!important}
+  .grid-cols-1.sm\:grid-cols-2{grid-template-columns:repeat(2,1fr)!important}
+  .gap-8,.gap-6{gap:2mm!important}
+  .pt-24,.pt-12{padding-top:4mm!important}
+  .max-w-2xl{max-width:100%!important}
+  .rounded-\[2\.5rem\]{border-radius:2mm!important;border:1px solid #bbb!important;padding:3mm!important}
+  .text-5xl{font-size:12pt!important}
+  .text-4xl{font-size:10pt!important}
+  #champion{font-size:12pt!important;color:#111!important}
+  .auto-ok{display:none!important}
+  [class*="shadow"]{box-shadow:none!important}
+  /* Section gaps — space-y-20 was missing */
+  .space-y-20>*+*{margin-top:6mm!important}
+  /* Decorative dividers between sections */
+  .h-px{display:none!important}
+  /* Keep cards from splitting across pages */
+  #mgrid>*,#sgrid>*{page-break-inside:avoid!important;break-inside:avoid!important}
+  #kocont .rounded-2xl{page-break-inside:avoid!important;break-inside:avoid!important}
+  /* Show full team names instead of clipping */
+  .truncate{overflow:visible!important;text-overflow:clip!important;white-space:normal!important}
+  /* Finale / 3e-plaats grid (lg:grid-cols-2 without sm:grid-cols-2) */
+  .grid-cols-1.lg\:grid-cols-2{grid-template-columns:repeat(2,1fr)!important}
+  /* KO round title badge */
+  .ko-round-title{font-size:9pt!important;padding:1mm 3mm!important;border-width:1px!important;border-radius:2mm!important;box-shadow:none!important;color:#333!important;background:#f5f5f5!important}
+  /* gap-12 used in finale/3e-plaats wrapper */
+  .gap-12{gap:3mm!important}
+}
