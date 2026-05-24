@@ -636,6 +636,50 @@ function triggerStandings(){
   flashOk('ok-standings');
 }
 
+// ── PDF DOWNLOAD ─────────────────────────────────────────────────────────────
+async function savePDF() {
+  const naam = (document.getElementById('naam').value || 'deelnemer').trim();
+  const btn  = document.getElementById('btn-pdf');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-base">hourglass_empty</span> BEZIG...';
+
+  const siteHeader  = document.getElementById('site-header');
+  const actionBar   = document.getElementById('action-bar');
+  const printHeader = document.querySelector('.print-header');
+  const main        = document.querySelector('main');
+
+  // Hide chrome, show print header, reset main padding
+  siteHeader.style.display  = 'none';
+  actionBar.style.display   = 'none';
+  printHeader.style.display = 'flex';
+  main.style.paddingTop     = '0';
+  main.style.paddingBottom  = '0';
+  window.scrollTo(0, 0);
+
+  try {
+    await html2pdf()
+      .set({
+        margin: [8, 8, 8, 8],
+        filename: `WK2026-Poule-${naam}.pdf`,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 1.5, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      })
+      .from(document.body)
+      .save();
+  } catch (err) {
+    alert('PDF maken mislukt: ' + err.message);
+  } finally {
+    siteHeader.style.display  = '';
+    actionBar.style.display   = '';
+    printHeader.style.display = 'none';
+    main.style.paddingTop     = '';
+    main.style.paddingBottom  = '';
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-base">download</span> PDF OPSLAAN';
+  }
+}
+
 // ── SUBMISSION ───────────────────────────────────────────────────────────────
 const ADMIN_EMAIL = 'VERVANG_DIT@jouwmail.nl'; // ← vul hier jouw e-mailadres in
 
