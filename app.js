@@ -407,13 +407,13 @@ function koMatch(m,placeholders){
     </div>
     <div class="p-5 space-y-3">
       <div class="flex items-center gap-3">
-        <input type="text" class="kti flex-1 bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2.5 text-xs font-bold text-on-surface outline-none focus:border-primary-container transition-all" id="${id}_h" placeholder="${placeholders[0]}">
-        <input type="number" min="0" max="99" class="w-12 h-12 bg-white border border-outline-variant rounded-xl text-center font-bold text-lg focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none text-on-surface" id="${id}_sh" placeholder="&ndash;" oninput="onScoreChange(this)">
+        <input type="text" class="kti flex-1 min-w-0 bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2.5 text-xs font-bold text-on-surface outline-none focus:border-primary-container transition-all" id="${id}_h" placeholder="${placeholders[0]}">
+        <input type="number" min="0" max="99" class="ksi w-12 h-12 flex-shrink-0 bg-white border border-outline-variant rounded-xl text-center font-bold text-lg focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none text-on-surface" id="${id}_sh" placeholder="&ndash;" oninput="onScoreChange(this)">
       </div>
       <div class="text-center text-[10px] font-black opacity-10 uppercase tracking-[0.5em] text-on-surface">Versus</div>
       <div class="flex items-center gap-3">
-        <input type="text" class="kti flex-1 bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2.5 text-xs font-bold text-on-surface outline-none focus:border-primary-container transition-all" id="${id}_a" placeholder="${placeholders[1]}">
-        <input type="number" min="0" max="99" class="w-12 h-12 bg-white border border-outline-variant rounded-xl text-center font-bold text-lg focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none text-on-surface" id="${id}_sa" placeholder="&ndash;" oninput="onScoreChange(this)">
+        <input type="text" class="kti flex-1 min-w-0 bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2.5 text-xs font-bold text-on-surface outline-none focus:border-primary-container transition-all" id="${id}_a" placeholder="${placeholders[1]}">
+        <input type="number" min="0" max="99" class="ksi w-12 h-12 flex-shrink-0 bg-white border border-outline-variant rounded-xl text-center font-bold text-lg focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none text-on-surface" id="${id}_sa" placeholder="&ndash;" oninput="onScoreChange(this)">
       </div>
       <div id="${id}_dwbar" style="display:none;border-top:1px solid #e1e3e4;padding:.75rem 1rem;background:#fffde7">
         <div style="font-size:.7rem;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem">Winnaar na verlenging / strafschoppen</div>
@@ -833,7 +833,9 @@ function isScoreInput(el) {
 
 document.addEventListener('keydown', e => {
   if (!isScoreInput(e.target)) return;
-  if (['e','E','-','+','.'].includes(e.key)) { e.preventDefault(); return; }
+  const ctrl = ['Backspace','Delete','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Tab','Home','End','Enter'];
+  if (ctrl.includes(e.key)) return;
+  if (!/^\d$/.test(e.key)) e.preventDefault();
 }, true);
 
 document.addEventListener('input', e => {

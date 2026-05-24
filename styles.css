@@ -12,6 +12,7 @@ input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0
 .nl-text{color:#735c00!important;font-weight:700}
 .auto-ok{display:none;font-size:.75rem;color:#735c00;animation:fadeIn .3s ease-out}
 .auto-ok.show{display:inline-flex;align-items:center;gap:4px}
+#ok-saved{position:fixed;bottom:5.5rem;right:1.5rem;z-index:150;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:1px solid #d4af37;border-radius:.75rem;padding:.5rem .9rem;box-shadow:0 2px 8px rgba(0,0,0,.1)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .table-zebra tr:nth-child(even){background-color:rgba(0,0,0,.02)}
 .pbox{background:#fff;border:1px solid #e1e3e4;border-radius:.75rem;padding:1.25rem;margin-bottom:2rem;box-shadow:0 4px 6px -1px rgb(0 0 0/.05)}
