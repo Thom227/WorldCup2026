@@ -385,10 +385,10 @@ function buildMatches(){
           <div class="text-right text-sm font-semibold truncate ${m.h==='Nederland'?'nl-text':''} text-on-surface">${m.h}</div>
           <div class="flex items-center gap-2">
             <input type="number" min="0" max="99" data-i="${m.i}" data-side="h" placeholder="–"
-              class="w-10 h-10 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
+              class="w-12 h-10 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
             <span class="text-on-surface-variant opacity-30 font-bold">:</span>
             <input type="number" min="0" max="99" data-i="${m.i}" data-side="a" placeholder="–"
-              class="w-10 h-10 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
+              class="w-12 h-10 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
           </div>
           <div class="text-left text-sm font-semibold truncate ${m.a==='Nederland'?'nl-text':''} text-on-surface">${m.a}</div>
         </div>`;
@@ -756,18 +756,15 @@ function isScoreInput(el) {
     !!(el.closest('#mgrid') || el.closest('#kocont'));
 }
 
-// Capture phase: runs before saveState and onScoreChange bubble handlers
 document.addEventListener('keydown', e => {
   if (!isScoreInput(e.target)) return;
-  if (['e','E','-','+','.'].includes(e.key)) e.preventDefault();
+  if (['e','E','-','+','.'].includes(e.key)) { e.preventDefault(); return; }
 }, true);
 
 document.addEventListener('input', e => {
   const el = e.target;
-  if (!isScoreInput(el)) return;
-  // Strip any non-digit characters, limit to 2 digits
-  const cleaned = el.value.replace(/\D/g, '').slice(0, 2);
-  if (el.value !== cleaned) el.value = cleaned;
+  if (!isScoreInput(el) || el.value.length <= 2) return;
+  el.value = el.value.slice(0, 2);
 }, true);
 
 document.addEventListener('focusout', e => {

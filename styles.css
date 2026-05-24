@@ -4,6 +4,7 @@ h1,h2,h3{font-family:'Noto Serif',serif}
 ::-webkit-scrollbar-track{background:#f3f4f5}
 ::-webkit-scrollbar-thumb{background:#d0c5af;border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:#d4af37}
+input[type="number"]{-moz-appearance:textfield;appearance:textfield}
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 .filled{background-color:rgba(212,175,55,.1)!important;border-color:#d4af37!important;color:#735c00!important}
