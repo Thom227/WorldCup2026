@@ -636,7 +636,80 @@ function triggerStandings(){
   flashOk('ok-standings');
 }
 
-// ── PERSISTENCE ──────────────────────────────────────────────────────────────
+// ── SUBMISSION ───────────────────────────────────────────────────────────────
+const ADMIN_EMAIL = 'VERVANG_DIT@jouwmail.nl'; // ← vul hier jouw e-mailadres in
+
+function validateForm() {
+  const errors = [];
+  const naam  = document.getElementById('naam')?.value.trim()  || '';
+  const email = document.getElementById('email')?.value.trim() || '';
+  if (!naam)  errors.push({field:'naam',  msg:'Vul je naam in'});
+  if (!email) errors.push({field:'email', msg:'Vul je e-mailadres in'});
+  const empty = [...document.querySelectorAll('input[data-i][data-side]')]
+    .filter(el => el.value === '').length;
+  if (empty > 0) errors.push({field:'scores', msg:`Nog ${empty} uitslag${empty !== 1 ? 'en' : ''} niet ingevuld`});
+  return errors;
+}
+
+function updateSubmitButton() {
+  const btn   = document.getElementById('btn-inzenden');
+  const naam  = document.getElementById('naam')?.value.trim();
+  const email = document.getElementById('email')?.value.trim();
+  if (btn) btn.disabled = !naam || !email;
+}
+
+function submitForm() {
+  // Clear previous error highlights
+  ['naam','email'].forEach(id => document.getElementById(id)?.style.removeProperty('border-color'));
+  const errEl = document.getElementById('form-errors');
+  if (errEl) errEl.classList.add('hidden');
+
+  const errors = validateForm();
+  if (errors.length) {
+    const msgs = errors.map(e => e.msg);
+    errors.forEach(({field}) => {
+      const el = document.getElementById(field);
+      if (el) el.style.borderColor = '#ba1a1a';
+    });
+    if (errEl) { errEl.textContent = msgs.join(' · '); errEl.classList.remove('hidden'); }
+    // Scroll to first field error
+    const firstField = errors.find(e => e.field !== 'scores');
+    if (firstField) document.getElementById(firstField.field)?.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  const naam  = document.getElementById('naam').value.trim();
+  const email = document.getElementById('email').value.trim();
+
+  const ok = confirm(
+    `Weet je zeker dat je wilt inzenden?\n\n` +
+    `Na het inzenden wordt je formulier gewist en kun je niet opnieuw inzenden.\n\n` +
+    `Tip: sla eerst je PDF op via de knop "PDF OPSLAAN"!`
+  );
+  if (!ok) return;
+
+  // Wipe local state
+  try { localStorage.removeItem(LS_KEY); } catch {}
+
+  // Open mailto
+  const subject = encodeURIComponent(`WK 2026 Poule – ${naam}`);
+  const body    = encodeURIComponent(
+    `Hoi,\n\nHieronder mijn inzending voor de WK 2026 Poule.\n\n` +
+    `Naam: ${naam}\nEmail: ${email}\n\n` +
+    `Zie bijgevoegde PDF.\n\nGroeten,\n${naam}`
+  );
+  const a = document.createElement('a');
+  a.href = `mailto:${ADMIN_EMAIL}?cc=${encodeURIComponent(email)}&subject=${subject}&body=${body}`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  // Show confirmation screen
+  const screen = document.getElementById('verzonden-screen');
+  if (screen) screen.classList.remove('hidden');
+}
+
+// ── PERSISTENCE ───────────────────────────────────────────────────────────────
 const LS_KEY = 'wk2026';
 let _loadingState = false;
 
@@ -659,6 +732,7 @@ function saveState() {
   });
   try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
   flashOk('ok-saved');
+  updateSubmitButton();
 }
 
 function loadState() {
@@ -735,6 +809,7 @@ function loadState() {
   }
 
   _loadingState = false;
+  updateSubmitButton();
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
