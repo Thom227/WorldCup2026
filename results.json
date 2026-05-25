@@ -1,0 +1,30 @@
+{
+  "_comment": "Update this file as the tournament progresses. phase: pre | group | knockout | done",
+  "lastUpdated": "2026-05-25T00:00:00Z",
+  "phase": "pre",
+  "groupScores": {
+    "_comment": "Key = MATCHES array index (0-71). Add entries as matches are played.",
+    "0": {"h": 2, "a": 1},
+    "1": {"h": 0, "a": 0}
+  },
+  "finalStandings": {
+    "_comment": "Fill in after group phase completes. Order: 1st to 4th.",
+    "A": ["Mexico", "Tsjechië", "Zuid-Afrika", "Zuid-Korea"]
+  },
+  "ko": {
+    "_comment": "Key = match id (r32_0, af_0, kf_0, hf_0, tf, fin). sh/sa = actual scores.",
+    "r32_0": {"h": "Mexico", "a": "Tsjechië", "sh": 2, "sa": 0}
+  },
+  "bonus": {
+    "b1": null,
+    "b2": null,
+    "b3": null,
+    "b4": null,
+    "b5": null,
+    "b6": null,
+    "b7": null,
+    "b8": null,
+    "b9": null,
+    "b10": null
+  }
+}

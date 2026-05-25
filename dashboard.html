@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WK 2026 Poule — Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Serif:wght@500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1d","outline":"#7f7663","outline-variant":"#d0c5af","surface-container-high":"#e7e8e9","background":"#f8f9fa","surface-dim":"#d9dadb","on-surface":"#191c1d","primary":"#735c00","on-primary-container":"#554300","primary-container":"#d4af37","surface-bright":"#f8f9fa","on-surface-variant":"#4d4635","surface-container-highest":"#e1e3e4","surface-container-low":"#f3f4f5","on-primary":"#ffffff","surface-container":"#edeeef","secondary":"#516169","on-secondary":"#ffffff","surface-container-lowest":"#ffffff","error":"#ba1a1a"}}}}
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #191c1d; }
+  .gold-row { background-color: rgba(212,175,55,0.15); }
+  .rank-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2rem; height: 2rem; border-radius: 9999px; font-weight: 700; font-size: 0.875rem;
+  }
+  .rank-1 { background: #d4af37; color: #fff; }
+  .rank-2 { background: #a8a8a8; color: #fff; }
+  .rank-3 { background: #c47722; color: #fff; }
+  .rank-n { background: #edeeef; color: #4d4635; }
+  .info-box {
+    background: #fff;
+    border: 1px solid #d0c5af;
+    border-left: 4px solid #d4af37;
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+  }
+  .phase-badge {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .phase-pre    { background: #edeeef; color: #4d4635; }
+  .phase-group  { background: #d4af37; color: #fff; }
+  .phase-knockout { background: #735c00; color: #fff; }
+  .phase-done   { background: #191c1d; color: #fff; }
+  table { border-collapse: collapse; width: 100%; }
+  th { background: #edeeef; color: #4d4635; font-size: 0.7rem; font-weight: 700;
+       text-transform: uppercase; letter-spacing: 0.1em; padding: 0.625rem 0.875rem;
+       white-space: nowrap; }
+  td { padding: 0.625rem 0.875rem; font-size: 0.875rem; white-space: nowrap; border-bottom: 1px solid #e1e3e4; }
+  tr:last-child td { border-bottom: none; }
+  .score-cell { font-weight: 700; font-size: 1rem; text-align: right; }
+  .sub-score  { font-size: 0.7rem; color: #7f7663; font-weight: 400; }
+  .error-msg  { background: #fff0f0; border: 1px solid #ba1a1a; border-radius: 0.5rem;
+                padding: 0.75rem 1rem; color: #ba1a1a; font-size: 0.875rem; }
+  .spinner { display: inline-block; width: 1.25rem; height: 1.25rem;
+             border: 2px solid #d0c5af; border-top-color: #735c00;
+             border-radius: 9999px; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- HEADER -->
+<header class="bg-white border-b border-outline-variant px-6 sticky top-0 z-50 shadow-sm" style="padding-top:1.25rem;padding-bottom:1.25rem">
+  <div class="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <h1 class="font-bold text-on-surface leading-none" style="font-size:1.75rem">
+        WK 2026 <span style="color:#d4af37">POULE</span>
+      </h1>
+      <span class="text-on-surface-variant font-semibold uppercase tracking-[0.15em] text-[10px] opacity-60 hidden sm:block">VS · Canada · Mexico · 11 jun – 19 jul 2026</span>
+    </div>
+    <nav class="flex items-center gap-4">
+      <a href="index.html" class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">
+        <span class="material-symbols-outlined text-sm">arrow_back</span> Formulier
+      </a>
+      <span class="text-xs font-bold uppercase tracking-widest text-primary border-b-2 border-primary-container pb-0.5">Dashboard</span>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-[1200px] mx-auto px-4 sm:px-6 pt-10 pb-24 space-y-8">
+
+  <!-- Page title -->
+  <div class="border-l-4 border-primary-container pl-6">
+    <h2 class="text-3xl font-bold text-on-surface mb-1">Klassement</h2>
+    <p class="text-on-surface-variant opacity-70 font-medium text-sm">Scores worden live herberekend op basis van results.json.</p>
+  </div>
+
+  <!-- Status info box -->
+  <div class="info-box" id="status-box">
+    <div class="flex items-center gap-2 mb-1">
+      <span class="material-symbols-outlined text-base" style="color:#735c00">info</span>
+      <span class="font-semibold text-sm text-on-surface">Toernooi status</span>
+    </div>
+    <div id="status-content" class="flex flex-wrap items-center gap-3 mt-2">
+      <div class="spinner"></div>
+      <span class="text-sm text-on-surface-variant">Laden...</span>
+    </div>
+  </div>
+
+  <!-- Error area -->
+  <div id="errors" class="space-y-2 hidden"></div>
+
+  <!-- Leaderboard -->
+  <div class="bg-white border border-outline-variant rounded-xl shadow-sm overflow-hidden" id="leaderboard-wrap">
+    <div class="px-5 py-4 border-b border-outline-variant flex items-center justify-between">
+      <span class="font-bold text-sm uppercase tracking-widest text-on-surface">Tussenstand</span>
+      <span class="text-xs text-on-surface-variant" id="last-updated"></span>
+    </div>
+    <div class="overflow-x-auto">
+      <table id="leaderboard-table">
+        <thead>
+          <tr>
+            <th style="text-align:center">#</th>
+            <th>Naam</th>
+            <th style="text-align:right">Groep<br>Uitslagen</th>
+            <th style="text-align:right">Standen</th>
+            <th style="text-align:right">KO Fase</th>
+            <th style="text-align:right">Bonus</th>
+            <th style="text-align:right">Totaal</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+          <tr>
+            <td colspan="7" class="text-center py-10 text-on-surface-variant text-sm">
+              <div class="spinner mx-auto mb-2"></div>
+              Inzendingen laden...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer note -->
+  <p class="text-xs text-on-surface-variant opacity-60 text-center pt-2">
+    Scores worden automatisch herberekend zodra results.json wordt bijgewerkt
+    &middot;
+    KO-fase scoring volgt na de knock-out ronde
+  </p>
+
+</main>
+
+<script>
+// ---------------------------------------------------------------------------
+// CONFIG
+// ---------------------------------------------------------------------------
+const BONUS_PTS = {b1:25, b2:20, b3:20, b4:15, b5:35, b6:30, b7:20, b8:20, b9:25, b10:40};
+
+const PHASE_LABELS = {
+  pre:      { label: 'Vooraf (pre)',      cls: 'phase-pre'     },
+  group:    { label: 'Groepsfase',        cls: 'phase-group'   },
+  knockout: { label: 'Knock-out fase',    cls: 'phase-knockout' },
+  done:     { label: 'Afgelopen',         cls: 'phase-done'    },
+};
+
+// ---------------------------------------------------------------------------
+// HELPERS
+// ---------------------------------------------------------------------------
+function outcome(h, a) {
+  if (h > a) return 'h';
+  if (a > h) return 'a';
+  return 'd';
+}
+
+function scoreGroupMatch(pH, pA, rH, rA) {
+  // pH/pA = predicted; rH/rA = actual
+  if (pH === rH && pA === rA) return 8;
+  if (outcome(pH, pA) === outcome(rH, rA)) return 4;
+  return 0;
+}
+
+function scoreStandings(predicted, actual) {
+  // predicted & actual are arrays of 4 team names
+  let pts = 0;
+  for (let i = 0; i < 4; i++) {
+    if (predicted[i] && actual[i] &&
+        predicted[i].trim().toLowerCase() === actual[i].trim().toLowerCase()) {
+      pts += 5;
+    }
+  }
+  return pts;
+}
+
+function scoreBonus(sub, results) {
+  const rb = results.bonus || {};
+  const sb = sub.bonus || {};
+  let pts = 0;
+
+  function norm(v) { return (v || '').toString().trim().toLowerCase(); }
+  function numClose(a, b, tol) {
+    const na = parseFloat(a), nb = parseFloat(b);
+    return !isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= tol;
+  }
+
+  // b1 – b3: exact text match
+  ['b1','b2','b3'].forEach(k => {
+    if (rb[k] !== null && rb[k] !== undefined) {
+      if (norm(sb[k]) === norm(rb[k])) pts += BONUS_PTS[k];
+    }
+  });
+
+  // b4: number within ±5
+  if (rb.b4 !== null && rb.b4 !== undefined) {
+    if (numClose(sb.b4, rb.b4, 5)) pts += BONUS_PTS.b4;
+  }
+
+  // b5, b6: exact text match
+  ['b5','b6'].forEach(k => {
+    if (rb[k] !== null && rb[k] !== undefined) {
+      if (norm(sb[k]) === norm(rb[k])) pts += BONUS_PTS[k];
+    }
+  });
+
+  // b7: exact text match
+  if (rb.b7 !== null && rb.b7 !== undefined) {
+    if (norm(sb.b7) === norm(rb.b7)) pts += BONUS_PTS.b7;
+  }
+
+  // b8: number within ±10
+  if (rb.b8 !== null && rb.b8 !== undefined) {
+    if (numClose(sb.b8, rb.b8, 10)) pts += BONUS_PTS.b8;
+  }
+
+  // b9: exact text match
+  if (rb.b9 !== null && rb.b9 !== undefined) {
+    if (norm(sb.b9) === norm(rb.b9)) pts += BONUS_PTS.b9;
+  }
+
+  // b10: both teams correct (order-independent) using b10a+b10b from submission
+  if (rb.b10 !== null && rb.b10 !== undefined) {
+    // results.json stores b10 as a string "TeamA & TeamB" or similar
+    // We support both a single string and split a/b in results
+    const rVal = norm(rb.b10);
+    const sA = norm(sb.b10a || '');
+    const sB = norm(sb.b10b || '');
+    // Parse result value: try splitting on common separators
+    const rParts = rVal.split(/[&,\/\-]/).map(s => s.trim()).filter(Boolean);
+    if (rParts.length >= 2) {
+      const bothMatch =
+        (sA === rParts[0] && sB === rParts[1]) ||
+        (sA === rParts[1] && sB === rParts[0]);
+      if (bothMatch) pts += BONUS_PTS.b10;
+    } else if (rParts.length === 1) {
+      // Single value stored: check if submission's a or b matches
+      if (sA === rParts[0] || sB === rParts[0]) pts += BONUS_PTS.b10;
+    }
+  }
+
+  return pts;
+}
+
+// ---------------------------------------------------------------------------
+// FETCH HELPERS
+// ---------------------------------------------------------------------------
+async function fetchJSON(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status} voor ${url}`);
+  return resp.json();
+}
+
+// ---------------------------------------------------------------------------
+// RENDER
+// ---------------------------------------------------------------------------
+function renderStatusBox(results, submissionCount) {
+  const phase = results.phase || 'pre';
+  const phaseInfo = PHASE_LABELS[phase] || { label: phase, cls: 'phase-pre' };
+  const groupScores = results.groupScores || {};
+  const scoredCount = Object.keys(groupScores).filter(k => k !== '_comment').length;
+  const lastUpdated = results.lastUpdated
+    ? new Date(results.lastUpdated).toLocaleString('nl-NL', { dateStyle: 'medium', timeStyle: 'short' })
+    : '—';
+
+  document.getElementById('last-updated').textContent = `Bijgewerkt: ${lastUpdated}`;
+
+  document.getElementById('status-content').innerHTML = `
+    <span class="phase-badge ${phaseInfo.cls}">${phaseInfo.label}</span>
+    <span class="text-sm text-on-surface-variant">
+      <strong class="text-on-surface">${scoredCount}</strong> van 72 groepswedstrijden gescoord
+    </span>
+    <span class="text-sm text-on-surface-variant">
+      <strong class="text-on-surface">${submissionCount}</strong> inzendingen geladen
+    </span>
+  `;
+}
+
+function showErrors(errorList) {
+  const el = document.getElementById('errors');
+  if (!errorList.length) { el.classList.add('hidden'); return; }
+  el.classList.remove('hidden');
+  el.innerHTML = errorList.map(e =>
+    `<div class="error-msg"><span class="material-symbols-outlined text-sm align-middle mr-1">warning</span>${e}</div>`
+  ).join('');
+}
+
+function renderLeaderboard(rows) {
+  const tbody = document.getElementById('leaderboard-body');
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-10 text-on-surface-variant text-sm">Geen inzendingen gevonden.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map((r, idx) => {
+    const rank = idx + 1;
+    let rankBadgeCls = 'rank-n';
+    if (rank === 1) rankBadgeCls = 'rank-1';
+    else if (rank === 2) rankBadgeCls = 'rank-2';
+    else if (rank === 3) rankBadgeCls = 'rank-3';
+
+    const rowCls = rank === 1 ? 'gold-row' : (idx % 2 === 0 ? '' : 'bg-surface-container-lowest');
+
+    return `
+      <tr class="${rowCls}">
+        <td style="text-align:center">
+          <span class="rank-badge ${rankBadgeCls}">${rank}</span>
+        </td>
+        <td>
+          <div class="font-semibold text-on-surface">${escHtml(r.naam)}</div>
+          <div class="text-xs text-on-surface-variant opacity-70">${escHtml(r.kampioen || '—')}</div>
+        </td>
+        <td class="score-cell">
+          ${r.groep}
+          <div class="sub-score">${r.groepMatches} wed.</div>
+        </td>
+        <td class="score-cell">
+          ${r.standen}
+          <div class="sub-score">${r.standenGroepen} groepen</div>
+        </td>
+        <td class="score-cell" style="color:#a8a8a8">—</td>
+        <td class="score-cell">${r.bonus}</td>
+        <td class="score-cell" style="font-size:1.125rem; color:#735c00">${r.totaal}</td>
+      </tr>`;
+  }).join('');
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+// ---------------------------------------------------------------------------
+// SCORING ENGINE
+// ---------------------------------------------------------------------------
+function calcScore(sub, results) {
+  const groupScores = results.groupScores || {};
+  const finalStandings = results.finalStandings || {};
+
+  let groepPts = 0;
+  let groepMatches = 0;
+  let standenPts = 0;
+  let standenGroepen = 0;
+
+  // Group match scoring (indices 0-71)
+  for (const [idxStr, actual] of Object.entries(groupScores)) {
+    if (idxStr === '_comment') continue;
+    const idx = parseInt(idxStr, 10);
+    const pH = parseInt(sub.scores[`${idx}-h`], 10);
+    const pA = parseInt(sub.scores[`${idx}-a`], 10);
+    const rH = actual.h;
+    const rA = actual.a;
+    if (!isNaN(pH) && !isNaN(pA)) {
+      groepPts += scoreGroupMatch(pH, pA, rH, rA);
+      groepMatches++;
+    }
+  }
+
+  // Group standings scoring
+  for (const [group, actualOrder] of Object.entries(finalStandings)) {
+    if (group === '_comment') continue;
+    const predictedOrder = sub.standings && sub.standings[group];
+    if (predictedOrder) {
+      standenPts += scoreStandings(predictedOrder, actualOrder);
+      standenGroepen++;
+    }
+  }
+
+  const bonusPts = scoreBonus(sub, results);
+
+  return {
+    groep: groepPts,
+    groepMatches,
+    standen: standenPts,
+    standenGroepen,
+    bonus: bonusPts,
+    totaal: groepPts + standenPts + bonusPts,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// MAIN
+// ---------------------------------------------------------------------------
+async function main() {
+  const errors = [];
+
+  let results;
+  try {
+    results = await fetchJSON('results.json');
+  } catch (e) {
+    errors.push(`Kon results.json niet laden: ${e.message}`);
+    showErrors(errors);
+    document.getElementById('status-content').innerHTML =
+      `<span class="text-sm text-error">results.json kon niet worden geladen.</span>`;
+    document.getElementById('leaderboard-body').innerHTML =
+      `<tr><td colspan="7" class="text-center py-10 text-error text-sm">Kan scores niet berekenen zonder results.json.</td></tr>`;
+    return;
+  }
+
+  let submissionIndex;
+  try {
+    submissionIndex = await fetchJSON('submissions/index.json');
+  } catch (e) {
+    errors.push(`Kon submissions/index.json niet laden: ${e.message}`);
+    showErrors(errors);
+    renderStatusBox(results, 0);
+    document.getElementById('leaderboard-body').innerHTML =
+      `<tr><td colspan="7" class="text-center py-10 text-on-surface-variant text-sm">Geen inzendingen index gevonden.</td></tr>`;
+    return;
+  }
+
+  // Load all submissions in parallel
+  const settled = await Promise.allSettled(
+    submissionIndex.map(filename => fetchJSON(`submissions/${filename}`))
+  );
+
+  const rows = [];
+  settled.forEach((result, i) => {
+    const filename = submissionIndex[i];
+    if (result.status === 'rejected') {
+      errors.push(`Kon ${filename} niet laden: ${result.reason.message}`);
+    } else {
+      const sub = result.value;
+      try {
+        const score = calcScore(sub, results);
+        rows.push({
+          naam: sub.naam || filename,
+          kampioen: sub.kampioen || '',
+          ...score,
+        });
+      } catch (e) {
+        errors.push(`Fout bij het berekenen van score voor ${filename}: ${e.message}`);
+      }
+    }
+  });
+
+  // Sort descending by totaal, then naam alphabetically as tiebreak
+  rows.sort((a, b) => b.totaal - a.totaal || a.naam.localeCompare(b.naam, 'nl'));
+
+  renderStatusBox(results, rows.length);
+  showErrors(errors);
+  renderLeaderboard(rows);
+}
+
+main();
+</script>
+</body>
+</html>
