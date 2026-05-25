@@ -648,7 +648,6 @@ async function savePDF() {
   const printHeader = document.querySelector('.print-header');
   const main        = document.querySelector('main');
 
-  // Hide chrome, show print header, reset main padding
   siteHeader.style.display  = 'none';
   actionBar.style.display   = 'none';
   printHeader.style.display = 'flex';
@@ -662,13 +661,58 @@ async function savePDF() {
         margin: [8, 8, 8, 8],
         filename: `WK2026-Poule-${naam}.pdf`,
         image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: { scale: 1.5, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
+        html2canvas: {
+          scale: 1.5,
+          useCORS: true,
+          logging: false,
+          scrollX: 0,
+          scrollY: 0,
+          onclone: (clonedDoc) => {
+            // Google Fonts are cross-origin and fail in html2canvas — use system fonts
+            const fontFix = clonedDoc.createElement('style');
+            fontFix.textContent = `
+              * { font-family: Arial, Helvetica, sans-serif !important; }
+              h1, h2, h3, .pbox-title, .pitem .val { font-family: Georgia, serif !important; }
+            `;
+            clonedDoc.head.appendChild(fontFix);
+
+            // <input> elements clip overflow to their fixed bounds — replace with divs
+            clonedDoc.querySelectorAll('input').forEach(inp => {
+              const isNum = inp.type === 'number';
+              const val   = inp.value || '';
+              const ph    = inp.placeholder || '';
+              const div   = clonedDoc.createElement('div');
+              div.className = inp.className;
+              if (inp.getAttribute('style')) div.setAttribute('style', inp.getAttribute('style'));
+              div.style.display        = 'flex';
+              div.style.alignItems     = 'center';
+              div.style.justifyContent = isNum ? 'center' : 'flex-start';
+              div.style.overflow       = 'visible';
+              div.style.whiteSpace     = 'nowrap';
+              div.style.boxSizing      = 'border-box';
+              div.textContent = val || ph;
+              if (!val && ph) div.style.opacity = '0.35';
+              inp.parentNode.replaceChild(div, inp);
+            });
+
+            // Prevent page breaks splitting individual cards
+            clonedDoc.querySelectorAll('#mgrid > *, #sgrid > *').forEach(el => {
+              el.style.pageBreakInside = 'avoid';
+              el.style.breakInside     = 'avoid';
+            });
+            clonedDoc.querySelectorAll('#kocont .grid > div').forEach(el => {
+              el.style.pageBreakInside = 'avoid';
+              el.style.breakInside     = 'avoid';
+            });
+          }
+        },
+        pagebreak: { mode: ['css'] },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       })
       .from(document.body)
       .save();
   } catch (err) {
-    alert('PDF maken mislukt: ' + err.message);
+    console.error('PDF maken mislukt:', err);
   } finally {
     siteHeader.style.display  = '';
     actionBar.style.display   = '';
@@ -681,7 +725,7 @@ async function savePDF() {
 }
 
 // ── SUBMISSION ───────────────────────────────────────────────────────────────
-const ADMIN_EMAIL = 'VERVANG_DIT@jouwmail.nl'; // ← vul hier jouw e-mailadres in
+const ADMIN_EMAIL = 'toernooienbt+wc2026@gmail.com'; // ← vul hier jouw e-mailadres in
 
 function validateForm() {
   const errors = [];
