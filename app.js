@@ -637,95 +637,185 @@ function triggerStandings(){
 }
 
 // ── PDF DOWNLOAD ─────────────────────────────────────────────────────────────
+function buildPDFView() {
+  const naam      = document.getElementById('naam').value  || '';
+  const email     = document.getElementById('email').value || '';
+  const kampioen  = document.getElementById('kampioen-vrijkeuze')?.value || '';
+
+  const scores = {};
+  document.querySelectorAll('input[data-i][data-side]').forEach(el => {
+    if (el.value !== '') scores[`${el.dataset.i}-${el.dataset.side}`] = el.value;
+  });
+
+  const byG = {};
+  MATCHES.forEach((m, i) => { if (!byG[m.g]) byG[m.g] = []; byG[m.g].push({...m, i}); });
+
+  const CARD   = 'border:0.5px solid #d4af37;border-radius:2mm;overflow:hidden;page-break-inside:avoid;break-inside:avoid';
+  const HDR    = 'background:#f5f0e0;padding:1.5mm 3mm;border-bottom:0.5px solid #d4af37';
+  const HDRTXT = 'font-size:8pt;font-weight:700;color:#735c00;font-family:Georgia,serif;letter-spacing:.05em';
+  const SEC    = 'font-size:9pt;font-weight:700;font-family:Georgia,serif;color:#735c00;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2.5mm;margin-top:5mm';
+  const TEAM   = 'font-size:6.5pt;font-weight:600;color:#222;padding:1.2mm 2mm;word-break:break-word;overflow-wrap:break-word';
+  const SCORE  = 'font-size:7.5pt;font-weight:700;color:#333;text-align:center;padding:1.2mm 2mm;white-space:nowrap;background:#fafaf5';
+
+  function matchCard(g) {
+    const rows = (byG[g]||[]).map(m => {
+      const sh = scores[`${m.i}-h`] ?? '', sa = scores[`${m.i}-a`] ?? '';
+      const sc = (sh!==''&&sa!=='') ? `${sh}–${sa}` : '–';
+      return `<tr style="border-top:.3px solid #eee">
+        <td style="${TEAM};text-align:right;width:44%">${m.h}</td>
+        <td style="${SCORE};width:12%">${sc}</td>
+        <td style="${TEAM};width:44%">${m.a}</td></tr>`;
+    }).join('');
+    return `<div style="${CARD}"><div style="${HDR}"><span style="${HDRTXT}">GROEP ${g}</span></div>
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed">${rows}</table></div>`;
+  }
+
+  function standingCard(g) {
+    const rows = getDisplayOrder(g).map((t,i) =>
+      `<tr style="${i?'border-top:.3px solid #eee':''}">
+        <td style="font-size:6pt;color:#bbb;padding:1.2mm 1mm 1.2mm 3mm;width:6mm">${i+1}.</td>
+        <td style="${TEAM};padding:1.2mm 2mm 1.2mm 1mm">${t}</td></tr>`
+    ).join('');
+    return `<div style="${CARD}"><div style="${HDR}"><span style="${HDRTXT}">GROEP ${g}</span></div>
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed">${rows}</table></div>`;
+  }
+
+  function koCard(id, label, date) {
+    const hEl = document.getElementById(`${id}_h`);
+    const aEl = document.getElementById(`${id}_a`);
+    const h  = hEl?.value || hEl?.placeholder || '?';
+    const a  = aEl?.value || aEl?.placeholder || '?';
+    const sh = document.getElementById(`${id}_sh`)?.value || '–';
+    const sa = document.getElementById(`${id}_sa`)?.value || '–';
+    return `<div style="${CARD}">
+      <div style="${HDR};display:flex;justify-content:space-between;align-items:center">
+        <span style="${HDRTXT};font-size:6.5pt">${label}</span>
+        <span style="font-size:5.5pt;color:#999">${date}</span></div>
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+        <tr><td style="${TEAM};width:80%">${h}</td><td style="${SCORE};width:20%">${sh}</td></tr>
+        <tr style="border-top:.3px solid #eee">
+          <td style="${TEAM}">${a}</td><td style="${SCORE}">${sa}</td></tr>
+      </table></div>`;
+  }
+
+  const g2 = c => `<div style="display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin-bottom:2.5mm;page-break-inside:avoid;break-inside:avoid">${c}</div>`;
+  const g3 = c => `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2.5mm;margin-bottom:2.5mm">${c}</div>`;
+  const g4 = c => `<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:2mm;margin-bottom:2mm">${c}</div>`;
+  const gk = Object.keys(GROUPS);
+
+  return `<div style="width:700px;font-family:Arial,Helvetica,sans-serif;background:white;color:#222;font-size:8pt;line-height:1.3">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #d4af37;padding-bottom:2.5mm;margin-bottom:4mm">
+      <strong style="font-size:12pt;font-family:Georgia,serif;color:#735c00">WK 2026 POULE</strong>
+      <span style="font-size:7.5pt"><strong>Deelnemer:</strong> ${naam||'_______________________'} &nbsp;&nbsp; <strong>E-mail:</strong> ${email||'___________________________'}</span>
+    </div>
+
+    <div style="${SEC}">① Groepswedstrijden</div>
+    ${g2(gk.slice(0,2).map(matchCard).join(''))}
+    ${g2(gk.slice(2,4).map(matchCard).join(''))}
+    ${g2(gk.slice(4,6).map(matchCard).join(''))}
+    ${g2(gk.slice(6,8).map(matchCard).join(''))}
+    ${g2(gk.slice(8,10).map(matchCard).join(''))}
+    ${g2(gk.slice(10,12).map(matchCard).join(''))}
+
+    <div style="${SEC}">② Poulevolgorde</div>
+    ${g3(gk.map(standingCard).join(''))}
+
+    <div style="${SEC};page-break-before:always">③ Knock-out fase</div>
+
+    <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Ronde van 32</div>
+    ${g4(R32.slice(0,4).map(m=>koCard(m.id,m.lb,m.d)).join(''))}
+    ${g4(R32.slice(4,8).map(m=>koCard(m.id,m.lb,m.d)).join(''))}
+    ${g4(R32.slice(8,12).map(m=>koCard(m.id,m.lb,m.d)).join(''))}
+    ${g4(R32.slice(12).map(m=>koCard(m.id,m.lb,m.d)).join(''))}
+
+    <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin:2mm 0 1.5mm">Achtste finales</div>
+    ${g4(AF.slice(0,4).map(m=>koCard(m.id,`R32 ${m.from[0]+1} vs ${m.from[1]+1}`,m.d)).join(''))}
+    ${g4(AF.slice(4).map(m=>koCard(m.id,`R32 ${m.from[0]+1} vs ${m.from[1]+1}`,m.d)).join(''))}
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin:2mm 0">
+      <div>
+        <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Kwartfinales</div>
+        ${g2(KF.map(m=>koCard(m.id,`AF ${m.from[0]+1} vs ${m.from[1]+1}`,m.d)).join(''))}
+      </div>
+      <div>
+        <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Halve finales</div>
+        ${g2(HF.map(m=>koCard(m.id,`KF ${m.from[0]+1} vs ${m.from[1]+1}`,m.d)).join(''))}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin:2mm 0">
+      <div>
+        <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Troostfinale · 18 jul</div>
+        ${koCard('tf','3e / 4e Plaats','18 jul')}
+      </div>
+      <div>
+        <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Grote Finale · 19 jul</div>
+        ${koCard('fin','FINALE','19 jul')}
+      </div>
+    </div>
+
+    <div style="border:1.5px solid #d4af37;border-radius:2mm;padding:3mm 5mm;margin-top:3mm;text-align:center;background:#fffde7">
+      <div style="font-size:7pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1mm">🏆 Voorspelde Wereldkampioen</div>
+      <div style="font-size:11pt;font-weight:700;color:#333">${kampioen||'—'}</div>
+    </div>
+
+    ${(()=>{
+      const bIds = ['b1','b2','b3','b4','b5','b6','b7','b8','b9','b10a','b10b'];
+      const bVals = {};
+      bIds.forEach(id => { bVals[id] = document.getElementById(id)?.value || ''; });
+      const hasAny = bIds.some(id => bVals[id]);
+      if (!hasAny) return '';
+      const bLabels = {
+        b1:'1. NL eerste doelpunt', b2:'2. Eerste rode kaart', b3:'3. Meeste goals groepsfase',
+        b4:'4. Goals groepsfase (±5)', b5:'5. Topscorer', b6:'6. Meeste clean sheets',
+        b7:'7. Meeste gele kaarten', b8:'8. Goals toernooi (±10)', b9:'9. Penalty-uitschakeling',
+        b10a:'10a. Finalist 1', b10b:'10b. Finalist 2'
+      };
+      const bPts = {b1:25,b2:20,b3:20,b4:15,b5:35,b6:30,b7:20,b8:20,b9:25,b10a:20,b10b:20};
+      const ROW = 'border-top:.3px solid #eee';
+      const TD1 = 'font-size:6.5pt;color:#735c00;font-weight:700;padding:1.2mm 2mm;width:45%';
+      const TD2 = 'font-size:7pt;font-weight:600;color:#222;padding:1.2mm 2mm';
+      const TD3 = 'font-size:6pt;color:#999;padding:1.2mm 2mm;text-align:right;width:12%';
+      const rows = bIds.filter(id=>bVals[id]).map(id =>
+        `<tr style="${ROW}"><td style="${TD1}">${bLabels[id]}</td><td style="${TD2}">${bVals[id]}</td><td style="${TD3}">${bPts[id]} pts</td></tr>`
+      ).join('');
+      return `<div style="border:0.5px solid #d4af37;border-radius:2mm;overflow:hidden;margin-top:4mm;page-break-inside:avoid;break-inside:avoid">
+        <div style="background:#f5f0e0;padding:1.5mm 3mm;border-bottom:0.5px solid #d4af37">
+          <span style="font-size:8pt;font-weight:700;color:#735c00;font-family:Georgia,serif;letter-spacing:.05em">④ BONUSVRAGEN</span>
+        </div>
+        <table style="width:100%;border-collapse:collapse;table-layout:fixed">${rows}</table>
+      </div>`;
+    })()}
+  </div>`;
+}
+
 async function savePDF() {
   const naam = (document.getElementById('naam').value || 'deelnemer').trim();
   const btn  = document.getElementById('btn-pdf');
   btn.disabled = true;
   btn.innerHTML = '<span class="material-symbols-outlined text-base">hourglass_empty</span> BEZIG...';
 
-  const siteHeader  = document.getElementById('site-header');
-  const actionBar   = document.getElementById('action-bar');
-  const printHeader = document.querySelector('.print-header');
-  const main        = document.querySelector('main');
-
-  siteHeader.style.display  = 'none';
-  actionBar.style.display   = 'none';
-  printHeader.style.display = 'flex';
-  main.style.paddingTop     = '0';
-  main.style.paddingBottom  = '0';
-  window.scrollTo(0, 0);
+  // Hide all body children so html2pdf's container lands at Y=0 in the document,
+  // preventing variable whitespace at the top of the PDF.
+  const bodyChildren = Array.from(document.body.children);
+  bodyChildren.forEach(c => c.style.setProperty('display', 'none', 'important'));
 
   try {
     await html2pdf()
       .set({
-        margin: [8, 8, 8, 8],
+        margin: [10, 8, 8, 8],
         filename: `WK2026-Poule-${naam}.pdf`,
         image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: {
-          scale: 1.5,
-          useCORS: true,
-          logging: false,
-          scrollX: 0,
-          scrollY: 0,
-          onclone: (clonedDoc) => {
-            // Google Fonts are cross-origin and fail in html2canvas — use system fonts
-            const fontFix = clonedDoc.createElement('style');
-            fontFix.textContent = `
-              * { font-family: Arial, Helvetica, sans-serif !important; }
-              h1, h2, h3, .pbox-title, .pitem .val { font-family: Georgia, serif !important; }
-            `;
-            clonedDoc.head.appendChild(fontFix);
-
-            // <input> elements clip overflow to their fixed bounds — replace with divs
-            clonedDoc.querySelectorAll('input').forEach(inp => {
-              const isNum = inp.type === 'number';
-              const val   = inp.value || '';
-              const ph    = inp.placeholder || '';
-              const div   = clonedDoc.createElement('div');
-              div.className = inp.className;
-              if (inp.getAttribute('style')) div.setAttribute('style', inp.getAttribute('style'));
-              div.style.display        = 'flex';
-              div.style.alignItems     = 'center';
-              div.style.justifyContent = isNum ? 'center' : 'flex-start';
-              div.style.overflow       = 'visible';
-              div.style.whiteSpace     = 'nowrap';
-              div.style.boxSizing      = 'border-box';
-              div.textContent = val || ph;
-              if (!val && ph) div.style.opacity = '0.35';
-              inp.parentNode.replaceChild(div, inp);
-            });
-
-            // .truncate clips country names — make them wrap instead
-            clonedDoc.querySelectorAll('.truncate').forEach(el => {
-              el.style.overflow   = 'visible';
-              el.style.textOverflow = 'clip';
-              el.style.whiteSpace = 'normal';
-            });
-
-            // Prevent page breaks splitting individual cards
-            clonedDoc.querySelectorAll('#mgrid > *, #sgrid > *').forEach(el => {
-              el.style.pageBreakInside = 'avoid';
-              el.style.breakInside     = 'avoid';
-            });
-            clonedDoc.querySelectorAll('#kocont .grid > div').forEach(el => {
-              el.style.pageBreakInside = 'avoid';
-              el.style.breakInside     = 'avoid';
-            });
-          }
-        },
+        html2canvas: { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
         pagebreak: { mode: ['css'] },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       })
-      .from(document.body)
+      .from(buildPDFView())
       .save();
   } catch (err) {
     console.error('PDF maken mislukt:', err);
   } finally {
-    siteHeader.style.display  = '';
-    actionBar.style.display   = '';
-    printHeader.style.display = 'none';
-    main.style.paddingTop     = '';
-    main.style.paddingBottom  = '';
+    bodyChildren.forEach(c => c.style.removeProperty('display'));
     btn.disabled = false;
     btn.innerHTML = '<span class="material-symbols-outlined text-base">download</span> PDF OPSLAAN';
   }
@@ -753,6 +843,14 @@ function updateSubmitButton() {
   const email = document.getElementById('email')?.value.trim();
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (btn) btn.disabled = !naam || !emailValid;
+}
+
+function buildSubmissionJSON() {
+  const state = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+  // Capture current display order for each group (includes calcStandings result)
+  state.standings = {};
+  Object.keys(GROUPS).forEach(g => { state.standings[g] = getDisplayOrder(g); });
+  return state;
 }
 
 function submitForm() {
@@ -784,6 +882,19 @@ function submitForm() {
     `Tip: sla eerst je PDF op via de knop "PDF OPSLAAN"!`
   );
   if (!ok) return;
+
+  // Download submission JSON for admin
+  try {
+    const json  = JSON.stringify(buildSubmissionJSON(), null, 2);
+    const slug  = naam.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+    const blob  = new Blob([json], {type:'application/json'});
+    const url   = URL.createObjectURL(blob);
+    const dl    = document.createElement('a');
+    dl.href = url; dl.download = `wk2026-${slug}.json`;
+    document.body.appendChild(dl); dl.click();
+    document.body.removeChild(dl);
+    URL.revokeObjectURL(url);
+  } catch {}
 
   // Wipe local state
   try { localStorage.removeItem(LS_KEY); } catch {}
@@ -826,6 +937,11 @@ function saveState() {
   });
   document.querySelectorAll('#kocont input').forEach(el => {
     if (el.id && el.value !== '') state.koFields[el.id] = el.value;
+  });
+  state.bonus = {};
+  ['b1','b2','b3','b4','b5','b6','b7','b8','b9','b10a','b10b'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.value !== '') state.bonus[id] = el.value;
   });
   try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
   flashOk('ok-saved');
@@ -905,6 +1021,13 @@ function loadState() {
     if (champ) { champ.textContent = state.kampioen; champ.classList.add('text-primary'); }
   }
 
+  if (state.bonus) {
+    Object.entries(state.bonus).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    });
+  }
+
   _loadingState = false;
   updateSubmitButton();
 }
@@ -949,3 +1072,78 @@ document.addEventListener('focusout', e => {
 });
 
 document.addEventListener('input', saveState);
+
+// ── DEV TOOLS (only shown with ?dev in URL) ───────────────────────────────────
+function fillTestData() {
+  const r = () => Math.floor(Math.random() * 4);
+  const setKO = id => {
+    const h = r(); let a = r(); if (a === h) a = (a + 1) % 4;
+    const sh = document.getElementById(id + '_sh');
+    const sa = document.getElementById(id + '_sa');
+    if (sh) { sh.value = h; sh.classList.add('filled'); }
+    if (sa) { sa.value = a; sa.classList.add('filled'); }
+    if (sh) onScoreChange(sh);
+  };
+
+  // Naam & email
+  document.getElementById('naam').value  = 'Test Gebruiker';
+  document.getElementById('email').value = 'test@test.nl';
+  document.getElementById('print-naam').textContent  = 'Test Gebruiker';
+  document.getElementById('print-email').textContent = 'test@test.nl';
+
+  // Groepswedstrijden
+  document.querySelectorAll('input[data-i][data-side]').forEach(el => {
+    el.value = r(); el.classList.add('filled');
+  });
+  calcStandings();
+  Object.keys(GROUPS).forEach(g => { delete manualOrder[g]; });
+  renderStandings();
+
+  // Knock-out fase — trigger each round so team names populate, then fill scores
+  triggerR32();  R32.forEach(m => setKO(m.id));
+  triggerAF();   AF.forEach(m  => setKO(m.id));
+  triggerKF();   KF.forEach(m  => setKO(m.id));
+  triggerHF();   HF.forEach(m  => setKO(m.id));
+  triggerFinale(); setKO('tf'); setKO('fin');
+
+  // Kampioen
+  const champ = getWinner('fin');
+  if (champ) {
+    const el = document.getElementById('kampioen-vrijkeuze');
+    const disp = document.getElementById('champion');
+    if (el) el.value = champ;
+    if (disp) { disp.textContent = champ; disp.classList.add('text-primary'); }
+  }
+
+  // Bonus
+  const dutchPlayers = ['Memphis Depay','Virgil van Dijk','Cody Gakpo','Donyell Malen','Wout Weghorst'];
+  const topscorers   = ['Erling Haaland','Kylian Mbappé','Vinicius Jr','Lionel Messi','Harry Kane','Cristiano Ronaldo'];
+  const keepers      = ['Alisson','Manuel Neuer','Marc-André ter Stegen','Thibaut Courtois','Jordan Pickford'];
+  const allTeams     = Object.values(GROUPS).flat();
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  document.getElementById('b1').value  = pick(dutchPlayers);
+  document.getElementById('b2').value  = pick(allTeams);
+  document.getElementById('b3').value  = pick(allTeams);
+  document.getElementById('b4').value  = Math.floor(Math.random() * 40 + 110);
+  document.getElementById('b5').value  = pick(topscorers);
+  document.getElementById('b6').value  = pick(keepers);
+  document.getElementById('b7').value  = pick(allTeams);
+  document.getElementById('b8').value  = Math.floor(Math.random() * 60 + 180);
+  document.getElementById('b9').value  = pick(allTeams);
+  document.getElementById('b10a').value = pick(allTeams);
+  document.getElementById('b10b').value = pick(allTeams);
+
+  saveState();
+  updateSubmitButton();
+}
+
+function eraseAll() {
+  if (!confirm('Weet je zeker dat je alles wilt wissen? Dit kan niet ongedaan worden gemaakt.')) return;
+  localStorage.removeItem(LS_KEY);
+  location.reload();
+}
+
+if (new URLSearchParams(location.search).has('dev')) {
+  const dt = document.getElementById('dev-tools');
+  if (dt) dt.classList.remove('hidden');
+}

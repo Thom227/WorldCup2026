@@ -101,12 +101,131 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
     <div class="space-y-16" id="kocont"></div>
   </section>
 
+  <div class="h-px bg-gradient-to-r from-primary-container via-outline-variant to-transparent opacity-30"></div>
+
+  <!-- ④ BONUSVRAGEN -->
+  <section>
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
+      <div class="border-l-4 border-primary-container pl-8">
+        <h2 class="text-4xl font-bold text-on-surface mb-2">④ Bonusvragen</h2>
+        <p class="text-on-surface-variant opacity-70 font-medium">Optioneel — lege antwoorden geven geen fout maar ook geen punten.</p>
+      </div>
+    </div>
+    <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant opacity-50 mb-4">Groepsfase vragen</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">1. Welke Nederlandse speler scoort ons eerste doelpunt?</p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">25 pts</span>
+        </div>
+        <input id="b1" type="text" placeholder="Naam speler..." oninput="saveState()"
+          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">2. Welk land ontvangt als eerste een rode kaart?</p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">20 pts</span>
+        </div>
+        <input id="b2" type="text" placeholder="Landnaam..." oninput="saveState()"
+          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">3. Welk land scoort de meeste doelpunten in de groepsfase?</p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">20 pts</span>
+        </div>
+        <input id="b3" type="text" placeholder="Landnaam..." oninput="saveState()"
+          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">4. Hoeveel goals vallen er in de groepsfase? <span class="font-normal opacity-60">(±5 telt)</span></p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">15 pts</span>
+        </div>
+        <input id="b4" type="number" min="0" placeholder="Aantal goals..." oninput="saveState()"
+          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+      </div>
+
+    </div>
+
+    <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant opacity-50 mb-4">Toernooi vragen</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">5. Wie wordt topscorer van het toernooi?</p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">35 pts</span>
+        </div>
+        <input id="b5" type="text" placeholder="Naam speler..." oninput="saveState()"
+          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">6. Welke keeper houdt de meeste clean sheets?</p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">30 pts</span>
+        </div>
+        <input id="b6" type="text" placeholder="Naam keeper..." oninput="saveState()"
+          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">7. Welk land ontvangt de meeste gele kaarten?</p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">20 pts</span>
+        </div>
+        <input id="b7" type="text" placeholder="Landnaam..." oninput="saveState()"
+          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">8. Hoeveel goals vallen er in het hele toernooi? <span class="font-normal opacity-60">(±10 telt)</span></p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">20 pts</span>
+        </div>
+        <input id="b8" type="number" min="0" placeholder="Aantal goals..." oninput="saveState()"
+          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">9. Welk land valt uit via penalty's in de knock-out fase?</p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">25 pts</span>
+        </div>
+        <input id="b9" type="text" placeholder="Landnaam..." oninput="saveState()"
+          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-on-surface leading-snug">10. Welke twee landen staan in de finale? <span class="font-normal opacity-60">(beide correct voor punten)</span></p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">40 pts</span>
+        </div>
+        <div class="flex gap-2">
+          <input id="b10a" type="text" placeholder="1e land..." oninput="saveState()"
+            class="flex-1 bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+          <input id="b10b" type="text" placeholder="2e land..." oninput="saveState()"
+            class="flex-1 bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- ACTION BAR -->
 <div id="action-bar" class="fixed bottom-0 left-0 right-0 z-[100] no-print bg-white/95 backdrop-blur-sm border-t border-outline-variant shadow-lg">
   <div class="max-w-[1200px] mx-auto px-6 py-4 flex flex-wrap items-center gap-4">
     <p id="form-errors" class="hidden text-sm font-semibold flex-1" style="color:#ba1a1a"></p>
+    <div id="dev-tools" class="hidden items-center gap-2">
+      <button onclick="fillTestData()" class="flex items-center gap-1 bg-surface-container text-on-surface-variant border border-outline-variant rounded-full px-4 py-2 text-[10px] font-bold tracking-widest uppercase transition-all hover:border-primary active:scale-95">TEST INVULLEN</button>
+      <button onclick="eraseAll()" class="flex items-center gap-1 bg-surface-container text-error border border-error/30 rounded-full px-4 py-2 text-[10px] font-bold tracking-widest uppercase transition-all hover:bg-error/10 active:scale-95">ALLES WISSEN</button>
+    </div>
     <div class="flex items-center gap-3 ml-auto">
       <button id="btn-pdf" onclick="savePDF()"
         class="flex items-center gap-2 bg-white hover:bg-surface-container-low text-on-surface border border-outline-variant rounded-full px-6 py-3 text-xs font-bold tracking-widest uppercase transition-all hover:border-primary active:scale-95 shadow-sm">
