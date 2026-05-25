@@ -695,6 +695,13 @@ async function savePDF() {
               inp.parentNode.replaceChild(div, inp);
             });
 
+            // .truncate clips country names — make them wrap instead
+            clonedDoc.querySelectorAll('.truncate').forEach(el => {
+              el.style.overflow   = 'visible';
+              el.style.textOverflow = 'clip';
+              el.style.whiteSpace = 'normal';
+            });
+
             // Prevent page breaks splitting individual cards
             clonedDoc.querySelectorAll('#mgrid > *, #sgrid > *').forEach(el => {
               el.style.pageBreakInside = 'avoid';
@@ -733,6 +740,7 @@ function validateForm() {
   const email = document.getElementById('email')?.value.trim() || '';
   if (!naam)  errors.push({field:'naam',  msg:'Vul je naam in'});
   if (!email) errors.push({field:'email', msg:'Vul je e-mailadres in'});
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push({field:'email', msg:'Vul een geldig e-mailadres in (bijv. naam@gmail.com)'});
   const empty = [...document.querySelectorAll('input[data-i][data-side]')]
     .filter(el => el.value === '').length;
   if (empty > 0) errors.push({field:'scores', msg:`Nog ${empty} uitslag${empty !== 1 ? 'en' : ''} niet ingevuld`});
@@ -743,7 +751,8 @@ function updateSubmitButton() {
   const btn   = document.getElementById('btn-inzenden');
   const naam  = document.getElementById('naam')?.value.trim();
   const email = document.getElementById('email')?.value.trim();
-  if (btn) btn.disabled = !naam || !email;
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (btn) btn.disabled = !naam || !emailValid;
 }
 
 function submitForm() {
