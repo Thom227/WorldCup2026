@@ -289,26 +289,37 @@ function calcStandings(){
 function triggerR32(){
   calcStandings();
 
-  const allThirds = [];
-  Object.keys(GROUPS).forEach(g => {
-    const order = getDisplayOrder(g);
-    if (!order || order.length < 3) return;
-    const name = order[2];
-    const st = groupStandings[g];
-    const teamSt = st ? st.find(t => t.n === name) : null;
-    allThirds.push({
-      g, n: name,
-      pts: teamSt ? teamSt.pts : 0,
-      gd:  teamSt ? teamSt.gd  : 0,
-      gf:  teamSt ? teamSt.gf  : 0,
-    });
-  });
+  const hasManualBest3 = manualBest3.filter(v => v && v !== '').length === 8;
+  let best8groups, best8teams;
 
-  allThirds.sort((a,b) => b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || a.n.localeCompare(b.n));
-  const best8 = allThirds.slice(0, 8);
-  const best8groups = best8.map(t => t.g);
-  const best8teams  = {};
-  best8.forEach(t => { best8teams[t.g] = t.n; });
+  if (hasManualBest3) {
+    best8groups = manualBest3.filter(v => v && v !== '');
+    best8teams = {};
+    best8groups.forEach(g => {
+      const order = getDisplayOrder(g);
+      best8teams[g] = (order && order.length >= 3) ? order[2] : ('Nr.3 Gr.' + g);
+    });
+  } else {
+    const allThirds = [];
+    Object.keys(GROUPS).forEach(g => {
+      const order = getDisplayOrder(g);
+      if (!order || order.length < 3) return;
+      const name = order[2];
+      const st = groupStandings[g];
+      const teamSt = st ? st.find(t => t.n === name) : null;
+      allThirds.push({
+        g, n: name,
+        pts: teamSt ? teamSt.pts : 0,
+        gd:  teamSt ? teamSt.gd  : 0,
+        gf:  teamSt ? teamSt.gf  : 0,
+      });
+    });
+    allThirds.sort((a,b) => b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || a.n.localeCompare(b.n));
+    const best8 = allThirds.slice(0, 8);
+    best8groups = best8.map(t => t.g);
+    best8teams  = {};
+    best8.forEach(t => { best8teams[t.g] = t.n; });
+  }
 
   const winnerCols = ['A','B','D','E','G','I','K','L'];
   const mapping = getThirdPlaceMapping(best8groups);
@@ -403,7 +414,7 @@ function koMatch(m,placeholders){
   return `<div class="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-sm" id="${id}">
     <div class="bg-surface-container-low px-4 py-3 border-b border-outline-variant flex justify-between items-center">
       <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em]">${m.lb||''}</span>
-      <span class="text-[10px] font-bold text-primary opacity-80 uppercase tracking-widest">${m.d} · ${m.t}</span>
+      <span class="text-[10px] font-bold text-primary opacity-80 uppercase tracking-widest">${m.d}${m.nr ? ' · <span style="color:#735c00;font-weight:700">#'+m.nr+'</span>' : m.t ? ' · '+m.t : ''}</span>
     </div>
     <div class="p-5 space-y-3">
       <div class="flex items-center gap-3">
@@ -449,10 +460,10 @@ function buildKO(){
     return sec;
   };
 
-  cont.appendChild(createRound('Ronde van 32','28 jun – 4 jul','r32',POINTS.r32,VERLENGING_NOTE,R32.map(m=>koMatch(m,[slotLabel(m.s1),slotLabel(m.s2)])).join(''),4,'triggerR32()'));
-  cont.appendChild(createRound('Achtste finales','4 – 7 jul','af',POINTS.af,VERLENGING_NOTE,AF.map((m,i)=>koMatch({...m,lb:`Duel ${m.from[0]+1} vs Duel ${m.from[1]+1}`},[`Winnaar ${m.from[0]+1}`,`Winnaar ${m.from[1]+1}`])).join(''),4,'triggerAF()'));
-  cont.appendChild(createRound('Kwartfinales','9 – 12 jul','kf',POINTS.kf,VERLENGING_NOTE,KF.map(m=>koMatch({...m,lb:`AF ${m.from[0]+1} vs AF ${m.from[1]+1}`},[`Winnaar AF ${m.from[0]+1}`,`Winnaar AF ${m.from[1]+1}`])).join(''),2,'triggerKF()'));
-  cont.appendChild(createRound('Halve finales','14 – 15 jul','hf',POINTS.hf,VERLENGING_NOTE,HF.map(m=>koMatch({...m,lb:`KF ${m.from[0]+1} vs KF ${m.from[1]+1}`},[`Winnaar KF ${m.from[0]+1}`,`Winnaar KF ${m.from[1]+1}`])).join(''),2,'triggerHF()'));
+  cont.appendChild(createRound('Ronde van 32','28 jun – 4 jul','r32',POINTS.r32,VERLENGING_NOTE,R32.map((m,i)=>koMatch({...m,lb:m.lb,nr:i+1},[slotLabel(m.s1),slotLabel(m.s2)])).join(''),4,'triggerR32()'));
+  cont.appendChild(createRound('Achtste finales','4 – 7 jul','af',POINTS.af,VERLENGING_NOTE,AF.map((m,i)=>koMatch({...m,lb:`Achtste Finale #${i+1}`,nr:i+1},[`Winnaar W${m.from[0]+1}`,`Winnaar W${m.from[1]+1}`])).join(''),4,'triggerAF()'));
+  cont.appendChild(createRound('Kwartfinales','9 – 12 jul','kf',POINTS.kf,VERLENGING_NOTE,KF.map((m,i)=>koMatch({...m,lb:`Kwartfinale #${i+1}`,nr:i+1},[`Winnaar AF${m.from[0]+1}`,`Winnaar AF${m.from[1]+1}`])).join(''),2,'triggerKF()'));
+  cont.appendChild(createRound('Halve finales','14 – 15 jul','hf',POINTS.hf,VERLENGING_NOTE,HF.map((m,i)=>koMatch({...m,lb:`Halve Finale #${i+1}`,nr:i+1},[`Winnaar KF${m.from[0]+1}`,`Winnaar KF${m.from[1]+1}`])).join(''),2,'triggerHF()'));
 
   const duo=document.createElement('div');
   duo.className='grid grid-cols-1 lg:grid-cols-2 gap-12 pt-12';
@@ -506,6 +517,7 @@ function getThirdPlaceTeam(groupLetter, best8groups, best8teams) {
 
 // ── STANDINGS STATE & DRAG DROP ──────────────────────────────────────────────
 const manualOrder = {};
+const manualBest3 = [null, null, null, null, null, null, null, null];
 
 function getDisplayOrder(g) {
   if (manualOrder[g]) return manualOrder[g];
@@ -646,6 +658,7 @@ function buildPDFView() {
   document.querySelectorAll('input[data-i][data-side]').forEach(el => {
     if (el.value !== '') scores[`${el.dataset.i}-${el.dataset.side}`] = el.value;
   });
+  const isBlank = Object.keys(scores).length === 0;
 
   const byG = {};
   MATCHES.forEach((m, i) => { if (!byG[m.g]) byG[m.g] = []; byG[m.g].push({...m, i}); });
@@ -657,14 +670,24 @@ function buildPDFView() {
   const TEAM   = 'font-size:6.5pt;font-weight:600;color:#222;padding:1.2mm 2mm;word-break:break-word;overflow-wrap:break-word';
   const SCORE  = 'font-size:7.5pt;font-weight:700;color:#333;text-align:center;padding:1.2mm 2mm;white-space:nowrap;background:#fafaf5';
 
-  function matchCard(g) {
+  function matchCard(g, isBlank) {
     const rows = (byG[g]||[]).map(m => {
       const sh = scores[`${m.i}-h`] ?? '', sa = scores[`${m.i}-a`] ?? '';
-      const sc = (sh!==''&&sa!=='') ? `${sh}–${sa}` : '–';
+      const sc = (sh!==''&&sa!=='') ? `${sh}–${sa}` : '';
+      const isEmpty = sh===''&&sa==='';
+      const TD_H = isEmpty
+        ? 'font-size:6.5pt;font-weight:600;color:#222;padding:1.5mm 2mm;width:42%;border-right:.3px solid #ddd;word-break:break-word'
+        : 'font-size:6.5pt;font-weight:600;color:#222;padding:1.2mm 2mm;width:44%;word-break:break-word';
+      const TD_A = isEmpty
+        ? 'font-size:6.5pt;font-weight:600;color:#222;padding:1.5mm 2mm;width:42%;word-break:break-word'
+        : 'font-size:6.5pt;font-weight:600;color:#222;padding:1.2mm 2mm;width:44%;word-break:break-word';
+      const SCORE_COL = isEmpty
+        ? 'font-size:7pt;text-align:center;padding:1.5mm 1mm;width:16%;color:#ccc;border-left:.3px solid #ddd;border-right:.3px solid #ddd'
+        : 'font-size:7.5pt;font-weight:700;color:#333;text-align:center;padding:1.2mm 2mm;width:12%;background:#fafaf5';
       return `<tr style="border-top:.3px solid #eee">
-        <td style="${TEAM};text-align:right;width:44%">${m.h}</td>
-        <td style="${SCORE};width:12%">${sc}</td>
-        <td style="${TEAM};width:44%">${m.a}</td></tr>`;
+        <td style="${TD_H};text-align:right">${m.h}</td>
+        <td style="${SCORE_COL}">${sc}</td>
+        <td style="${TD_A}">${m.a}</td></tr>`;
     }).join('');
     return `<div style="${CARD}"><div style="${HDR}"><span style="${HDRTXT}">GROEP ${g}</span></div>
       <table style="width:100%;border-collapse:collapse;table-layout:fixed">${rows}</table></div>`;
@@ -680,21 +703,39 @@ function buildPDFView() {
       <table style="width:100%;border-collapse:collapse;table-layout:fixed">${rows}</table></div>`;
   }
 
-  function koCard(id, label, date) {
+  function koCard(id, label, date, isBlank) {
     const hEl = document.getElementById(`${id}_h`);
     const aEl = document.getElementById(`${id}_a`);
-    const h  = hEl?.value || hEl?.placeholder || '?';
-    const a  = aEl?.value || aEl?.placeholder || '?';
-    const sh = document.getElementById(`${id}_sh`)?.value || '–';
-    const sa = document.getElementById(`${id}_sa`)?.value || '–';
+    const hVal = hEl?.value || '';
+    const aVal = aEl?.value || '';
+    const shVal = document.getElementById(`${id}_sh`)?.value || '';
+    const saVal = document.getElementById(`${id}_sa`)?.value || '';
+    const hDisplay = hVal || hEl?.placeholder || '';
+    const aDisplay = aVal || aEl?.placeholder || '';
+    const scDisplay = (shVal!==''&&saVal!=='') ? `${shVal}–${saVal}` : '';
+    const nameColorH = hVal ? '#222' : '#aaa';
+    const nameColorA = aVal ? '#222' : '#aaa';
+    if (isBlank) {
+      return `<div style="${CARD}">
+        <div style="${HDR};display:flex;justify-content:space-between;align-items:center">
+          <span style="${HDRTXT};font-size:6.5pt">${label}</span>
+          <span style="font-size:5.5pt;color:#999">${date}</span></div>
+        <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+          <tr><td style="font-size:7pt;padding:2mm 2mm;width:75%;border-bottom:0.5px dotted #bbb;color:#bbb">${hDisplay}</td>
+              <td style="font-size:7pt;text-align:center;padding:2mm 1mm;width:25%;border-left:.3px solid #ddd;border-bottom:0.5px dotted #bbb;color:#bbb"></td></tr>
+          <tr style="border-top:.3px solid #eee">
+            <td style="font-size:7pt;padding:2mm 2mm;width:75%;border-bottom:0.5px dotted #bbb;color:#bbb">${aDisplay}</td>
+            <td style="font-size:7pt;text-align:center;padding:2mm 1mm;width:25%;border-left:.3px solid #ddd;border-bottom:0.5px dotted #bbb;color:#bbb"></td></tr>
+        </table></div>`;
+    }
     return `<div style="${CARD}">
       <div style="${HDR};display:flex;justify-content:space-between;align-items:center">
         <span style="${HDRTXT};font-size:6.5pt">${label}</span>
         <span style="font-size:5.5pt;color:#999">${date}</span></div>
       <table style="width:100%;border-collapse:collapse;table-layout:fixed">
-        <tr><td style="${TEAM};width:80%">${h}</td><td style="${SCORE};width:20%">${sh}</td></tr>
+        <tr><td style="${TEAM};width:80%;color:${nameColorH}">${hDisplay}</td><td style="${SCORE};width:20%">${scDisplay}</td></tr>
         <tr style="border-top:.3px solid #eee">
-          <td style="${TEAM}">${a}</td><td style="${SCORE}">${sa}</td></tr>
+          <td style="${TEAM};width:80%;color:${nameColorA}">${aDisplay}</td><td style="${SCORE};width:20%"></td></tr>
       </table></div>`;
   }
 
@@ -710,12 +751,12 @@ function buildPDFView() {
     </div>
 
     <div style="${SEC}">① Groepswedstrijden</div>
-    ${g2(gk.slice(0,2).map(matchCard).join(''))}
-    ${g2(gk.slice(2,4).map(matchCard).join(''))}
-    ${g2(gk.slice(4,6).map(matchCard).join(''))}
-    ${g2(gk.slice(6,8).map(matchCard).join(''))}
-    ${g2(gk.slice(8,10).map(matchCard).join(''))}
-    ${g2(gk.slice(10,12).map(matchCard).join(''))}
+    ${g2(gk.slice(0,2).map(g=>matchCard(g,isBlank)).join(''))}
+    ${g2(gk.slice(2,4).map(g=>matchCard(g,isBlank)).join(''))}
+    ${g2(gk.slice(4,6).map(g=>matchCard(g,isBlank)).join(''))}
+    ${g2(gk.slice(6,8).map(g=>matchCard(g,isBlank)).join(''))}
+    ${g2(gk.slice(8,10).map(g=>matchCard(g,isBlank)).join(''))}
+    ${g2(gk.slice(10,12).map(g=>matchCard(g,isBlank)).join(''))}
 
     <div style="${SEC}">② Poulevolgorde</div>
     ${g3(gk.map(standingCard).join(''))}
@@ -723,34 +764,34 @@ function buildPDFView() {
     <div style="${SEC};page-break-before:always">③ Knock-out fase</div>
 
     <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Ronde van 32</div>
-    ${g4(R32.slice(0,4).map(m=>koCard(m.id,m.lb,m.d)).join(''))}
-    ${g4(R32.slice(4,8).map(m=>koCard(m.id,m.lb,m.d)).join(''))}
-    ${g4(R32.slice(8,12).map(m=>koCard(m.id,m.lb,m.d)).join(''))}
-    ${g4(R32.slice(12).map(m=>koCard(m.id,m.lb,m.d)).join(''))}
+    ${g4(R32.slice(0,4).map((m,i)=>koCard(m.id,m.lb,`${m.d} · #${i+1}`,isBlank)).join(''))}
+    ${g4(R32.slice(4,8).map((m,i)=>koCard(m.id,m.lb,`${m.d} · #${i+5}`,isBlank)).join(''))}
+    ${g4(R32.slice(8,12).map((m,i)=>koCard(m.id,m.lb,`${m.d} · #${i+9}`,isBlank)).join(''))}
+    ${g4(R32.slice(12).map((m,i)=>koCard(m.id,m.lb,`${m.d} · #${i+13}`,isBlank)).join(''))}
 
     <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin:2mm 0 1.5mm">Achtste finales</div>
-    ${g4(AF.slice(0,4).map(m=>koCard(m.id,`R32 ${m.from[0]+1} vs ${m.from[1]+1}`,m.d)).join(''))}
-    ${g4(AF.slice(4).map(m=>koCard(m.id,`R32 ${m.from[0]+1} vs ${m.from[1]+1}`,m.d)).join(''))}
+    ${g4(AF.slice(0,4).map((m,i)=>koCard(m.id,`Achtste Finale #${i+1}`,m.d,isBlank)).join(''))}
+    ${g4(AF.slice(4).map((m,i)=>koCard(m.id,`Achtste Finale #${i+5}`,m.d,isBlank)).join(''))}
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin:2mm 0">
       <div>
         <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Kwartfinales</div>
-        ${g2(KF.map(m=>koCard(m.id,`AF ${m.from[0]+1} vs ${m.from[1]+1}`,m.d)).join(''))}
+        ${g2(KF.map((m,i)=>koCard(m.id,`Kwartfinale #${i+1}`,m.d,isBlank)).join(''))}
       </div>
       <div>
         <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Halve finales</div>
-        ${g2(HF.map(m=>koCard(m.id,`KF ${m.from[0]+1} vs ${m.from[1]+1}`,m.d)).join(''))}
+        ${g2(HF.map((m,i)=>koCard(m.id,`Halve Finale #${i+1}`,m.d,isBlank)).join(''))}
       </div>
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin:2mm 0">
       <div>
         <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Troostfinale · 18 jul</div>
-        ${koCard('tf','3e / 4e Plaats','18 jul')}
+        ${koCard('tf','3e / 4e Plaats','18 jul',isBlank)}
       </div>
       <div>
         <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Grote Finale · 19 jul</div>
-        ${koCard('fin','FINALE','19 jul')}
+        ${koCard('fin','FINALE','19 jul',isBlank)}
       </div>
     </div>
 
@@ -760,25 +801,30 @@ function buildPDFView() {
     </div>
 
     ${(()=>{
-      const bIds = ['b1','b2','b3','b4','b5','b6','b7','b8','b9','b10a','b10b'];
-      const bVals = {};
-      bIds.forEach(id => { bVals[id] = document.getElementById(id)?.value || ''; });
-      const hasAny = bIds.some(id => bVals[id]);
-      if (!hasAny) return '';
+      const bIds = ['b1','b2','b3','b4','b5','b6','b7','b8','b9'];
       const bLabels = {
-        b1:'1. NL eerste doelpunt', b2:'2. Eerste rode kaart', b3:'3. Meeste goals groepsfase',
-        b4:'4. Goals groepsfase (±5)', b5:'5. Topscorer', b6:'6. Meeste clean sheets',
-        b7:'7. Meeste gele kaarten', b8:'8. Goals toernooi (±10)', b9:'9. Penalty-uitschakeling',
-        b10a:'10a. Finalist 1', b10b:'10b. Finalist 2'
+        b1:'1. Welke Nederlandse speler scoort ons eerste doelpunt?',
+        b2:'2. Welk land scoort de meeste doelpunten in de groepsfase?',
+        b3:'3. Welk land ontvangt als eerste een rode kaart?',
+        b4:'4. In welke minuut valt het snelste doelpunt?',
+        b5:'5. Wie wordt topscorer van het WK?',
+        b6:'6. Hoeveel eigen doelpunten vallen er op het gehele WK?',
+        b7:'7. Tijdens welke wedstrijd valt de eerste strafschop?',
+        b8:'8. Welk land verzamelt de meeste gele kaarten?',
+        b9:'9. Hoeveel goals vallen er in de groepsfase? (±5 telt)'
       };
-      const bPts = {b1:25,b2:20,b3:20,b4:15,b5:35,b6:30,b7:20,b8:20,b9:25,b10a:20,b10b:20};
+      const bPts = {b1:15,b2:15,b3:25,b4:25,b5:50,b6:25,b7:25,b8:25,b9:25};
       const ROW = 'border-top:.3px solid #eee';
-      const TD1 = 'font-size:6.5pt;color:#735c00;font-weight:700;padding:1.2mm 2mm;width:45%';
-      const TD2 = 'font-size:7pt;font-weight:600;color:#222;padding:1.2mm 2mm';
-      const TD3 = 'font-size:6pt;color:#999;padding:1.2mm 2mm;text-align:right;width:12%';
-      const rows = bIds.filter(id=>bVals[id]).map(id =>
-        `<tr style="${ROW}"><td style="${TD1}">${bLabels[id]}</td><td style="${TD2}">${bVals[id]}</td><td style="${TD3}">${bPts[id]} pts</td></tr>`
-      ).join('');
+      const TD1 = 'font-size:6.5pt;color:#735c00;font-weight:700;padding:1.5mm 2mm;width:60%';
+      const TD2 = 'font-size:7pt;font-weight:600;color:#222;padding:1.5mm 2mm;width:28%;border-left:.3px solid #eee';
+      const TD3 = 'font-size:6pt;color:#999;padding:1.5mm 2mm;text-align:right;width:12%';
+      const rows = bIds.map(id => {
+        const val = document.getElementById(id)?.value || '';
+        const answerCell = val === ''
+          ? `<td style="${TD2};border-bottom:0.5px dotted #bbb;color:#bbb"> </td>`
+          : `<td style="${TD2}">${val}</td>`;
+        return `<tr style="${ROW}"><td style="${TD1}">${bLabels[id]}</td>${answerCell}<td style="${TD3}">${bPts[id]} pts</td></tr>`;
+      }).join('');
       return `<div style="border:0.5px solid #d4af37;border-radius:2mm;overflow:hidden;margin-top:4mm;page-break-inside:avoid;break-inside:avoid">
         <div style="background:#f5f0e0;padding:1.5mm 3mm;border-bottom:0.5px solid #d4af37">
           <span style="font-size:8pt;font-weight:700;color:#735c00;font-family:Georgia,serif;letter-spacing:.05em">④ BONUSVRAGEN</span>
@@ -931,6 +977,7 @@ function saveState() {
     koFields: {},
     manualOrder: {...manualOrder},
     drawWinners: {...drawWinners},
+    manualBest3: [...manualBest3],
   };
   document.querySelectorAll('input[data-i][data-side]').forEach(el => {
     if (el.value !== '') state.scores[`${el.dataset.i}-${el.dataset.side}`] = el.value;
@@ -939,7 +986,7 @@ function saveState() {
     if (el.id && el.value !== '') state.koFields[el.id] = el.value;
   });
   state.bonus = {};
-  ['b1','b2','b3','b4','b5','b6','b7','b8','b9','b10a','b10b'].forEach(id => {
+  ['b1','b2','b3','b4','b5','b6','b7','b8','b9'].forEach(id => {
     const el = document.getElementById(id);
     if (el && el.value !== '') state.bonus[id] = el.value;
   });
@@ -1028,14 +1075,73 @@ function loadState() {
     });
   }
 
+  if (state.manualBest3) {
+    state.manualBest3.forEach((v, i) => {
+      manualBest3[i] = v || null;
+      const el = document.getElementById(`best3-slot-${i}`);
+      if (el) el.value = v || '';
+    });
+    validateBest3();
+  }
+
   _loadingState = false;
   updateSubmitButton();
+}
+
+// ── BESTE NUMMERS 3 ───────────────────────────────────────────────────────────
+function validateBest3() {
+  const warn = document.getElementById('best3-warning');
+  if (!warn) return;
+  const vals = manualBest3.filter(v => v && v !== '');
+  warn.style.display = vals.length !== new Set(vals).size ? 'block' : 'none';
+}
+
+function buildBest3Grid() {
+  const grid = document.getElementById('best3-grid');
+  if (!grid) return;
+  const groups = Object.keys(GROUPS);
+  grid.innerHTML = '';
+  for (let i = 0; i < 8; i++) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'flex flex-col gap-1';
+    const label = document.createElement('label');
+    label.className = 'text-xs font-bold text-on-surface-variant uppercase tracking-wider';
+    label.textContent = `Slot ${i + 1}`;
+    const select = document.createElement('select');
+    select.className = 'bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm text-on-surface w-full outline-none focus:ring-2 focus:ring-primary-container';
+    select.id = `best3-slot-${i}`;
+    const emptyOpt = document.createElement('option');
+    emptyOpt.value = '';
+    emptyOpt.textContent = '— Automatisch —';
+    select.appendChild(emptyOpt);
+    groups.forEach(g => {
+      const opt = document.createElement('option');
+      opt.value = g;
+      opt.textContent = `Beste 3e Gr.${g}`;
+      select.appendChild(opt);
+    });
+    if (manualBest3[i]) select.value = manualBest3[i];
+    select.addEventListener('change', () => {
+      manualBest3[i] = select.value || null;
+      validateBest3();
+      saveState();
+    });
+    wrapper.appendChild(label);
+    wrapper.appendChild(select);
+    grid.appendChild(wrapper);
+  }
+  const warn = document.createElement('p');
+  warn.id = 'best3-warning';
+  warn.style.cssText = 'color:#ba1a1a;font-size:.75rem;margin-top:.5rem;display:none;grid-column:1/-1';
+  warn.textContent = 'Let op: elke groep mag maar één keer gekozen worden.';
+  grid.appendChild(warn);
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 buildMatches();
 buildKO();
 renderStandings();
+buildBest3Grid();
 loadState();
 document.getElementById('naam').addEventListener('input',function(){
   const el=document.getElementById('print-naam');
@@ -1117,21 +1223,19 @@ function fillTestData() {
 
   // Bonus
   const dutchPlayers = ['Memphis Depay','Virgil van Dijk','Cody Gakpo','Donyell Malen','Wout Weghorst'];
-  const topscorers   = ['Erling Haaland','Kylian Mbappé','Vinicius Jr','Lionel Messi','Harry Kane','Cristiano Ronaldo'];
-  const keepers      = ['Alisson','Manuel Neuer','Marc-André ter Stegen','Thibaut Courtois','Jordan Pickford'];
+  const topscorers   = ['Erling Haaland','Kylian Mbappé','Vinicius Jr','Lionel Messi','Harry Kane'];
   const allTeams     = Object.values(GROUPS).flat();
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-  document.getElementById('b1').value  = pick(dutchPlayers);
-  document.getElementById('b2').value  = pick(allTeams);
-  document.getElementById('b3').value  = pick(allTeams);
-  document.getElementById('b4').value  = Math.floor(Math.random() * 40 + 110);
-  document.getElementById('b5').value  = pick(topscorers);
-  document.getElementById('b6').value  = pick(keepers);
-  document.getElementById('b7').value  = pick(allTeams);
-  document.getElementById('b8').value  = Math.floor(Math.random() * 60 + 180);
-  document.getElementById('b9').value  = pick(allTeams);
-  document.getElementById('b10a').value = pick(allTeams);
-  document.getElementById('b10b').value = pick(allTeams);
+  const pickTwo = arr => { const a = pick(arr); let b = pick(arr); while (b === a) b = pick(arr); return `${a} - ${b}`; };
+  document.getElementById('b1').value = pick(dutchPlayers);
+  document.getElementById('b2').value = pick(allTeams);
+  document.getElementById('b3').value = pick(allTeams);
+  document.getElementById('b4').value = Math.floor(Math.random() * 15 + 3);
+  document.getElementById('b5').value = pick(topscorers);
+  document.getElementById('b6').value = Math.floor(Math.random() * 5 + 2);
+  document.getElementById('b7').value = pickTwo(allTeams);
+  document.getElementById('b8').value = pick(allTeams);
+  document.getElementById('b9').value = Math.floor(Math.random() * 20 + 120);
 
   saveState();
   updateSubmitButton();
