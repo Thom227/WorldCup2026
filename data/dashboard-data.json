@@ -1,7 +1,185 @@
 {
-  "generatedAt": "2026-05-31T00:00:00.000Z",
-  "phase": "pre",
+  "generatedAt": "2026-05-31T11:07:43.973Z",
+  "phase": "knockout",
   "lastUpdated": "2026-05-25T00:00:00Z",
-  "played": {},
-  "leaderboard": []
+  "played": {
+    "0": {
+      "h": 3,
+      "a": 2
+    },
+    "1": {
+      "h": 1,
+      "a": 0
+    },
+    "r32_0": {
+      "h": "Zuid-Afrika",
+      "a": "Bosnië-Herzegovina",
+      "sh": 2,
+      "sa": 3
+    }
+  },
+  "leaderboard": [
+    {
+      "naam": "Bober cage",
+      "scores": {
+        "groep": 16,
+        "groepMatches": 2,
+        "standen": 5,
+        "standenGroepen": 1,
+        "ko": 28,
+        "koMatches": 1,
+        "bonus": 0,
+        "totaal": 49
+      },
+      "todayPts": 0,
+      "history": [
+        {
+          "matchId": "0",
+          "date": "2026-06-11",
+          "home": "Mexico",
+          "away": "Zuid-Afrika",
+          "round": "group",
+          "predictedH": 3,
+          "predictedA": 2,
+          "actualH": 3,
+          "actualA": 2,
+          "pts": 12
+        },
+        {
+          "matchId": "1",
+          "date": "2026-06-12",
+          "home": "Zuid-Korea",
+          "away": "Tsjechië",
+          "round": "group",
+          "predictedH": 3,
+          "predictedA": 1,
+          "actualH": 1,
+          "actualA": 0,
+          "pts": 4
+        },
+        {
+          "matchId": "r32_0",
+          "date": "2026-06-28",
+          "home": "Zuid-Afrika",
+          "away": "Bosnië-Herzegovina",
+          "actualHome": "Zuid-Afrika",
+          "actualAway": "Bosnië-Herzegovina",
+          "round": "r32",
+          "predictedH": 2,
+          "predictedA": 3,
+          "actualH": 2,
+          "actualA": 3,
+          "pts": 28
+        }
+      ]
+    },
+    {
+      "naam": "Joeri remco",
+      "scores": {
+        "groep": 12,
+        "groepMatches": 2,
+        "standen": 0,
+        "standenGroepen": 1,
+        "ko": 16,
+        "koMatches": 1,
+        "bonus": 0,
+        "totaal": 28
+      },
+      "todayPts": 0,
+      "history": [
+        {
+          "matchId": "0",
+          "date": "2026-06-11",
+          "home": "Mexico",
+          "away": "Zuid-Afrika",
+          "round": "group",
+          "predictedH": 1,
+          "predictedA": 3,
+          "actualH": 3,
+          "actualA": 2,
+          "pts": 0
+        },
+        {
+          "matchId": "1",
+          "date": "2026-06-12",
+          "home": "Zuid-Korea",
+          "away": "Tsjechië",
+          "round": "group",
+          "predictedH": 1,
+          "predictedA": 0,
+          "actualH": 1,
+          "actualA": 0,
+          "pts": 12
+        },
+        {
+          "matchId": "r32_0",
+          "date": "2026-06-28",
+          "home": "Zuid-Afrika",
+          "away": "Canada",
+          "actualHome": "Zuid-Afrika",
+          "actualAway": "Bosnië-Herzegovina",
+          "round": "r32",
+          "predictedH": 2,
+          "predictedA": 3,
+          "actualH": 2,
+          "actualA": 3,
+          "pts": 16
+        }
+      ]
+    },
+    {
+      "naam": "Jeroen Boer",
+      "scores": {
+        "groep": 4,
+        "groepMatches": 2,
+        "standen": 5,
+        "standenGroepen": 1,
+        "ko": 0,
+        "koMatches": 1,
+        "bonus": 0,
+        "totaal": 9
+      },
+      "todayPts": 0,
+      "history": [
+        {
+          "matchId": "0",
+          "date": "2026-06-11",
+          "home": "Mexico",
+          "away": "Zuid-Afrika",
+          "round": "group",
+          "predictedH": 2,
+          "predictedA": 2,
+          "actualH": 3,
+          "actualA": 2,
+          "pts": 0
+        },
+        {
+          "matchId": "1",
+          "date": "2026-06-12",
+          "home": "Zuid-Korea",
+          "away": "Tsjechië",
+          "round": "group",
+          "predictedH": 3,
+          "predictedA": 2,
+          "actualH": 1,
+          "actualA": 0,
+          "pts": 4
+        },
+        {
+          "matchId": "r32_0",
+          "date": "2026-06-28",
+          "home": "Mexico",
+          "away": "Qatar",
+          "actualHome": "Zuid-Afrika",
+          "actualAway": "Bosnië-Herzegovina",
+          "round": "r32",
+          "predictedH": 0,
+          "predictedA": 3,
+          "actualH": 2,
+          "actualA": 3,
+          "pts": 0
+        }
+      ]
+    }
+  ]
 }

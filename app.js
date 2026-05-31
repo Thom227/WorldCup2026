@@ -821,19 +821,17 @@ function buildPDFView() {
     </div>
 
     ${(()=>{
-      const bIds = ['b1','b2','b3','b4','b5','b6','b7','b8','b9'];
+      const bIds = ['b1','b2','b3','b4','b5','b8','b9'];
       const bLabels = {
         b1:'1. Welke Nederlandse speler scoort ons eerste doelpunt?',
         b2:'2. Welk land scoort de meeste doelpunten in de groepsfase?',
         b3:'3. Welk land ontvangt als eerste een rode kaart?',
         b4:'4. In welke minuut valt het snelste doelpunt?',
         b5:'5. Wie wordt topscorer van het WK?',
-        b6:'6. Hoeveel eigen doelpunten vallen er op het gehele WK?',
-        b7:'7. Tijdens welke wedstrijd valt de eerste strafschop?',
-        b8:'8. Welk land verzamelt de meeste gele kaarten?',
-        b9:'9. Hoeveel goals vallen er in de groepsfase? (±5 telt)'
+        b8:'6. Hoeveel gele kaarten vallen er in het gehele toernooi? (±3 telt)',
+        b9:'7. Hoeveel goals vallen er in het gehele toernooi? (±5 telt)'
       };
-      const bPts = {b1:15,b2:15,b3:25,b4:25,b5:50,b6:25,b7:25,b8:25,b9:25};
+      const bPts = {b1:15,b2:15,b3:25,b4:25,b5:30,b8:30,b9:30};
       const ROW = 'border-top:.3px solid #eee';
       const TD1 = 'font-size:6.5pt;color:#735c00;font-weight:700;padding:1.5mm 2mm;width:60%';
       const TD2 = 'font-size:7pt;font-weight:600;color:#222;padding:1.5mm 2mm;width:28%;border-left:.3px solid #eee';
@@ -881,10 +879,16 @@ async function savePDF() {
       .output('blob');
 
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = `WK2026-Poule-${slug}.pdf`;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIOS) {
+      window.open(url, '_blank');
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    } else {
+      const a = document.createElement('a');
+      a.href = url; a.download = `WK2026-Poule-${slug}.pdf`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }
   } catch (err) {
     console.error('PDF maken mislukt:', err);
   } finally {
@@ -1020,7 +1024,7 @@ function saveState() {
     if (el.id && el.value !== '') state.koFields[el.id] = el.value;
   });
   state.bonus = {};
-  ['b1','b2','b3','b4','b5','b6','b7','b8','b9'].forEach(id => {
+  ['b1','b2','b3','b4','b5','b8','b9'].forEach(id => {
     const el = document.getElementById(id);
     if (el && el.value !== '') state.bonus[id] = el.value;
   });
@@ -1283,10 +1287,8 @@ function fillTestData() {
   document.getElementById('b3').value = pick(allTeams);
   document.getElementById('b4').value = Math.floor(Math.random() * 15 + 3);
   document.getElementById('b5').value = pick(topscorers);
-  document.getElementById('b6').value = Math.floor(Math.random() * 5 + 2);
-  document.getElementById('b7').value = pickTwo(allTeams);
-  document.getElementById('b8').value = pick(allTeams);
-  document.getElementById('b9').value = Math.floor(Math.random() * 20 + 120);
+  document.getElementById('b8').value = Math.floor(Math.random() * 50 + 200);
+  document.getElementById('b9').value = Math.floor(Math.random() * 30 + 150);
 
   saveState();
   updateSubmitButton();

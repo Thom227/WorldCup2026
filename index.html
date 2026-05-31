@@ -53,9 +53,8 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
     <div class="pbox">
       <div class="pbox-title">Puntenverdeling groepsfase</div>
       <div class="pbox-grid">
-        <div class="pitem"><div class="val">8</div><div class="lbl">Juiste stand</div></div>
-        <div class="pitem"><div class="val">4</div><div class="lbl">Juist land op winst</div></div>
-        <div class="pitem"><div class="val">4</div><div class="lbl">Gelijkspel correct</div></div>
+        <div class="pitem"><div class="val">12</div><div class="lbl">Exacte uitslag</div></div>
+        <div class="pitem"><div class="val">4</div><div class="lbl">Juiste winnaar / gelijkspel</div></div>
         <div class="pitem"><div class="val">0</div><div class="lbl">Niks goed</div></div>
       </div>
     </div>
@@ -166,7 +165,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
       <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
         <div class="flex items-start justify-between gap-3 mb-3">
           <p class="text-sm font-bold text-on-surface leading-snug">5. Wie wordt topscorer van het WK?</p>
-          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">50 pts</span>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">30 pts</span>
         </div>
         <input id="b5" type="text" placeholder="Naam speler..." oninput="saveState()"
           class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
@@ -174,35 +173,17 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
 
       <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
         <div class="flex items-start justify-between gap-3 mb-3">
-          <p class="text-sm font-bold text-on-surface leading-snug">6. Hoeveel eigen doelpunten vallen er op het gehele WK?</p>
-          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">25 pts</span>
+          <p class="text-sm font-bold text-on-surface leading-snug">6. Hoeveel gele kaarten vallen er in het gehele toernooi? <span class="font-normal opacity-60">(±3 telt)</span></p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">30 pts</span>
         </div>
-        <input id="b6" type="number" min="0" placeholder="Aantal eigen doelpunten..." oninput="saveState()"
+        <input id="b8" type="number" min="0" placeholder="Aantal gele kaarten..." oninput="saveState()"
           class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
       </div>
 
       <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
         <div class="flex items-start justify-between gap-3 mb-3">
-          <p class="text-sm font-bold text-on-surface leading-snug">7. Tijdens welke wedstrijd valt de eerste strafschop? <span class="font-normal opacity-60">(bijv. Nederland - Japan)</span></p>
-          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">25 pts</span>
-        </div>
-        <input id="b7" type="text" placeholder="Land A - Land B..." oninput="saveState()"
-          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
-      </div>
-
-      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
-        <div class="flex items-start justify-between gap-3 mb-3">
-          <p class="text-sm font-bold text-on-surface leading-snug">8. Welk land verzamelt de meeste gele kaarten?</p>
-          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">25 pts</span>
-        </div>
-        <input id="b8" type="text" placeholder="Landnaam..." oninput="saveState()"
-          class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>
-      </div>
-
-      <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-5">
-        <div class="flex items-start justify-between gap-3 mb-3">
-          <p class="text-sm font-bold text-on-surface leading-snug">9. Hoeveel goals vallen er in de groepsfase? <span class="font-normal opacity-60">(±5 telt)</span></p>
-          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">25 pts</span>
+          <p class="text-sm font-bold text-on-surface leading-snug">7. Hoeveel goals vallen er in het gehele toernooi? <span class="font-normal opacity-60">(±5 telt)</span></p>
+          <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest rounded-full px-2.5 py-1 bg-primary-container/20 text-on-primary-container border border-primary-container/30">30 pts</span>
         </div>
         <input id="b9" type="number" min="0" placeholder="Aantal goals..." oninput="saveState()"
           class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all placeholder:opacity-40"/>

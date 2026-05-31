@@ -1,18 +1,22 @@
 {
   "_comment": "Update this file as the tournament progresses. phase: pre | group | knockout | done",
   "lastUpdated": "2026-05-25T00:00:00Z",
-  "phase": "pre",
+  "phase": "knockout",
   "groupScores": {
     "_comment": "Key = match index (0-71). Values are integers.",
-    "_example": { "0": {"h": 2, "a": 1}, "1": {"h": 0, "a": 0} }
+    "_example": { "0": {"h": 2, "a": 1}, "1": {"h": 0, "a": 0} },
+    "0": {"h": 3, "a": 2},
+    "1": {"h": 1, "a": 0}
   },
   "groupStandings": {
     "_comment": "Fill in after group phase completes. Order: 1st to 4th.",
-    "_example": { "A": ["Mexico", "Tsjechië", "Zuid-Afrika", "Zuid-Korea"] }
+    "_example": { "A": ["Mexico", "Tsjechië", "Zuid-Afrika", "Zuid-Korea"] },
+    "A": ["Mexico", "Tsjechië", "Zuid-Afrika", "Zuid-Korea"]
   },
   "ko": {
     "_comment": "Key = match id (r32_0 … r32_15, af_0 … af_7, kf_0 … kf_3, hf_0, hf_1, tf, fin). h/a = actual teams, sh/sa = actual scores (integers).",
-    "_example": { "r32_0": {"h": "Mexico", "a": "Tsjechië", "sh": 2, "sa": 0} }
+    "_example": { "r32_0": {"h": "Mexico", "a": "Tsjechië", "sh": 2, "sa": 0} },
+    "r32_0": {"h": "Zuid-Afrika", "a": "Bosnië-Herzegovina", "sh": 2, "sa": 3}
   },
   "bonus": {
     "b1": null,
