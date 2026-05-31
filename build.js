@@ -35,7 +35,7 @@ const submissions = submissionFiles.map(f => {
 // ---------------------------------------------------------------------------
 // SCORING CONSTANTS (must match dashboard.html)
 // ---------------------------------------------------------------------------
-const BONUS_PTS = {b1:15, b2:15, b3:25, b4:25, b5:30, b8:30, b9:30};
+const BONUS_PTS = {b1:15, b2:15, b3:25, b4:25, b5:30, b6:30, b7:30};
 
 const KO_POINTS = {
   r32:    {stand:12, winnaar:8,  gelijk:8,  plek:4},
@@ -126,16 +126,16 @@ function scoreBonus(sub, res) {
     if (!isNaN(na) && !isNaN(nb) && na === nb) pts += BONUS_PTS.b4;
   }
 
-  // b8: yellow cards in entire tournament — ±3 tolerance
-  if (rb.b8 != null) {
-    const na = parseFloat(sb.b8), nb = parseFloat(rb.b8);
-    if (!isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 3) pts += BONUS_PTS.b8;
+  // b6: yellow cards in entire tournament — ±3 tolerance
+  if (rb.b6 != null) {
+    const na = parseFloat(sb.b6), nb = parseFloat(rb.b6);
+    if (!isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 3) pts += BONUS_PTS.b6;
   }
 
-  // b9: goals in entire tournament — ±5 tolerance
-  if (rb.b9 != null) {
-    const na = parseFloat(sb.b9), nb = parseFloat(rb.b9);
-    if (!isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 5) pts += BONUS_PTS.b9;
+  // b7: goals in entire tournament — ±5 tolerance
+  if (rb.b7 != null) {
+    const na = parseFloat(sb.b7), nb = parseFloat(rb.b7);
+    if (!isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 5) pts += BONUS_PTS.b7;
   }
 
   return pts;
@@ -160,8 +160,8 @@ const BONUS_LABELS = {
   b3: 'Welk land ontvangt als eerste een rode kaart?',
   b4: 'In welke minuut valt het snelste doelpunt?',
   b5: 'Wie wordt topscorer van het WK?',
-  b8: 'Hoeveel gele kaarten vallen er in het gehele toernooi? (±3 telt)',
-  b9: 'Hoeveel goals vallen er in het gehele toernooi? (±5 telt)',
+  b6: 'Hoeveel gele kaarten vallen er in het gehele toernooi? (±3 telt)',
+  b7: 'Hoeveel goals vallen er in het gehele toernooi? (±5 telt)',
 };
 const KO_ROUND_LABEL = { r32: 'Ronde van 32', af: 'Achtste finale', kf: 'Kwartfinale', hf: 'Halve finale', tf: 'Troostfinale', fin: 'Finale' };
 const KO_IDS = [
@@ -221,7 +221,7 @@ function buildReadableText(sub) {
   // Bonus
   lines.push('');
   lines.push('BONUSVRAGEN');
-  ['b1','b2','b3','b4','b5','b8','b9'].forEach(k => {
+  ['b1','b2','b3','b4','b5','b6','b7'].forEach(k => {
     const val = sub.bonus?.[k];
     if (val != null && val !== '') lines.push(`  ${BONUS_LABELS[k]}\n    → ${val}`);
   });

@@ -821,17 +821,17 @@ function buildPDFView() {
     </div>
 
     ${(()=>{
-      const bIds = ['b1','b2','b3','b4','b5','b8','b9'];
+      const bIds = ['b1','b2','b3','b4','b5','b6','b7'];
       const bLabels = {
         b1:'1. Welke Nederlandse speler scoort ons eerste doelpunt?',
         b2:'2. Welk land scoort de meeste doelpunten in de groepsfase?',
         b3:'3. Welk land ontvangt als eerste een rode kaart?',
         b4:'4. In welke minuut valt het snelste doelpunt?',
         b5:'5. Wie wordt topscorer van het WK?',
-        b8:'6. Hoeveel gele kaarten vallen er in het gehele toernooi? (±3 telt)',
-        b9:'7. Hoeveel goals vallen er in het gehele toernooi? (±5 telt)'
+        b6:'6. Hoeveel gele kaarten vallen er in het gehele toernooi? (±3 telt)',
+        b7:'7. Hoeveel goals vallen er in het gehele toernooi? (±5 telt)'
       };
-      const bPts = {b1:15,b2:15,b3:25,b4:25,b5:30,b8:30,b9:30};
+      const bPts = {b1:15,b2:15,b3:25,b4:25,b5:30,b6:30,b7:30};
       const ROW = 'border-top:.3px solid #eee';
       const TD1 = 'font-size:6.5pt;color:#735c00;font-weight:700;padding:1.5mm 2mm;width:60%';
       const TD2 = 'font-size:7pt;font-weight:600;color:#222;padding:1.5mm 2mm;width:28%;border-left:.3px solid #eee';
@@ -1024,7 +1024,7 @@ function saveState() {
     if (el.id && el.value !== '') state.koFields[el.id] = el.value;
   });
   state.bonus = {};
-  ['b1','b2','b3','b4','b5','b8','b9'].forEach(id => {
+  ['b1','b2','b3','b4','b5','b6','b7'].forEach(id => {
     const el = document.getElementById(id);
     if (el && el.value !== '') state.bonus[id] = el.value;
   });
@@ -1287,8 +1287,8 @@ function fillTestData() {
   document.getElementById('b3').value = pick(allTeams);
   document.getElementById('b4').value = Math.floor(Math.random() * 15 + 3);
   document.getElementById('b5').value = pick(topscorers);
-  document.getElementById('b8').value = Math.floor(Math.random() * 50 + 200);
-  document.getElementById('b9').value = Math.floor(Math.random() * 30 + 150);
+  document.getElementById('b6').value = Math.floor(Math.random() * 50 + 200);
+  document.getElementById('b7').value = Math.floor(Math.random() * 30 + 150);
 
   saveState();
   updateSubmitButton();
