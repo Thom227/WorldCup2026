@@ -203,7 +203,7 @@ function todayISO() {
 }
 
 async function fetchJSON(url) {
-  const resp = await fetch(url);
+  const resp = await fetch(url, { cache: 'no-cache' });
   if (!resp.ok) throw new Error(`HTTP ${resp.status} voor ${url}`);
   return resp.json();
 }
@@ -378,13 +378,12 @@ function renderStatusBox(data, participantCount) {
     : '—';
 
   document.getElementById('last-updated').textContent = `Bijgewerkt: ${lastUpdated}`;
-  const playedCount = Object.keys(data.played || {}).filter(k => !k.includes('_') || k.startsWith('r32') || k.startsWith('af') || k.startsWith('kf') || k.startsWith('hf') || k === 'tf' || k === 'fin').length;
-  const groupPlayedCount = Object.keys(data.played || {}).filter(k => !isNaN(k)).length;
+  const totalPlayedCount = Object.keys(data.played || {}).length;
 
   document.getElementById('status-content').innerHTML = `
     <span class="phase-badge ${phaseInfo.cls}">${phaseInfo.label}</span>
     <span class="text-sm text-on-surface-variant">
-      <strong class="text-on-surface">${groupPlayedCount}</strong> van 72 groepswedstrijden gespeeld
+      <strong class="text-on-surface">${totalPlayedCount}</strong> van 104 wedstrijden gespeeld
     </span>
     <span class="text-sm text-on-surface-variant">
       <strong class="text-on-surface">${participantCount}</strong> deelnemers

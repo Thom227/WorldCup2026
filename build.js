@@ -35,7 +35,7 @@ const submissions = submissionFiles.map(f => {
 // ---------------------------------------------------------------------------
 // SCORING CONSTANTS (must match dashboard.html)
 // ---------------------------------------------------------------------------
-const BONUS_PTS = {b1:15, b2:15, b3:25, b4:25, b5:50, b6:25, b7:25, b8:25, b9:25};
+const BONUS_PTS = {b1:15, b2:15, b3:25, b4:25, b5:30, b8:30, b9:30};
 
 const KO_POINTS = {
   r32:    {stand:12, winnaar:8,  gelijk:8,  plek:4},
@@ -55,9 +55,10 @@ function outcome(h, a) {
 }
 
 function scoreGroupMatch(pH, pA, rH, rA) {
-  if (pH === rH && pA === rA) return 8;
-  if (outcome(pH, pA) === outcome(rH, rA)) return 4;
-  return 0;
+  let pts = 0;
+  if (outcome(pH, pA) === outcome(rH, rA)) pts += 4;
+  if (pH === rH && pA === rA) pts += 8;
+  return pts;
 }
 
 function scoreStandings(predicted, actual) {
@@ -114,8 +115,8 @@ function scoreBonus(sub, res) {
   const sb = sub.bonus || {};
   let pts = 0;
 
-  // b1 player name, b2/b3 country, b5 player name, b7 match name, b8 country — text exact match
-  ['b1','b2','b3','b5','b7','b8'].forEach(k => {
+  // b1 player name, b2/b3 country, b5 player name — text exact match
+  ['b1','b2','b3','b5'].forEach(k => {
     if (rb[k] != null && norm(sb[k]) === norm(rb[k])) pts += BONUS_PTS[k];
   });
 
@@ -125,13 +126,13 @@ function scoreBonus(sub, res) {
     if (!isNaN(na) && !isNaN(nb) && na === nb) pts += BONUS_PTS.b4;
   }
 
-  // b6: number of own goals — exact
-  if (rb.b6 != null) {
-    const na = parseFloat(sb.b6), nb = parseFloat(rb.b6);
-    if (!isNaN(na) && !isNaN(nb) && na === nb) pts += BONUS_PTS.b6;
+  // b8: yellow cards in entire tournament — ±3 tolerance
+  if (rb.b8 != null) {
+    const na = parseFloat(sb.b8), nb = parseFloat(rb.b8);
+    if (!isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 3) pts += BONUS_PTS.b8;
   }
 
-  // b9: goals in group stage — ±5 tolerance (stated on the form)
+  // b9: goals in entire tournament — ±5 tolerance
   if (rb.b9 != null) {
     const na = parseFloat(sb.b9), nb = parseFloat(rb.b9);
     if (!isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 5) pts += BONUS_PTS.b9;
@@ -159,10 +160,8 @@ const BONUS_LABELS = {
   b3: 'Welk land ontvangt als eerste een rode kaart?',
   b4: 'In welke minuut valt het snelste doelpunt?',
   b5: 'Wie wordt topscorer van het WK?',
-  b6: 'Hoeveel eigen doelpunten vallen er op het gehele WK?',
-  b7: 'Tijdens welke wedstrijd valt de eerste strafschop?',
-  b8: 'Welk land verzamelt de meeste gele kaarten?',
-  b9: 'Hoeveel goals vallen er in de groepsfase? (±5 telt)',
+  b8: 'Hoeveel gele kaarten vallen er in het gehele toernooi? (±3 telt)',
+  b9: 'Hoeveel goals vallen er in het gehele toernooi? (±5 telt)',
 };
 const KO_ROUND_LABEL = { r32: 'Ronde van 32', af: 'Achtste finale', kf: 'Kwartfinale', hf: 'Halve finale', tf: 'Troostfinale', fin: 'Finale' };
 const KO_IDS = [
@@ -222,7 +221,7 @@ function buildReadableText(sub) {
   // Bonus
   lines.push('');
   lines.push('BONUSVRAGEN');
-  ['b1','b2','b3','b4','b5','b6','b7','b8','b9'].forEach(k => {
+  ['b1','b2','b3','b4','b5','b8','b9'].forEach(k => {
     const val = sub.bonus?.[k];
     if (val != null && val !== '') lines.push(`  ${BONUS_LABELS[k]}\n    → ${val}`);
   });
