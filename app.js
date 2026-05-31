@@ -410,7 +410,7 @@ function buildMatches(){
           <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-surface-container-low text-on-surface-variant opacity-60">Gr. ${m.g}</span>
         </div>
         <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-          <div class="text-right text-sm font-semibold truncate ${m.h==='Nederland'?'nl-text':''} text-on-surface">${m.h}</div>
+          <div class="text-right text-sm font-semibold break-words leading-tight ${m.h==='Nederland'?'nl-text':''} text-on-surface">${m.h}</div>
           <div class="flex items-center gap-1.5">
             <input type="number" min="0" max="99" data-i="${m.i}" data-side="h" placeholder="–"
               class="w-10 h-9 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
@@ -418,7 +418,7 @@ function buildMatches(){
             <input type="number" min="0" max="99" data-i="${m.i}" data-side="a" placeholder="–"
               class="w-10 h-9 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
           </div>
-          <div class="text-left text-sm font-semibold truncate ${m.a==='Nederland'?'nl-text':''} text-on-surface">${m.a}</div>
+          <div class="text-left text-sm font-semibold break-words leading-tight ${m.a==='Nederland'?'nl-text':''} text-on-surface">${m.a}</div>
         </div>`;
       block.appendChild(r);
     });
