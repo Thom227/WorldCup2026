@@ -373,38 +373,57 @@ function triggerKampioen(){
 
 // ── BUILD MATCHES ────────────────────────────────────────────────────────────
 function buildMatches(){
-  const grid=document.getElementById('mgrid');
-  const byG={};
-  MATCHES.forEach((m,i)=>{if(!byG[m.g])byG[m.g]=[];byG[m.g].push({...m,i})});
-  Object.keys(GROUPS).forEach(g=>{
-    const isNL=g==='F';
-    const c=document.createElement('div');
-    c.className='bg-white rounded-2xl overflow-hidden border border-outline-variant shadow-sm hover:shadow-md transition-shadow'+(isNL?' nl-highlight':'');
-    c.innerHTML=`<div class="bg-surface-container-low px-6 py-4 flex justify-between items-center border-b border-outline-variant">
-        <h3 class="text-xl font-bold tracking-tight">GROEP ${g}</h3>
-        <span class="text-[10px] font-bold opacity-40 tracking-[0.2em]">11 – 28 JUN</span>
-      </div><div id="ml-${g}" class="divide-y divide-outline-variant/30"></div>`;
-    grid.appendChild(c);
-    const list=c.querySelector('#ml-'+g);
-    (byG[g]||[]).forEach(m=>{
-      const nl=m.h==='Nederland'||m.a==='Nederland';
-      const r=document.createElement('div');
-      r.className='p-5 hover:bg-surface-container-lowest transition-all group'+(nl?' bg-primary-container/5':'');
-      r.innerHTML=`<div class="flex items-center justify-between mb-3 text-[10px] uppercase font-bold tracking-[0.2em] opacity-40 group-hover:opacity-80 transition-opacity">
-          <span>${m.d}</span><span>${m.t}</span></div>
-        <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+  const grid = document.getElementById('mgrid');
+  grid.innerHTML = '';
+
+  function dateLabel(d) {
+    const mo = {jan:0,feb:1,mrt:2,apr:3,mei:4,jun:5,jul:6};
+    const [day, mon] = d.split(' ');
+    const dt = new Date(2026, mo[mon], parseInt(day));
+    return ['Zo','Ma','Di','Wo','Do','Vr','Za'][dt.getDay()] + ' ' + d;
+  }
+
+  const byDate = new Map();
+  MATCHES.forEach((m, i) => {
+    if (!byDate.has(m.d)) byDate.set(m.d, []);
+    byDate.get(m.d).push({...m, i});
+  });
+
+  byDate.forEach((matches, date) => {
+    const divider = document.createElement('div');
+    divider.className = 'flex items-center gap-3 pt-2';
+    divider.innerHTML = `<span class="text-[11px] font-black uppercase tracking-[0.2em] text-on-surface-variant opacity-50 whitespace-nowrap">${dateLabel(date)}</span>
+      <div class="flex-1 h-px bg-outline-variant/40"></div>`;
+    grid.appendChild(divider);
+
+    const block = document.createElement('div');
+    block.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3';
+
+    matches.forEach((m) => {
+      const nl = m.h === 'Nederland' || m.a === 'Nederland';
+      const r = document.createElement('div');
+      r.className = 'bg-white rounded-2xl border border-outline-variant shadow-sm p-4 group transition-all hover:bg-surface-container-lowest'
+        + (nl ? ' bg-primary-container/5' : '');
+      r.innerHTML = `
+        <div class="flex items-center justify-between mb-2.5">
+          <span class="text-[10px] font-bold tracking-[0.15em] opacity-40 group-hover:opacity-70 transition-opacity">${m.t}</span>
+          <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-surface-container-low text-on-surface-variant opacity-60">Gr. ${m.g}</span>
+        </div>
+        <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
           <div class="text-right text-sm font-semibold truncate ${m.h==='Nederland'?'nl-text':''} text-on-surface">${m.h}</div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5">
             <input type="number" min="0" max="99" data-i="${m.i}" data-side="h" placeholder="–"
-              class="w-12 h-10 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
-            <span class="text-on-surface-variant opacity-30 font-bold">:</span>
+              class="w-10 h-9 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
+            <span class="text-on-surface-variant opacity-30 font-bold text-xs">:</span>
             <input type="number" min="0" max="99" data-i="${m.i}" data-side="a" placeholder="–"
-              class="w-12 h-10 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
+              class="w-10 h-9 rounded-lg bg-surface-container-low border border-outline-variant text-center font-bold text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none text-sm placeholder:opacity-40">
           </div>
           <div class="text-left text-sm font-semibold truncate ${m.a==='Nederland'?'nl-text':''} text-on-surface">${m.a}</div>
         </div>`;
-      list.appendChild(r);
+      block.appendChild(r);
     });
+
+    grid.appendChild(block);
   });
 }
 
@@ -660,8 +679,18 @@ function buildPDFView() {
   });
   const isBlank = Object.keys(scores).length === 0;
 
-  const byG = {};
-  MATCHES.forEach((m, i) => { if (!byG[m.g]) byG[m.g] = []; byG[m.g].push({...m, i}); });
+  const byDate = new Map();
+  MATCHES.forEach((m, i) => {
+    if (!byDate.has(m.d)) byDate.set(m.d, []);
+    byDate.get(m.d).push({...m, i});
+  });
+
+  function pdfDateLabel(d) {
+    const mo = {jan:0,feb:1,mrt:2,apr:3,mei:4,jun:5,jul:6};
+    const [day, mon] = d.split(' ');
+    const dt = new Date(2026, mo[mon], parseInt(day));
+    return ['Zo','Ma','Di','Wo','Do','Vr','Za'][dt.getDay()] + ' ' + d;
+  }
 
   const CARD   = 'border:0.5px solid #d4af37;border-radius:2mm;overflow:hidden;page-break-inside:avoid;break-inside:avoid';
   const HDR    = 'background:#f5f0e0;padding:1.5mm 3mm;border-bottom:0.5px solid #d4af37';
@@ -670,27 +699,25 @@ function buildPDFView() {
   const TEAM   = 'font-size:6.5pt;font-weight:600;color:#222;padding:1.2mm 2mm;word-break:break-word;overflow-wrap:break-word';
   const SCORE  = 'font-size:7.5pt;font-weight:700;color:#333;text-align:center;padding:1.2mm 2mm;white-space:nowrap;background:#fafaf5';
 
-  function matchCard(g, isBlank) {
-    const rows = (byG[g]||[]).map(m => {
-      const sh = scores[`${m.i}-h`] ?? '', sa = scores[`${m.i}-a`] ?? '';
-      const sc = (sh!==''&&sa!=='') ? `${sh}–${sa}` : '';
-      const isEmpty = sh===''&&sa==='';
-      const TD_H = isEmpty
-        ? 'font-size:6.5pt;font-weight:600;color:#222;padding:1.5mm 2mm;width:42%;border-right:.3px solid #ddd;word-break:break-word'
-        : 'font-size:6.5pt;font-weight:600;color:#222;padding:1.2mm 2mm;width:44%;word-break:break-word';
-      const TD_A = isEmpty
-        ? 'font-size:6.5pt;font-weight:600;color:#222;padding:1.5mm 2mm;width:42%;word-break:break-word'
-        : 'font-size:6.5pt;font-weight:600;color:#222;padding:1.2mm 2mm;width:44%;word-break:break-word';
-      const SCORE_COL = isEmpty
-        ? 'font-size:7pt;text-align:center;padding:1.5mm 1mm;width:16%;color:#ccc;border-left:.3px solid #ddd;border-right:.3px solid #ddd'
-        : 'font-size:7.5pt;font-weight:700;color:#333;text-align:center;padding:1.2mm 2mm;width:12%;background:#fafaf5';
-      return `<tr style="border-top:.3px solid #eee">
-        <td style="${TD_H};text-align:right">${m.h}</td>
-        <td style="${SCORE_COL}">${sc}</td>
-        <td style="${TD_A}">${m.a}</td></tr>`;
-    }).join('');
-    return `<div style="${CARD}"><div style="${HDR}"><span style="${HDRTXT}">GROEP ${g}</span></div>
-      <table style="width:100%;border-collapse:collapse;table-layout:fixed">${rows}</table></div>`;
+  function singleMatchCard(m) {
+    const sh = scores[`${m.i}-h`] ?? '', sa = scores[`${m.i}-a`] ?? '';
+    const sc = (sh!==''&&sa!=='') ? `${sh}–${sa}` : '';
+    const isEmpty = sh===''&&sa==='';
+    const TD_H = 'font-size:6.5pt;font-weight:600;color:#222;padding:1.5mm 2mm;width:40%;text-align:right;word-break:break-word';
+    const TD_A = 'font-size:6.5pt;font-weight:600;color:#222;padding:1.5mm 2mm;width:40%;text-align:left;word-break:break-word';
+    const SCORE_COL = isEmpty
+      ? 'font-size:7pt;text-align:center;padding:1.5mm 1mm;width:20%;color:#ccc;border-left:.3px solid #eee;border-right:.3px solid #eee'
+      : 'font-size:7.5pt;font-weight:700;color:#333;text-align:center;padding:1.2mm 1mm;width:20%;background:#fafaf5';
+    return `<div style="${CARD}">
+      <div style="${HDR};display:flex;justify-content:space-between;align-items:center;padding:1mm 2.5mm">
+        <span style="font-size:5.5pt;color:#999">${m.t}</span>
+        <span style="${HDRTXT};font-size:5.5pt">GR. ${m.g}</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+        <tr><td style="${TD_H}">${m.h}</td>
+            <td style="${SCORE_COL}">${isEmpty ? '–' : sc}</td>
+            <td style="${TD_A}">${m.a}</td></tr>
+      </table></div>`;
   }
 
   function standingCard(g) {
@@ -715,27 +742,19 @@ function buildPDFView() {
     const scDisplay = (shVal!==''&&saVal!=='') ? `${shVal}–${saVal}` : '';
     const nameColorH = hVal ? '#222' : '#aaa';
     const nameColorA = aVal ? '#222' : '#aaa';
-    if (isBlank) {
-      return `<div style="${CARD}">
-        <div style="${HDR};display:flex;justify-content:space-between;align-items:center">
-          <span style="${HDRTXT};font-size:6.5pt">${label}</span>
-          <span style="font-size:5.5pt;color:#999">${date}</span></div>
-        <table style="width:100%;border-collapse:collapse;table-layout:fixed">
-          <tr><td style="font-size:7pt;padding:2mm 2mm;width:75%;border-bottom:0.5px dotted #bbb;color:#bbb">${hDisplay}</td>
-              <td style="font-size:7pt;text-align:center;padding:2mm 1mm;width:25%;border-left:.3px solid #ddd;border-bottom:0.5px dotted #bbb;color:#bbb"></td></tr>
-          <tr style="border-top:.3px solid #eee">
-            <td style="font-size:7pt;padding:2mm 2mm;width:75%;border-bottom:0.5px dotted #bbb;color:#bbb">${aDisplay}</td>
-            <td style="font-size:7pt;text-align:center;padding:2mm 1mm;width:25%;border-left:.3px solid #ddd;border-bottom:0.5px dotted #bbb;color:#bbb"></td></tr>
-        </table></div>`;
-    }
+    const TN = 'font-size:6.5pt;font-weight:600;padding:1.5mm 2mm;word-break:break-word';
+    const SC = 'font-size:7pt;font-weight:700;text-align:right;padding:1.5mm 2mm;white-space:nowrap;width:10mm';
     return `<div style="${CARD}">
       <div style="${HDR};display:flex;justify-content:space-between;align-items:center">
         <span style="${HDRTXT};font-size:6.5pt">${label}</span>
         <span style="font-size:5.5pt;color:#999">${date}</span></div>
       <table style="width:100%;border-collapse:collapse;table-layout:fixed">
-        <tr><td style="${TEAM};width:80%;color:${nameColorH}">${hDisplay}</td><td style="${SCORE};width:20%">${scDisplay}</td></tr>
+        <tr>
+          <td style="${TN};color:${nameColorH}">${hDisplay}</td>
+          <td style="${SC};color:${shVal!==''?'#333':'#ccc'}">${shVal!==''?shVal:'–'}</td></tr>
         <tr style="border-top:.3px solid #eee">
-          <td style="${TEAM};width:80%;color:${nameColorA}">${aDisplay}</td><td style="${SCORE};width:20%"></td></tr>
+          <td style="${TN};color:${nameColorA}">${aDisplay}</td>
+          <td style="${SC};color:${saVal!==''?'#333':'#ccc'}">${saVal!==''?saVal:'–'}</td></tr>
       </table></div>`;
   }
 
@@ -751,14 +770,15 @@ function buildPDFView() {
     </div>
 
     <div style="${SEC}">① Groepswedstrijden</div>
-    ${g2(gk.slice(0,2).map(g=>matchCard(g,isBlank)).join(''))}
-    ${g2(gk.slice(2,4).map(g=>matchCard(g,isBlank)).join(''))}
-    ${g2(gk.slice(4,6).map(g=>matchCard(g,isBlank)).join(''))}
-    ${g2(gk.slice(6,8).map(g=>matchCard(g,isBlank)).join(''))}
-    ${g2(gk.slice(8,10).map(g=>matchCard(g,isBlank)).join(''))}
-    ${g2(gk.slice(10,12).map(g=>matchCard(g,isBlank)).join(''))}
+    ${Array.from(byDate).map(([date, ms]) => {
+      const rows = [];
+      for (let i = 0; i < ms.length; i += 3) rows.push(g3(ms.slice(i, i+3).map(singleMatchCard).join('')));
+      return `<div style="page-break-inside:avoid">
+        <div style="font-size:6pt;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.1em;margin:2.5mm 0 1.5mm">${pdfDateLabel(date)}</div>
+        ${rows.join('')}</div>`;
+    }).join('')}
 
-    <div style="${SEC}">② Poulevolgorde</div>
+    <div style="${SEC};page-break-before:always">② Poulevolgorde</div>
     ${g3(gk.map(standingCard).join(''))}
 
     <div style="${SEC};page-break-before:always">③ Knock-out fase</div>
@@ -825,7 +845,7 @@ function buildPDFView() {
           : `<td style="${TD2}">${val}</td>`;
         return `<tr style="${ROW}"><td style="${TD1}">${bLabels[id]}</td>${answerCell}<td style="${TD3}">${bPts[id]} pts</td></tr>`;
       }).join('');
-      return `<div style="border:0.5px solid #d4af37;border-radius:2mm;overflow:hidden;margin-top:4mm;page-break-inside:avoid;break-inside:avoid">
+      return `<div style="border:0.5px solid #d4af37;border-radius:2mm;overflow:hidden;margin-top:4mm;page-break-before:always;page-break-inside:avoid;break-inside:avoid">
         <div style="background:#f5f0e0;padding:1.5mm 3mm;border-bottom:0.5px solid #d4af37">
           <span style="font-size:8pt;font-weight:700;color:#735c00;font-family:Georgia,serif;letter-spacing:.05em">④ BONUSVRAGEN</span>
         </div>
@@ -837,6 +857,7 @@ function buildPDFView() {
 
 async function savePDF() {
   const naam = (document.getElementById('naam').value || 'deelnemer').trim();
+  const slug = naam.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
   const btn  = document.getElementById('btn-pdf');
   btn.disabled = true;
   btn.innerHTML = '<span class="material-symbols-outlined text-base">hourglass_empty</span> BEZIG...';
@@ -847,17 +868,23 @@ async function savePDF() {
   bodyChildren.forEach(c => c.style.setProperty('display', 'none', 'important'));
 
   try {
-    await html2pdf()
+    const blob = await html2pdf()
       .set({
         margin: [10, 8, 8, 8],
-        filename: `WK2026-Poule-${naam}.pdf`,
+        filename: `WK2026-Poule-${slug}.pdf`,
         image: { type: 'jpeg', quality: 0.95 },
         html2canvas: { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
         pagebreak: { mode: ['css'] },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       })
       .from(buildPDFView())
-      .save();
+      .output('blob');
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `WK2026-Poule-${slug}.pdf`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
   } catch (err) {
     console.error('PDF maken mislukt:', err);
   } finally {
@@ -868,7 +895,7 @@ async function savePDF() {
 }
 
 // ── SUBMISSION ───────────────────────────────────────────────────────────────
-const ADMIN_EMAIL = 'toernooienbt+wc2026@gmail.com'; // ← vul hier jouw e-mailadres in
+const WEB3FORMS_KEY = '08fb45d5-dc31-4f05-868b-00c7e2b4c67d';
 
 function validateForm() {
   const errors = [];
@@ -907,60 +934,67 @@ function submitForm() {
 
   const errors = validateForm();
   if (errors.length) {
-    const msgs = errors.map(e => e.msg);
     errors.forEach(({field}) => {
       const el = document.getElementById(field);
       if (el) el.style.borderColor = '#ba1a1a';
     });
-    if (errEl) { errEl.textContent = msgs.join(' · '); errEl.classList.remove('hidden'); }
-    // Scroll to first field error
+    if (errEl) { errEl.textContent = errors.map(e => e.msg).join(' · '); errEl.classList.remove('hidden'); }
     const firstField = errors.find(e => e.field !== 'scores');
     if (firstField) document.getElementById(firstField.field)?.scrollIntoView({behavior:'smooth', block:'center'});
     return;
   }
 
-  const naam  = document.getElementById('naam').value.trim();
-  const email = document.getElementById('email').value.trim();
+  // Show pre-submit modal
+  document.getElementById('presubmit-modal')?.classList.remove('hidden');
+}
 
-  const ok = confirm(
-    `Weet je zeker dat je wilt inzenden?\n\n` +
-    `Na het inzenden wordt je formulier gewist en kun je niet opnieuw inzenden.\n\n` +
-    `Tip: sla eerst je PDF op via de knop "PDF OPSLAAN"!`
-  );
-  if (!ok) return;
+async function confirmSubmit() {
+  document.getElementById('presubmit-modal')?.classList.add('hidden');
 
-  // Download submission JSON for admin
+  const errEl  = document.getElementById('form-errors');
+  const naam   = document.getElementById('naam').value.trim();
+  const email  = document.getElementById('email').value.trim();
+  const btn    = document.getElementById('btn-inzenden');
+  const btnOrig = btn.innerHTML;
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-base">progress_activity</span> Versturen...';
+
+  // Auto-save PDF for participant
+  try { await savePDF(); } catch {}
+
   try {
-    const json  = JSON.stringify(buildSubmissionJSON(), null, 2);
-    const slug  = naam.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
-    const blob  = new Blob([json], {type:'application/json'});
-    const url   = URL.createObjectURL(blob);
-    const dl    = document.createElement('a');
-    dl.href = url; dl.download = `wk2026-${slug}.json`;
-    document.body.appendChild(dl); dl.click();
-    document.body.removeChild(dl);
-    URL.revokeObjectURL(url);
-  } catch {}
+    const submission = buildSubmissionJSON();
+    const slug = naam.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
 
-  // Wipe local state
-  try { localStorage.removeItem(LS_KEY); } catch {}
+    const formData = new FormData();
+    formData.append('access_key', WEB3FORMS_KEY);
+    formData.append('subject',    `WK 2026 Poule – ${naam}`);
+    formData.append('from_name',  naam);
+    formData.append('replyto',    email);
+    formData.append('naam',       naam);
+    formData.append('email',      email);
+    formData.append('filename',   `wk2026-${slug}.json`);
+    formData.append('submission', JSON.stringify(submission, null, 2));
 
-  // Open mailto
-  const subject = encodeURIComponent(`WK 2026 Poule – ${naam}`);
-  const body    = encodeURIComponent(
-    `Hoi,\n\nHieronder mijn inzending voor de WK 2026 Poule.\n\n` +
-    `Naam: ${naam}\nEmail: ${email}\n\n` +
-    `Zie bijgevoegde PDF.\n\nGroeten,\n${naam}`
-  );
-  const a = document.createElement('a');
-  a.href = `mailto:${ADMIN_EMAIL}?cc=${encodeURIComponent(email)}&subject=${subject}&body=${body}`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: formData
+    });
 
-  // Show confirmation screen
-  const screen = document.getElementById('verzonden-screen');
-  if (screen) screen.classList.remove('hidden');
+    const result = await res.json();
+    if (!result.success) throw new Error(result.message || 'Onbekende fout');
+
+    try { localStorage.removeItem(LS_KEY); } catch {}
+
+    const screen = document.getElementById('verzonden-screen');
+    if (screen) screen.classList.remove('hidden');
+  } catch (err) {
+    if (errEl) { errEl.textContent = `Verzenden mislukt: ${err.message}. Probeer het opnieuw.`; errEl.classList.remove('hidden'); }
+    btn.disabled = false;
+    btn.innerHTML = btnOrig;
+  }
 }
 
 // ── PERSISTENCE ───────────────────────────────────────────────────────────────
@@ -1206,7 +1240,24 @@ function fillTestData() {
   renderStandings();
 
   // Knock-out fase — trigger each round so team names populate, then fill scores
-  triggerR32();  R32.forEach(m => setKO(m.id));
+  triggerR32();
+  // Populate best3 dropdowns with auto-calculated best 8 third-place groups
+  {
+    const allThirds = Object.keys(GROUPS).map(g => {
+      const order = getDisplayOrder(g);
+      if (!order || order.length < 3) return null;
+      const name = order[2];
+      const st = groupStandings[g];
+      const teamSt = st ? st.find(t => t.n === name) : null;
+      return { g, pts: teamSt ? teamSt.pts : 0, gd: teamSt ? teamSt.gd : 0, gf: teamSt ? teamSt.gf : 0 };
+    }).filter(Boolean);
+    allThirds.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
+    allThirds.slice(0, 8).forEach((t, i) => { manualBest3[i] = t.g; });
+    buildBest3Grid();
+    validateBest3();
+    triggerR32();
+  }
+  R32.forEach(m => setKO(m.id));
   triggerAF();   AF.forEach(m  => setKO(m.id));
   triggerKF();   KF.forEach(m  => setKO(m.id));
   triggerHF();   HF.forEach(m  => setKO(m.id));

@@ -1,30 +1,37 @@
-# AI Extractie Prompt — WK 2026 Poule
+# Deelnemer toevoegen — WK 2026 Poule
 
-Gebruik dit wanneer een deelnemer alleen een PDF heeft opgestuurd (geen JSON).
+## Primaire flow (JSON via e-mail)
 
-## Stappen
+Inzendingen komen automatisch binnen via Web3Forms. De e-mail bevat een veld `submission` met de volledige JSON.
 
-1. Open [claude.ai](https://claude.ai) of ChatGPT (met bestandsupload)
-2. Upload de PDF van de deelnemer
-3. Kopieer de volledige prompt hieronder en plak deze erbij
-4. Kopieer de JSON-output
-5. Sla op als `submissions/<voornaam-achternaam>.json`
-6. Voeg de bestandsnaam toe aan `submissions/index.json`
+1. Open de e-mail van de deelnemer
+2. Kopieer de inhoud van het `submission` veld (alles tussen de accolades `{ ... }`)
+3. Sla op als `submissions/<voornaam-achternaam>.json` (lowercase, koppelteken)
+4. `node build.js` — genereert ook `submissions/<naam>-leesbaar.txt` voor verificatie
+5. Commit en push `data/dashboard-data.json`
+
+> Als de JSON niet opgemaakt is: plak in Claude met `Zet dit om naar nette JSON, output alleen de JSON:` voor de JSON.
 
 ---
 
-## Prompt (kopieer alles hieronder)
+## Fallback: deelnemer heeft alleen een PDF gestuurd
+
+Open [claude.ai](https://claude.ai), upload de PDF en plak de prompt hieronder erbij. Kopieer de JSON-output en sla op als hierboven.
+
+---
+
+## Extractie-prompt (alleen bij PDF)
 
 ```
-I have attached a WK 2026 Poule prediction form (PDF). Extract all predictions and output a single valid JSON object matching the schema below exactly. Do not include any explanation — output only the JSON.
+I have attached a WK 2026 Poule prediction form (PDF). Extract all predictions and output a single valid JSON object matching the schema below exactly. Output only the JSON — no explanation.
 
 Rules:
 - Use the participant's name and email exactly as written on the form.
-- "scores": keyed by match index 0–71 (see match list below). Each entry has "-h" (home score) and "-a" (away score) as strings. Omit a match if the score is blank.
-- "standings": for each group A–L, list all 4 teams in the predicted finishing order (1st to 4th) as they appear in the "Poulevolgorde" section.
-- "koFields": keyed by match ID (see KO list below). Each match has "_h" (home team), "_a" (away team), "_sh" (home score), "_sa" (away score) as strings. Omit fields that are blank.
-- "kampioen": the predicted world champion (free text field at the bottom).
-- "bonus": answers to the 10 bonus questions (b1–b10b). Omit blank answers.
+- "scores": keyed by match index 0–71. Each entry has "-h" (home score) and "-a" (away score) as strings. Omit blank matches.
+- "standings": for each group A–L, list all 4 teams in predicted finishing order (1st to 4th).
+- "koFields": keyed by match ID. Each match has "_h" (home team), "_a" (away team), "_sh" (home score), "_sa" (away score) as strings. Omit blank fields.
+- "kampioen": predicted world champion.
+- "bonus": answers to bonus questions b1–b9. Omit blank answers.
 - Use Dutch team/player names exactly as printed on the form.
 
 ---
@@ -116,17 +123,15 @@ Finale: fin
 ---
 
 BONUS QUESTION IDs:
-b1 = Welke Nederlandse speler scoort ons eerste doelpunt? (25 pts)
-b2 = Welk land ontvangt als eerste een rode kaart? (20 pts)
-b3 = Welk land scoort de meeste doelpunten in de groepsfase? (20 pts)
-b4 = Hoeveel goals vallen er in de groepsfase? (15 pts)
-b5 = Wie wordt topscorer van het toernooi? (35 pts)
-b6 = Welke keeper houdt de meeste clean sheets? (30 pts)
-b7 = Welk land ontvangt de meeste gele kaarten? (20 pts)
-b8 = Hoeveel goals vallen er in het hele toernooi? (20 pts)
-b9 = Welk land valt uit via penalty's in de knock-out fase? (25 pts)
-b10a = Finalist 1 (eerste van de twee finalisten) (20 pts)
-b10b = Finalist 2 (tweede van de twee finalisten) (20 pts)
+b1 = Welke Nederlandse speler scoort ons eerste doelpunt? (15 pts)
+b2 = Welk land scoort de meeste doelpunten in de groepsfase? (15 pts)
+b3 = Welk land ontvangt als eerste een rode kaart? (25 pts)
+b4 = In welke minuut valt het snelste doelpunt? (25 pts)
+b5 = Wie wordt topscorer van het WK? (50 pts)
+b6 = Hoeveel eigen doelpunten vallen er op het gehele WK? (25 pts)
+b7 = Tijdens welke wedstrijd valt de eerste strafschop? (bijv. "Nederland - Japan") (25 pts)
+b8 = Welk land verzamelt de meeste gele kaarten? (25 pts)
+b9 = Hoeveel goals vallen er in de groepsfase? (±5 telt) (25 pts)
 
 ---
 
@@ -137,7 +142,7 @@ OUTPUT SCHEMA:
   "kampioen": "",
   "scores": {
     "0-h": "", "0-a": "",
-    ...
+    "1-h": "", "1-a": ""
   },
   "standings": {
     "A": ["", "", "", ""],
@@ -154,21 +159,18 @@ OUTPUT SCHEMA:
     "L": ["", "", "", ""]
   },
   "koFields": {
-    "r32_0_h": "", "r32_0_a": "", "r32_0_sh": "", "r32_0_sa": "",
-    ...
+    "r32_0_h": "", "r32_0_a": "", "r32_0_sh": "", "r32_0_sa": ""
   },
   "bonus": {
     "b1": "",
     "b2": "",
-    ...
+    "b3": "",
+    "b4": "",
+    "b5": "",
+    "b6": "",
+    "b7": "",
+    "b8": "",
+    "b9": ""
   }
 }
 ```
-
----
-
-## Na extractie
-
-- Controleer de naam in `naam` — gebruik die als bestandsnaam: `voornaam-achternaam.json` (lowercase, spaties als koppelteken)
-- Voeg de bestandsnaam toe aan `submissions/index.json`
-- Push naar GitHub → dashboard herberekent automatisch

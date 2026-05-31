@@ -51,6 +51,33 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
              border: 2px solid #d0c5af; border-top-color: #735c00;
              border-radius: 9999px; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* History rows */
+  .history-row td { padding: 0; border-bottom: 2px solid #d0c5af; background: #fafaf8; }
+  .history-inner { padding: 0.75rem 1rem 1rem; }
+  .hist-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  .hist-table th { background: #f0ebe0; font-size: 0.65rem; padding: 0.35rem 0.6rem; }
+  .hist-table td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e8e4da; font-size: 0.8rem; }
+  .hist-table tr:last-child td { border-bottom: none; }
+  .pts-exact  { color: #2d6a2d; font-weight: 700; }
+  .pts-part   { color: #735c00; font-weight: 700; }
+  .pts-zero   { color: #b0a888; }
+
+  /* Today badge */
+  .today-badge { display: inline-flex; align-items: center; gap: 0.2rem;
+                 background: #e8f5e9; color: #2d6a2d; border-radius: 9999px;
+                 padding: 0.1rem 0.5rem; font-size: 0.7rem; font-weight: 700; }
+
+  /* Match card for today's schedule */
+  .match-card { background: #fff; border: 1px solid #d0c5af; border-radius: 0.75rem;
+                padding: 0.75rem 1rem; min-width: 160px; }
+  .match-card.played { border-left: 3px solid #d4af37; }
+
+  /* Toggle button */
+  .toggle-btn { background: none; border: none; cursor: pointer; padding: 0.125rem 0.375rem;
+                border-radius: 0.375rem; color: #7f7663; font-size: 0.75rem;
+                transition: background 0.15s; }
+  .toggle-btn:hover { background: #e8e4da; color: #4d4635; }
 </style>
 </head>
 <body class="min-h-screen">
@@ -65,9 +92,6 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
       <span class="text-on-surface-variant font-semibold uppercase tracking-[0.15em] text-[10px] opacity-60 hidden sm:block">VS · Canada · Mexico · 11 jun – 19 jul 2026</span>
     </div>
     <nav class="flex items-center gap-4">
-      <a href="index.html" class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">
-        <span class="material-symbols-outlined text-sm">arrow_back</span> Formulier
-      </a>
       <span class="text-xs font-bold uppercase tracking-widest text-primary border-b-2 border-primary-container pb-0.5">Dashboard</span>
     </nav>
   </div>
@@ -78,13 +102,22 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
   <!-- Page title -->
   <div class="border-l-4 border-primary-container pl-6">
     <h2 class="text-3xl font-bold text-on-surface mb-1">Klassement</h2>
-    <p class="text-on-surface-variant opacity-70 font-medium text-sm">Scores worden live herberekend op basis van results.json.</p>
+    <p class="text-on-surface-variant opacity-70 font-medium text-sm">Scores worden bijgewerkt door de beheerder na elke speelronde.</p>
+  </div>
+
+  <!-- Today's matches -->
+  <div id="today-section" class="hidden">
+    <div class="flex items-center gap-2 mb-3">
+      <span class="material-symbols-outlined text-base" style="color:#735c00">today</span>
+      <span class="font-bold text-sm uppercase tracking-widest text-on-surface">Wedstrijden vandaag</span>
+      <span class="text-xs text-on-surface-variant" id="today-date-label"></span>
+    </div>
+    <div class="flex flex-wrap gap-3" id="today-matches-list"></div>
   </div>
 
   <!-- Status info box -->
   <div class="info-box" id="status-box">
     <div class="flex items-center gap-2 mb-1">
-      <span class="material-symbols-outlined text-base" style="color:#735c00">info</span>
       <span class="font-semibold text-sm text-on-surface">Toernooi status</span>
     </div>
     <div id="status-content" class="flex flex-wrap items-center gap-3 mt-2">
@@ -108,8 +141,8 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
           <tr>
             <th style="text-align:center">#</th>
             <th>Naam</th>
-            <th style="text-align:right">Groep<br>Uitslagen</th>
-            <th style="text-align:right">Standen</th>
+            <th style="text-align:right">Groepsfase</th>
+            <th style="text-align:right">Poule<br>Eindstand</th>
             <th style="text-align:right">KO Fase</th>
             <th style="text-align:right">Bonus</th>
             <th style="text-align:right">Totaal</th>
@@ -119,7 +152,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
           <tr>
             <td colspan="7" class="text-center py-10 text-on-surface-variant text-sm">
               <div class="spinner mx-auto mb-2"></div>
-              Inzendingen laden...
+              Laden...
             </td>
           </tr>
         </tbody>
@@ -127,127 +160,48 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
     </div>
   </div>
 
-  <!-- Footer note -->
   <p class="text-xs text-on-surface-variant opacity-60 text-center pt-2">
-    Scores worden automatisch herberekend zodra results.json wordt bijgewerkt
-    &middot;
-    KO-fase scoring volgt na de knock-out ronde
+    Scores worden automatisch herberekend zodra de beheerder de resultaten bijwerkt
   </p>
 
 </main>
 
 <script>
 // ---------------------------------------------------------------------------
-// CONFIG
+// CONSTANTS
 // ---------------------------------------------------------------------------
-const BONUS_PTS = {b1:25, b2:20, b3:20, b4:15, b5:35, b6:30, b7:20, b8:20, b9:25, b10:40};
-
 const PHASE_LABELS = {
-  pre:      { label: 'Vooraf (pre)',      cls: 'phase-pre'     },
-  group:    { label: 'Groepsfase',        cls: 'phase-group'   },
-  knockout: { label: 'Knock-out fase',    cls: 'phase-knockout' },
-  done:     { label: 'Afgelopen',         cls: 'phase-done'    },
+  pre:      { label: 'Vooraf',         cls: 'phase-pre'      },
+  group:    { label: 'Groepsfase',     cls: 'phase-group'    },
+  knockout: { label: 'Knock-out fase', cls: 'phase-knockout' },
+  done:     { label: 'Afgelopen',      cls: 'phase-done'     },
 };
+
+const ROUND_LABELS = {
+  group: 'Groepsfase', r32: 'Ronde van 32', af: 'Achtste finale',
+  kf: 'Kwartfinale', hf: 'Halve finale', tf: '3e Plaats', finale: 'Finale',
+};
+
+const NL_MONTHS = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
 
 // ---------------------------------------------------------------------------
 // HELPERS
 // ---------------------------------------------------------------------------
-function outcome(h, a) {
-  if (h > a) return 'h';
-  if (a > h) return 'a';
-  return 'd';
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function scoreGroupMatch(pH, pA, rH, rA) {
-  // pH/pA = predicted; rH/rA = actual
-  if (pH === rH && pA === rA) return 8;
-  if (outcome(pH, pA) === outcome(rH, rA)) return 4;
-  return 0;
+function fmtDate(isoDate) {
+  if (!isoDate) return '';
+  const [, m, d] = isoDate.split('-');
+  return `${parseInt(d, 10)} ${NL_MONTHS[parseInt(m, 10) - 1]}`;
 }
 
-function scoreStandings(predicted, actual) {
-  // predicted & actual are arrays of 4 team names
-  let pts = 0;
-  for (let i = 0; i < 4; i++) {
-    if (predicted[i] && actual[i] &&
-        predicted[i].trim().toLowerCase() === actual[i].trim().toLowerCase()) {
-      pts += 5;
-    }
-  }
-  return pts;
+function todayISO() {
+  const override = new URLSearchParams(location.search).get('date');
+  return override || new Date().toISOString().slice(0, 10);
 }
 
-function scoreBonus(sub, results) {
-  const rb = results.bonus || {};
-  const sb = sub.bonus || {};
-  let pts = 0;
-
-  function norm(v) { return (v || '').toString().trim().toLowerCase(); }
-  function numClose(a, b, tol) {
-    const na = parseFloat(a), nb = parseFloat(b);
-    return !isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= tol;
-  }
-
-  // b1 – b3: exact text match
-  ['b1','b2','b3'].forEach(k => {
-    if (rb[k] !== null && rb[k] !== undefined) {
-      if (norm(sb[k]) === norm(rb[k])) pts += BONUS_PTS[k];
-    }
-  });
-
-  // b4: number within ±5
-  if (rb.b4 !== null && rb.b4 !== undefined) {
-    if (numClose(sb.b4, rb.b4, 5)) pts += BONUS_PTS.b4;
-  }
-
-  // b5, b6: exact text match
-  ['b5','b6'].forEach(k => {
-    if (rb[k] !== null && rb[k] !== undefined) {
-      if (norm(sb[k]) === norm(rb[k])) pts += BONUS_PTS[k];
-    }
-  });
-
-  // b7: exact text match
-  if (rb.b7 !== null && rb.b7 !== undefined) {
-    if (norm(sb.b7) === norm(rb.b7)) pts += BONUS_PTS.b7;
-  }
-
-  // b8: number within ±10
-  if (rb.b8 !== null && rb.b8 !== undefined) {
-    if (numClose(sb.b8, rb.b8, 10)) pts += BONUS_PTS.b8;
-  }
-
-  // b9: exact text match
-  if (rb.b9 !== null && rb.b9 !== undefined) {
-    if (norm(sb.b9) === norm(rb.b9)) pts += BONUS_PTS.b9;
-  }
-
-  // b10: both teams correct (order-independent) using b10a+b10b from submission
-  if (rb.b10 !== null && rb.b10 !== undefined) {
-    // results.json stores b10 as a string "TeamA & TeamB" or similar
-    // We support both a single string and split a/b in results
-    const rVal = norm(rb.b10);
-    const sA = norm(sb.b10a || '');
-    const sB = norm(sb.b10b || '');
-    // Parse result value: try splitting on common separators
-    const rParts = rVal.split(/[&,\/\-]/).map(s => s.trim()).filter(Boolean);
-    if (rParts.length >= 2) {
-      const bothMatch =
-        (sA === rParts[0] && sB === rParts[1]) ||
-        (sA === rParts[1] && sB === rParts[0]);
-      if (bothMatch) pts += BONUS_PTS.b10;
-    } else if (rParts.length === 1) {
-      // Single value stored: check if submission's a or b matches
-      if (sA === rParts[0] || sB === rParts[0]) pts += BONUS_PTS.b10;
-    }
-  }
-
-  return pts;
-}
-
-// ---------------------------------------------------------------------------
-// FETCH HELPERS
-// ---------------------------------------------------------------------------
 async function fetchJSON(url) {
   const resp = await fetch(url);
   if (!resp.ok) throw new Error(`HTTP ${resp.status} voor ${url}`);
@@ -255,45 +209,58 @@ async function fetchJSON(url) {
 }
 
 // ---------------------------------------------------------------------------
-// RENDER
+// TODAY'S MATCHES
 // ---------------------------------------------------------------------------
-function renderStatusBox(results, submissionCount) {
-  const phase = results.phase || 'pre';
-  const phaseInfo = PHASE_LABELS[phase] || { label: phase, cls: 'phase-pre' };
-  const groupScores = results.groupScores || {};
-  const scoredCount = Object.keys(groupScores).filter(k => k !== '_comment').length;
-  const lastUpdated = results.lastUpdated
-    ? new Date(results.lastUpdated).toLocaleString('nl-NL', { dateStyle: 'medium', timeStyle: 'short' })
-    : '—';
+function renderTodaysMatches(schedule, played) {
+  const today = todayISO();
+  const todayMatches = schedule.filter(m => m.date === today);
+  const section = document.getElementById('today-section');
+  if (!todayMatches.length) { section.classList.add('hidden'); return; }
 
-  document.getElementById('last-updated').textContent = `Bijgewerkt: ${lastUpdated}`;
+  section.classList.remove('hidden');
+  document.getElementById('today-date-label').textContent = `— ${fmtDate(today)}`;
 
-  document.getElementById('status-content').innerHTML = `
-    <span class="phase-badge ${phaseInfo.cls}">${phaseInfo.label}</span>
-    <span class="text-sm text-on-surface-variant">
-      <strong class="text-on-surface">${scoredCount}</strong> van 72 groepswedstrijden gescoord
-    </span>
-    <span class="text-sm text-on-surface-variant">
-      <strong class="text-on-surface">${submissionCount}</strong> inzendingen geladen
-    </span>
-  `;
+  const list = document.getElementById('today-matches-list');
+  list.innerHTML = todayMatches.map(m => {
+    const result = played[m.id];
+    const isPlayed = !!result;
+    const roundLabel = ROUND_LABELS[m.round] || m.round;
+
+    let scoreHtml = '';
+    if (isPlayed) {
+      if (m.round === 'group') {
+        scoreHtml = `<div class="text-lg font-bold text-primary mt-1">${result.h} – ${result.a}</div>`;
+      } else {
+        scoreHtml = `<div class="text-lg font-bold text-primary mt-1">${result.sh} – ${result.sa}</div>`;
+      }
+    } else {
+      scoreHtml = `<div class="text-xs text-on-surface-variant mt-1">${m.time}</div>`;
+    }
+
+    const homeAway = m.home
+      ? `<div class="font-semibold text-xs">${escHtml(m.home)}</div>
+         <div class="text-[10px] text-on-surface-variant">vs ${escHtml(m.away)}</div>`
+      : `<div class="font-semibold text-xs">${escHtml(m.label || m.id)}</div>`;
+
+    return `<div class="match-card${isPlayed ? ' played' : ''}">
+      <div class="text-[10px] text-on-surface-variant uppercase tracking-wider mb-1">${roundLabel}${m.group ? ` · Gr.${m.group}` : ''}</div>
+      ${homeAway}
+      ${scoreHtml}
+    </div>`;
+  }).join('');
 }
 
-function showErrors(errorList) {
-  const el = document.getElementById('errors');
-  if (!errorList.length) { el.classList.add('hidden'); return; }
-  el.classList.remove('hidden');
-  el.innerHTML = errorList.map(e =>
-    `<div class="error-msg"><span class="material-symbols-outlined text-sm align-middle mr-1">warning</span>${e}</div>`
-  ).join('');
-}
-
+// ---------------------------------------------------------------------------
+// LEADERBOARD
+// ---------------------------------------------------------------------------
 function renderLeaderboard(rows) {
   const tbody = document.getElementById('leaderboard-body');
   if (!rows.length) {
     tbody.innerHTML = `<tr><td colspan="7" class="text-center py-10 text-on-surface-variant text-sm">Geen inzendingen gevonden.</td></tr>`;
     return;
   }
+
+  const today = todayISO();
 
   tbody.innerHTML = rows.map((r, idx) => {
     const rank = idx + 1;
@@ -303,85 +270,138 @@ function renderLeaderboard(rows) {
     else if (rank === 3) rankBadgeCls = 'rank-3';
 
     const rowCls = rank === 1 ? 'gold-row' : (idx % 2 === 0 ? '' : 'bg-surface-container-lowest');
+    const s = r.scores;
+    const histId = `hist-${idx}`;
 
-    return `
-      <tr class="${rowCls}">
+    const todayBadge = r.todayPts > 0
+      ? `<span class="today-badge ml-1"><span class="material-symbols-outlined" style="font-size:0.75rem">trending_up</span>+${r.todayPts} vandaag</span>`
+      : '';
+
+    const hasHistory = r.history && r.history.length > 0;
+    const toggleBtn = hasHistory
+      ? `<button class="toggle-btn ml-1" onclick="toggleHistory('${histId}')" title="Voorspellingen">
+           <span class="material-symbols-outlined" style="font-size:1rem" id="icon-${histId}">expand_more</span>
+         </button>`
+      : '';
+
+    const mainRow = `
+      <tr class="${rowCls}" id="row-${histId}">
         <td style="text-align:center">
           <span class="rank-badge ${rankBadgeCls}">${rank}</span>
         </td>
         <td>
-          <div class="font-semibold text-on-surface">${escHtml(r.naam)}</div>
-          <div class="text-xs text-on-surface-variant opacity-70">${escHtml(r.kampioen || '—')}</div>
+          <div class="flex items-center flex-wrap gap-1">
+            <span class="font-semibold text-on-surface">${escHtml(r.naam)}</span>
+            ${todayBadge}
+            ${toggleBtn}
+          </div>
         </td>
-        <td class="score-cell">
-          ${r.groep}
-          <div class="sub-score">${r.groepMatches} wed.</div>
-        </td>
-        <td class="score-cell">
-          ${r.standen}
-          <div class="sub-score">${r.standenGroepen} groepen</div>
-        </td>
-        <td class="score-cell" style="color:#a8a8a8">—</td>
-        <td class="score-cell">${r.bonus}</td>
-        <td class="score-cell" style="font-size:1.125rem; color:#735c00">${r.totaal}</td>
+        <td class="score-cell">${s.groep}</td>
+        <td class="score-cell">${s.standen}</td>
+        <td class="score-cell">${s.ko}</td>
+        <td class="score-cell">${s.bonus}</td>
+        <td class="score-cell" style="font-size:1.125rem; color:#735c00">${s.totaal}</td>
       </tr>`;
+
+    if (!hasHistory) return mainRow;
+
+    const histRows = [...r.history].reverse().slice(0, 5).map(h => {
+      const isNaN_h = isNaN(h.predictedH), isNaN_a = isNaN(h.predictedA);
+      const pred = (!isNaN_h && !isNaN_a) ? `${h.predictedH}–${h.predictedA}` : '—';
+      const actual = `${h.actualH}–${h.actualA}`;
+      const isToday = h.date === today;
+
+      let ptsCls = 'pts-zero';
+      if (h.pts > 0) ptsCls = (h.predictedH === h.actualH && h.predictedA === h.actualA) ? 'pts-exact' : 'pts-part';
+
+      const roundLabel = ROUND_LABELS[h.round] || h.round;
+      let matchLabel;
+      if (h.actualHome) {
+        const norm = s => (s || '').trim().toLowerCase();
+        const homeOk = norm(h.home) === norm(h.actualHome);
+        const awayOk = norm(h.away) === norm(h.actualAway);
+        const homeSpan = `<span style="color:${homeOk ? '#2d6a2d' : '#ba1a1a'};font-weight:600">${escHtml(h.home)}</span>`;
+        const awaySpan = `<span style="color:${awayOk ? '#2d6a2d' : '#ba1a1a'};font-weight:600">${escHtml(h.away)}</span>`;
+        matchLabel = `${homeSpan} – ${awaySpan}`;
+      } else {
+        matchLabel = h.away ? `${escHtml(h.home)} – ${escHtml(h.away)}` : escHtml(h.home);
+      }
+
+      return `<tr${isToday ? ' style="background:#f0ffe8"' : ''}>
+        <td>${fmtDate(h.date)}</td>
+        <td>${roundLabel}</td>
+        <td>${matchLabel}</td>
+        <td style="text-align:center">${pred}</td>
+        <td style="text-align:center">${actual}</td>
+        <td style="text-align:right" class="${ptsCls}">${h.pts > 0 ? '+' : ''}${h.pts}</td>
+      </tr>`;
+    }).join('');
+
+    const historyRow = `
+      <tr class="history-row" id="${histId}" style="display:none">
+        <td colspan="7">
+          <div class="history-inner">
+            <table class="hist-table">
+              <thead><tr>
+                <th>Datum</th><th>Ronde</th><th>Wedstrijd</th>
+                <th style="text-align:center">Voorspeld</th>
+                <th style="text-align:center">Uitslag</th>
+                <th style="text-align:right">Punten</th>
+              </tr></thead>
+              <tbody>${histRows}</tbody>
+            </table>
+          </div>
+        </td>
+      </tr>`;
+
+    return mainRow + historyRow;
   }).join('');
 }
 
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
+function toggleHistory(histId) {
+  const row = document.getElementById(histId);
+  const icon = document.getElementById(`icon-${histId}`);
+  if (!row) return;
+  const isHidden = row.style.display === 'none';
+  row.style.display = isHidden ? 'table-row' : 'none';
+  if (icon) icon.textContent = isHidden ? 'expand_less' : 'expand_more';
 }
 
 // ---------------------------------------------------------------------------
-// SCORING ENGINE
+// STATUS BOX
 // ---------------------------------------------------------------------------
-function calcScore(sub, results) {
-  const groupScores = results.groupScores || {};
-  const finalStandings = results.finalStandings || {};
+function renderStatusBox(data, participantCount) {
+  const phase = data.phase || 'pre';
+  const phaseInfo = PHASE_LABELS[phase] || { label: phase, cls: 'phase-pre' };
+  const lastUpdated = data.lastUpdated
+    ? new Date(data.lastUpdated).toLocaleString('nl-NL', { dateStyle: 'medium', timeStyle: 'short' })
+    : '—';
 
-  let groepPts = 0;
-  let groepMatches = 0;
-  let standenPts = 0;
-  let standenGroepen = 0;
+  document.getElementById('last-updated').textContent = `Bijgewerkt: ${lastUpdated}`;
+  const playedCount = Object.keys(data.played || {}).filter(k => !k.includes('_') || k.startsWith('r32') || k.startsWith('af') || k.startsWith('kf') || k.startsWith('hf') || k === 'tf' || k === 'fin').length;
+  const groupPlayedCount = Object.keys(data.played || {}).filter(k => !isNaN(k)).length;
 
-  // Group match scoring (indices 0-71)
-  for (const [idxStr, actual] of Object.entries(groupScores)) {
-    if (idxStr === '_comment') continue;
-    const idx = parseInt(idxStr, 10);
-    const pH = parseInt(sub.scores[`${idx}-h`], 10);
-    const pA = parseInt(sub.scores[`${idx}-a`], 10);
-    const rH = actual.h;
-    const rA = actual.a;
-    if (!isNaN(pH) && !isNaN(pA)) {
-      groepPts += scoreGroupMatch(pH, pA, rH, rA);
-      groepMatches++;
-    }
-  }
+  document.getElementById('status-content').innerHTML = `
+    <span class="phase-badge ${phaseInfo.cls}">${phaseInfo.label}</span>
+    <span class="text-sm text-on-surface-variant">
+      <strong class="text-on-surface">${groupPlayedCount}</strong> van 72 groepswedstrijden gespeeld
+    </span>
+    <span class="text-sm text-on-surface-variant">
+      <strong class="text-on-surface">${participantCount}</strong> deelnemers
+    </span>
+  `;
+}
 
-  // Group standings scoring
-  for (const [group, actualOrder] of Object.entries(finalStandings)) {
-    if (group === '_comment') continue;
-    const predictedOrder = sub.standings && sub.standings[group];
-    if (predictedOrder) {
-      standenPts += scoreStandings(predictedOrder, actualOrder);
-      standenGroepen++;
-    }
-  }
-
-  const bonusPts = scoreBonus(sub, results);
-
-  return {
-    groep: groepPts,
-    groepMatches,
-    standen: standenPts,
-    standenGroepen,
-    bonus: bonusPts,
-    totaal: groepPts + standenPts + bonusPts,
-  };
+// ---------------------------------------------------------------------------
+// ERRORS
+// ---------------------------------------------------------------------------
+function showErrors(errorList) {
+  const el = document.getElementById('errors');
+  if (!errorList.length) { el.classList.add('hidden'); return; }
+  el.classList.remove('hidden');
+  el.innerHTML = errorList.map(e =>
+    `<div class="error-msg"><span class="material-symbols-outlined text-sm align-middle mr-1">warning</span>${e}</div>`
+  ).join('');
 }
 
 // ---------------------------------------------------------------------------
@@ -390,62 +410,32 @@ function calcScore(sub, results) {
 async function main() {
   const errors = [];
 
-  let results;
-  try {
-    results = await fetchJSON('results.json');
-  } catch (e) {
-    errors.push(`Kon results.json niet laden: ${e.message}`);
+  const [dataResult, scheduleResult] = await Promise.allSettled([
+    fetchJSON('data/dashboard-data.json'),
+    fetchJSON('data/matches.json'),
+  ]);
+
+  if (dataResult.status === 'rejected') {
+    errors.push(`Kon dashboard-data.json niet laden: ${dataResult.reason.message}`);
     showErrors(errors);
     document.getElementById('status-content').innerHTML =
-      `<span class="text-sm text-error">results.json kon niet worden geladen.</span>`;
+      `<span class="text-sm text-error">dashboard-data.json kon niet worden geladen. Voer eerst build.js uit.</span>`;
     document.getElementById('leaderboard-body').innerHTML =
-      `<tr><td colspan="7" class="text-center py-10 text-error text-sm">Kan scores niet berekenen zonder results.json.</td></tr>`;
+      `<tr><td colspan="7" class="text-center py-10 text-error text-sm">Geen data beschikbaar. Voer node build.js uit en commit dashboard-data.json.</td></tr>`;
     return;
   }
 
-  let submissionIndex;
-  try {
-    submissionIndex = await fetchJSON('submissions/index.json');
-  } catch (e) {
-    errors.push(`Kon submissions/index.json niet laden: ${e.message}`);
-    showErrors(errors);
-    renderStatusBox(results, 0);
-    document.getElementById('leaderboard-body').innerHTML =
-      `<tr><td colspan="7" class="text-center py-10 text-on-surface-variant text-sm">Geen inzendingen index gevonden.</td></tr>`;
-    return;
+  const data     = dataResult.value;
+  const schedule = scheduleResult.status === 'fulfilled' ? scheduleResult.value : [];
+
+  if (scheduleResult.status === 'rejected') {
+    errors.push(`Kon matches.json niet laden: ${scheduleResult.reason.message}`);
   }
 
-  // Load all submissions in parallel
-  const settled = await Promise.allSettled(
-    submissionIndex.map(filename => fetchJSON(`submissions/${filename}`))
-  );
-
-  const rows = [];
-  settled.forEach((result, i) => {
-    const filename = submissionIndex[i];
-    if (result.status === 'rejected') {
-      errors.push(`Kon ${filename} niet laden: ${result.reason.message}`);
-    } else {
-      const sub = result.value;
-      try {
-        const score = calcScore(sub, results);
-        rows.push({
-          naam: sub.naam || filename,
-          kampioen: sub.kampioen || '',
-          ...score,
-        });
-      } catch (e) {
-        errors.push(`Fout bij het berekenen van score voor ${filename}: ${e.message}`);
-      }
-    }
-  });
-
-  // Sort descending by totaal, then naam alphabetically as tiebreak
-  rows.sort((a, b) => b.totaal - a.totaal || a.naam.localeCompare(b.naam, 'nl'));
-
-  renderStatusBox(results, rows.length);
+  renderStatusBox(data, data.leaderboard.length);
+  renderTodaysMatches(schedule, data.played || {});
   showErrors(errors);
-  renderLeaderboard(rows);
+  renderLeaderboard(data.leaderboard);
 }
 
 main();

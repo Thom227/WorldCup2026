@@ -1,2 +1,7 @@
 .claude
 .playwright-mcp/
+.idea/
+.DS_Store
+
+# Submission JSONs stay local — use build.js to generate dashboard-data.json
+submissions/
