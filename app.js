@@ -495,10 +495,10 @@ function buildKO(){
   };
 
   cont.appendChild(createRound('Ronde van 32','28 jun – 4 jul','r32',POINTS.r32,VERLENGING_NOTE,R32.map(m=>koMatch({...m,lb:m.lb,nr:m.nr},[slotLabel(m.s1),slotLabel(m.s2)])).join(''),4,'triggerR32()'));
-  cont.appendChild(createRound('Achtste finales','4 – 7 jul','af',POINTS.af,VERLENGING_NOTE,AF.map((m,i)=>koMatch({...m,lb:`Achtste Finale #${i+1}`,nr:m.nr},[`Winnaar W${R32[m.from[0]].nr}`,`Winnaar W${R32[m.from[1]].nr}`])).join(''),4,'triggerAF()'));
+  cont.appendChild(createRound('Achtste finales','4 – 7 jul','af',POINTS.af,VERLENGING_NOTE,AF.map((m,i)=>koMatch({...m,lb:`Achtste Finale W${m.nr}`,nr:m.nr},[`Winnaar W${R32[m.from[0]].nr}`,`Winnaar W${R32[m.from[1]].nr}`])).join(''),4,'triggerAF()'));
   const kfPH=[['Winnaar W90','Winnaar W89'],['Winnaar W93','Winnaar W94'],['Winnaar W91','Winnaar W92'],['Winnaar W95','Winnaar W96']];
-  cont.appendChild(createRound('Kwartfinales','9 – 12 jul','kf',POINTS.kf,VERLENGING_NOTE,KF.map((m,i)=>koMatch({...m,lb:`Kwartfinale #${i+1}`,nr:m.nr},kfPH[i])).join(''),2,'triggerKF()'));
-  cont.appendChild(createRound('Halve finales','14 – 15 jul','hf',POINTS.hf,VERLENGING_NOTE,HF.map((m,i)=>koMatch({...m,lb:`Halve Finale #${i+1}`,nr:m.nr},[`Winnaar W${KF[m.from[0]].nr}`,`Winnaar W${KF[m.from[1]].nr}`])).join(''),2,'triggerHF()'));
+  cont.appendChild(createRound('Kwartfinales','9 – 12 jul','kf',POINTS.kf,VERLENGING_NOTE,KF.map((m,i)=>koMatch({...m,lb:`Kwartfinale W${m.nr}`,nr:m.nr},kfPH[i])).join(''),2,'triggerKF()'));
+  cont.appendChild(createRound('Halve finales','14 – 15 jul','hf',POINTS.hf,VERLENGING_NOTE,HF.map((m,i)=>koMatch({...m,lb:`Halve Finale W${m.nr}`,nr:m.nr},[`Winnaar W${KF[m.from[0]].nr}`,`Winnaar W${KF[m.from[1]].nr}`])).join(''),2,'triggerHF()'));
 
   const duo=document.createElement('div');
   duo.className='grid grid-cols-1 lg:grid-cols-2 gap-12 pt-12';
