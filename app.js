@@ -138,8 +138,8 @@ const AF=[
   {id:'af_1', nr:89, d:'4 jul', t:'23:00',from:[2,5]},
   {id:'af_2', nr:91, d:'5 jul', t:'22:00',from:[1,4]},
   {id:'af_3', nr:92, d:'6 jul', t:'02:00',from:[6,7]},
-  {id:'af_4', nr:93, d:'6 jul', t:'21:00',from:[10,11]},
-  {id:'af_5', nr:94, d:'7 jul', t:'02:00',from:[8,9]},
+  {id:'af_4', nr:93, d:'6 jul', t:'21:00',from:[11,10]},
+  {id:'af_5', nr:94, d:'7 jul', t:'02:00',from:[9,8]},
   {id:'af_6', nr:95, d:'7 jul', t:'18:00',from:[14,13]},
   {id:'af_7', nr:96, d:'7 jul', t:'22:00',from:[12,15]},
 ];
@@ -496,7 +496,7 @@ function buildKO(){
 
   cont.appendChild(createRound('Ronde van 32','28 jun – 4 jul','r32',POINTS.r32,VERLENGING_NOTE,R32.map(m=>koMatch({...m,lb:m.lb,nr:m.nr},[slotLabel(m.s1),slotLabel(m.s2)])).join(''),4,'triggerR32()'));
   cont.appendChild(createRound('Achtste finales','4 – 7 jul','af',POINTS.af,VERLENGING_NOTE,AF.map((m,i)=>koMatch({...m,lb:`Achtste Finale W${m.nr}`,nr:m.nr},[`Winnaar W${R32[m.from[0]].nr}`,`Winnaar W${R32[m.from[1]].nr}`])).join(''),4,'triggerAF()'));
-  const kfPH=[['Winnaar W90','Winnaar W89'],['Winnaar W93','Winnaar W94'],['Winnaar W91','Winnaar W92'],['Winnaar W95','Winnaar W96']];
+  const kfPH=[['Winnaar W89','Winnaar W90'],['Winnaar W93','Winnaar W94'],['Winnaar W91','Winnaar W92'],['Winnaar W95','Winnaar W96']];
   cont.appendChild(createRound('Kwartfinales','9 – 12 jul','kf',POINTS.kf,VERLENGING_NOTE,KF.map((m,i)=>koMatch({...m,lb:`Kwartfinale W${m.nr}`,nr:m.nr},kfPH[i])).join(''),2,'triggerKF()'));
   cont.appendChild(createRound('Halve finales','14 – 15 jul','hf',POINTS.hf,VERLENGING_NOTE,HF.map((m,i)=>koMatch({...m,lb:`Halve Finale W${m.nr}`,nr:m.nr},[`Winnaar W${KF[m.from[0]].nr}`,`Winnaar W${KF[m.from[1]].nr}`])).join(''),2,'triggerHF()'));
 
