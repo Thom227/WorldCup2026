@@ -116,35 +116,42 @@ const POINTS={
 const VERLENGING_NOTE=`<strong>Let op:</strong> De stand telt tot 90 minuten. Als je 1–1 voorspeld hebt en het wordt verlenging na 1–1, telt dit als een <em>juiste stand</em>. Wordt het verlenging na 2–2 en heb je 1–1 voorspeld, dan ontvang je punten voor <em>gelijkspel</em>. Een land mag niet meerdere keren worden ingevuld in dezelfde ronde.`;
 
 const R32=[
-  {id:'r32_0', d:'28 jun',t:'21:00',lb:'2e Gr.A – 2e Gr.B',   s1:{type:'w2',g:'A'},s2:{type:'w2',g:'B'}},
-  {id:'r32_1', d:'29 jun',t:'19:00',lb:'1e Gr.C – 2e Gr.F',   s1:{type:'w1',g:'C'},s2:{type:'w2',g:'F'}},
-  {id:'r32_2', d:'29 jun',t:'22:30',lb:'1e Gr.E – beste 3e',  s1:{type:'w1',g:'E'},s2:{type:'b3',g:'?'}},
-  {id:'r32_3', d:'30 jun',t:'03:00',lb:'1e Gr.F – 2e Gr.C',   s1:{type:'w1',g:'F'},s2:{type:'w2',g:'C'}},
-  {id:'r32_4', d:'30 jun',t:'19:00',lb:'2e Gr.E – 2e Gr.I',   s1:{type:'w2',g:'E'},s2:{type:'w2',g:'I'}},
-  {id:'r32_5', d:'30 jun',t:'23:00',lb:'1e Gr.I – beste 3e',  s1:{type:'w1',g:'I'},s2:{type:'b3',g:'?'}},
-  {id:'r32_6', d:'1 jul', t:'03:00',lb:'1e Gr.A – beste 3e',  s1:{type:'w1',g:'A'},s2:{type:'b3',g:'?'}},
-  {id:'r32_7', d:'1 jul', t:'18:00',lb:'1e Gr.L – beste 3e',  s1:{type:'w1',g:'L'},s2:{type:'b3',g:'?'}},
-  {id:'r32_8', d:'1 jul', t:'22:00',lb:'1e Gr.G – beste 3e',  s1:{type:'w1',g:'G'},s2:{type:'b3',g:'?'}},
-  {id:'r32_9', d:'2 jul', t:'02:00',lb:'1e Gr.D – beste 3e',  s1:{type:'w1',g:'D'},s2:{type:'b3',g:'?'}},
-  {id:'r32_10',d:'2 jul', t:'21:00',lb:'1e Gr.H – 2e Gr.J',   s1:{type:'w1',g:'H'},s2:{type:'w2',g:'J'}},
-  {id:'r32_11',d:'3 jul', t:'01:00',lb:'2e Gr.K – 2e Gr.L',   s1:{type:'w2',g:'K'},s2:{type:'w2',g:'L'}},
-  {id:'r32_12',d:'3 jul', t:'05:00',lb:'1e Gr.B – beste 3e',  s1:{type:'w1',g:'B'},s2:{type:'b3',g:'?'}},
-  {id:'r32_13',d:'3 jul', t:'20:00',lb:'2e Gr.D – 2e Gr.G',   s1:{type:'w2',g:'D'},s2:{type:'w2',g:'G'}},
-  {id:'r32_14',d:'4 jul', t:'00:00',lb:'1e Gr.J – 2e Gr.H',   s1:{type:'w1',g:'J'},s2:{type:'w2',g:'H'}},
-  {id:'r32_15',d:'4 jul', t:'03:30',lb:'1e Gr.K – beste 3e',  s1:{type:'w1',g:'K'},s2:{type:'b3',g:'?'}},
+  {id:'r32_0',  nr:73, d:'28 jun',t:'21:00',lb:'2e Gr.A – 2e Gr.B',  stad:'Los Angeles',   s1:{type:'w2',g:'A'},s2:{type:'w2',g:'B'}},
+  {id:'r32_1',  nr:74, d:'29 jun',t:'22:30',lb:'1e Gr.E – beste 3e', stad:'Boston',         s1:{type:'w1',g:'E'},s2:{type:'b3',g:'?'}},
+  {id:'r32_2',  nr:75, d:'30 jun',t:'03:00',lb:'1e Gr.F – 2e Gr.C',  stad:'Monterrey',      s1:{type:'w1',g:'F'},s2:{type:'w2',g:'C'}},
+  {id:'r32_3',  nr:76, d:'29 jun',t:'19:00',lb:'1e Gr.C – 2e Gr.F',  stad:'Houston',        s1:{type:'w1',g:'C'},s2:{type:'w2',g:'F'}},
+  {id:'r32_4',  nr:77, d:'30 jun',t:'23:00',lb:'1e Gr.I – beste 3e', stad:'New York/NJ',    s1:{type:'w1',g:'I'},s2:{type:'b3',g:'?'}},
+  {id:'r32_5',  nr:78, d:'30 jun',t:'19:00',lb:'2e Gr.E – 2e Gr.I',  stad:'Dallas',         s1:{type:'w2',g:'E'},s2:{type:'w2',g:'I'}},
+  {id:'r32_6',  nr:79, d:'1 jul', t:'03:00',lb:'1e Gr.A – beste 3e', stad:'Mexico-Stad',    s1:{type:'w1',g:'A'},s2:{type:'b3',g:'?'}},
+  {id:'r32_7',  nr:80, d:'1 jul', t:'18:00',lb:'1e Gr.L – beste 3e', stad:'Atlanta',        s1:{type:'w1',g:'L'},s2:{type:'b3',g:'?'}},
+  {id:'r32_8',  nr:81, d:'2 jul', t:'02:00',lb:'1e Gr.D – beste 3e', stad:'Seattle',        s1:{type:'w1',g:'D'},s2:{type:'b3',g:'?'}},
+  {id:'r32_9',  nr:82, d:'1 jul', t:'22:00',lb:'1e Gr.G – beste 3e', stad:'San Francisco',  s1:{type:'w1',g:'G'},s2:{type:'b3',g:'?'}},
+  {id:'r32_10', nr:83, d:'3 jul', t:'01:00',lb:'2e Gr.K – 2e Gr.L',  stad:'Toronto',        s1:{type:'w2',g:'K'},s2:{type:'w2',g:'L'}},
+  {id:'r32_11', nr:84, d:'2 jul', t:'21:00',lb:'1e Gr.H – 2e Gr.J',  stad:'Los Angeles',    s1:{type:'w1',g:'H'},s2:{type:'w2',g:'J'}},
+  {id:'r32_12', nr:85, d:'3 jul', t:'05:00',lb:'1e Gr.B – beste 3e', stad:'Vancouver',      s1:{type:'w1',g:'B'},s2:{type:'b3',g:'?'}},
+  {id:'r32_13', nr:86, d:'4 jul', t:'00:00',lb:'1e Gr.J – 2e Gr.H',  stad:'Miami',          s1:{type:'w1',g:'J'},s2:{type:'w2',g:'H'}},
+  {id:'r32_14', nr:87, d:'4 jul', t:'03:30',lb:'1e Gr.K – beste 3e', stad:'Kansas City',    s1:{type:'w1',g:'K'},s2:{type:'b3',g:'?'}},
+  {id:'r32_15', nr:88, d:'3 jul', t:'20:00',lb:'2e Gr.D – 2e Gr.G',  stad:'Dallas',         s1:{type:'w2',g:'D'},s2:{type:'w2',g:'G'}},
 ];
 const AF=[
-  {id:'af_0',d:'4 jul', t:'19:00',from:[0,2]},{id:'af_1',d:'4 jul', t:'23:00',from:[1,4]},
-  {id:'af_2',d:'5 jul', t:'22:00',from:[3,5]},{id:'af_3',d:'6 jul', t:'02:00',from:[6,7]},
-  {id:'af_4',d:'6 jul', t:'21:00',from:[10,11]},{id:'af_5',d:'7 jul',t:'02:00',from:[8,9]},
-  {id:'af_6',d:'7 jul', t:'18:00',from:[13,15]},{id:'af_7',d:'7 jul',t:'22:00',from:[12,14]},
+  {id:'af_0', nr:89, d:'4 jul', t:'23:00',from:[1,4]},
+  {id:'af_1', nr:90, d:'4 jul', t:'19:00',from:[0,2]},
+  {id:'af_2', nr:91, d:'5 jul', t:'22:00',from:[3,5]},
+  {id:'af_3', nr:92, d:'6 jul', t:'02:00',from:[6,7]},
+  {id:'af_4', nr:93, d:'6 jul', t:'21:00',from:[10,11]},
+  {id:'af_5', nr:94, d:'7 jul', t:'02:00',from:[8,9]},
+  {id:'af_6', nr:95, d:'7 jul', t:'18:00',from:[13,15]},
+  {id:'af_7', nr:96, d:'7 jul', t:'22:00',from:[12,14]},
 ];
 const KF=[
-  {id:'kf_0',d:'9 jul',t:'22:00',from:[0,1]},{id:'kf_1',d:'10 jul',t:'21:00',from:[4,5]},
-  {id:'kf_2',d:'11 jul',t:'23:00',from:[2,3]},{id:'kf_3',d:'12 jul',t:'03:00',from:[6,7]},
+  {id:'kf_0', nr:97,  d:'9 jul',  t:'22:00',from:[1,0]},
+  {id:'kf_1', nr:98,  d:'10 jul', t:'21:00',from:[4,5]},
+  {id:'kf_2', nr:99,  d:'11 jul', t:'23:00',from:[2,3]},
+  {id:'kf_3', nr:100, d:'12 jul', t:'03:00',from:[6,7]},
 ];
 const HF=[
-  {id:'hf_0',d:'14 jul',t:'21:00',from:[0,1]},{id:'hf_1',d:'15 jul',t:'21:00',from:[2,3]},
+  {id:'hf_0', nr:101, d:'14 jul',t:'21:00',from:[0,1]},
+  {id:'hf_1', nr:102, d:'15 jul',t:'21:00',from:[2,3]},
 ];
 
 let groupStandings={};
@@ -487,16 +494,17 @@ function buildKO(){
     return sec;
   };
 
-  cont.appendChild(createRound('Ronde van 32','28 jun – 4 jul','r32',POINTS.r32,VERLENGING_NOTE,R32.map((m,i)=>koMatch({...m,lb:m.lb,nr:i+1},[slotLabel(m.s1),slotLabel(m.s2)])).join(''),4,'triggerR32()'));
-  cont.appendChild(createRound('Achtste finales','4 – 7 jul','af',POINTS.af,VERLENGING_NOTE,AF.map((m,i)=>koMatch({...m,lb:`Achtste Finale #${i+1}`,nr:i+1},[`Winnaar W${m.from[0]+1}`,`Winnaar W${m.from[1]+1}`])).join(''),4,'triggerAF()'));
-  cont.appendChild(createRound('Kwartfinales','9 – 12 jul','kf',POINTS.kf,VERLENGING_NOTE,KF.map((m,i)=>koMatch({...m,lb:`Kwartfinale #${i+1}`,nr:i+1},[`Winnaar AF${m.from[0]+1}`,`Winnaar AF${m.from[1]+1}`])).join(''),2,'triggerKF()'));
-  cont.appendChild(createRound('Halve finales','14 – 15 jul','hf',POINTS.hf,VERLENGING_NOTE,HF.map((m,i)=>koMatch({...m,lb:`Halve Finale #${i+1}`,nr:i+1},[`Winnaar KF${m.from[0]+1}`,`Winnaar KF${m.from[1]+1}`])).join(''),2,'triggerHF()'));
+  cont.appendChild(createRound('Ronde van 32','28 jun – 4 jul','r32',POINTS.r32,VERLENGING_NOTE,R32.map(m=>koMatch({...m,lb:m.lb,nr:m.nr},[slotLabel(m.s1),slotLabel(m.s2)])).join(''),4,'triggerR32()'));
+  cont.appendChild(createRound('Achtste finales','4 – 7 jul','af',POINTS.af,VERLENGING_NOTE,AF.map((m,i)=>koMatch({...m,lb:`Achtste Finale #${i+1}`,nr:m.nr},[`Winnaar W${R32[m.from[0]].nr}`,`Winnaar W${R32[m.from[1]].nr}`])).join(''),4,'triggerAF()'));
+  const kfPH=[['Winnaar W89','Winnaar W90'],['Winnaar W93','Winnaar W94'],['Winnaar W91','Winnaar W92'],['Winnaar W95','Winnaar W96']];
+  cont.appendChild(createRound('Kwartfinales','9 – 12 jul','kf',POINTS.kf,VERLENGING_NOTE,KF.map((m,i)=>koMatch({...m,lb:`Kwartfinale #${i+1}`,nr:m.nr},kfPH[i])).join(''),2,'triggerKF()'));
+  cont.appendChild(createRound('Halve finales','14 – 15 jul','hf',POINTS.hf,VERLENGING_NOTE,HF.map((m,i)=>koMatch({...m,lb:`Halve Finale #${i+1}`,nr:m.nr},[`Winnaar W${KF[m.from[0]].nr}`,`Winnaar W${KF[m.from[1]].nr}`])).join(''),2,'triggerHF()'));
 
   const duo=document.createElement('div');
   duo.className='grid grid-cols-1 lg:grid-cols-2 gap-12 pt-12';
-  duo.appendChild(createRound('Troostfinale','18 jul','tf',POINTS.finale,VERLENGING_NOTE,koMatch({id:'tf',d:'18 jul',t:'23:00',lb:'3e / 4e plaats'},['Verliezer HF 1','Verliezer HF 2']),1));
+  duo.appendChild(createRound('Troostfinale','18 jul','tf',POINTS.finale,VERLENGING_NOTE,koMatch({id:'tf',nr:103,d:'18 jul',t:'23:00',lb:'3e / 4e plaats'},['Verliezer W101','Verliezer W102']),1));
   const finNote=`${VERLENGING_NOTE}<br><br><strong style="color:#735c00">Kampioenswinnaar (50 pt):</strong> Je kunt ook een al uitgevallen land kiezen als eindwinnaar. Vul dit in het speciale vak onderaan in.`;
-  duo.appendChild(createRound('Grote Finale','19 jul · New York','fin',POINTS.finale,finNote,koMatch({id:'fin',d:'19 jul',t:'00:00',lb:'FINALE'},['Winnaar HF 1','Winnaar HF 2']),1,'triggerFinale()'));
+  duo.appendChild(createRound('Grote Finale','19 jul · New York/NJ','fin',POINTS.finale,finNote,koMatch({id:'fin',nr:104,d:'19 jul',t:'21:00',lb:'FINALE'},['Winnaar W101','Winnaar W102']),1,'triggerFinale()'));
   cont.appendChild(duo);
 
   const champ=document.createElement('div');
@@ -792,10 +800,10 @@ function buildPDFView() {
     <div style="${SEC};page-break-before:always">③ Knock-out fase</div>
 
     <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5mm">Ronde van 32</div>
-    ${g4(R32.slice(0,4).map((m,i)=>koCard(m.id,m.lb,`${m.d} · #${i+1}`,isBlank)).join(''))}
-    ${g4(R32.slice(4,8).map((m,i)=>koCard(m.id,m.lb,`${m.d} · #${i+5}`,isBlank)).join(''))}
-    ${g4(R32.slice(8,12).map((m,i)=>koCard(m.id,m.lb,`${m.d} · #${i+9}`,isBlank)).join(''))}
-    ${g4(R32.slice(12).map((m,i)=>koCard(m.id,m.lb,`${m.d} · #${i+13}`,isBlank)).join(''))}
+    ${g4(R32.slice(0,4).map(m=>koCard(m.id,m.lb,`${m.d} · #${m.nr}`,isBlank)).join(''))}
+    ${g4(R32.slice(4,8).map(m=>koCard(m.id,m.lb,`${m.d} · #${m.nr}`,isBlank)).join(''))}
+    ${g4(R32.slice(8,12).map(m=>koCard(m.id,m.lb,`${m.d} · #${m.nr}`,isBlank)).join(''))}
+    ${g4(R32.slice(12).map(m=>koCard(m.id,m.lb,`${m.d} · #${m.nr}`,isBlank)).join(''))}
 
     <div style="font-size:6.5pt;font-weight:700;color:#735c00;text-transform:uppercase;letter-spacing:.05em;margin:2mm 0 1.5mm">Achtste finales</div>
     ${g4(AF.slice(0,4).map((m,i)=>koCard(m.id,`Achtste Finale #${i+1}`,m.d,isBlank)).join(''))}
