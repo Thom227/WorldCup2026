@@ -382,7 +382,9 @@ function triggerFinale(){
 function triggerKampioen(){
   const w=getWinner('fin');
   const el=document.getElementById('champion');
+  const inp=document.getElementById('kampioen-vrijkeuze');
   if(el&&w){el.textContent=w;el.classList.add('text-primary');}
+  if(inp&&w){inp.value=w;}
   flashOk('ok-champ');
 }
 
@@ -1196,7 +1198,40 @@ buildMatches();
 buildKO();
 renderStandings();
 buildBest3Grid();
+
+// ── RESTORE FROM ?state PARAM ─────────────────────────────────────────────────
+const _stateParam = new URLSearchParams(location.search).get('state');
+let _didRestore = false;
+if (_stateParam) {
+  try {
+    const _restored = JSON.parse(atob(_stateParam));
+    const _existing = JSON.parse(localStorage.getItem('wk2026') || 'null');
+    if (!_existing || _existing._restoreNonce !== _restored._restoreNonce) {
+      localStorage.setItem('wk2026', JSON.stringify(_restored));
+      _didRestore = true;
+    }
+    history.replaceState(null, '', location.pathname);
+  } catch(e) {}
+}
+
 loadState();
+
+if (_didRestore) {
+  const afSection = document.getElementById('kocont').children[1];
+  const banner = document.createElement('div');
+  banner.style.cssText = 'background:#fffde7;border:1.5px solid #d4af37;border-radius:.75rem;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:.75rem';
+  banner.innerHTML = `<span style="color:#735c00;font-size:1.1rem">&#9432;</span>
+    <div style="flex:1">
+      <strong style="color:#735c00">Jouw inzending is hersteld.</strong>
+      <span style="color:#5c4813;font-size:.875rem;display:block;margin-top:.25rem">
+        Groepsfase en Ronde van 32 zijn ingevuld. Vul de Achtste finales t/m de Finale in en klik opnieuw op <strong>Inzenden</strong>.
+      </span>
+    </div>
+    <button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:#735c00;font-size:1.1rem;padding:0;line-height:1">&times;</button>`;
+  afSection.insertBefore(banner, afSection.firstChild);
+  setTimeout(() => afSection.scrollIntoView({behavior:'smooth', block:'start'}), 100);
+}
+
 document.getElementById('naam').addEventListener('input',function(){
   const el=document.getElementById('print-naam');
   if(el) el.textContent=this.value;
