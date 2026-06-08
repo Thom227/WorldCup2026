@@ -1204,7 +1204,8 @@ const _stateParam = new URLSearchParams(location.search).get('state');
 let _didRestore = false;
 if (_stateParam) {
   try {
-    const _restored = JSON.parse(atob(_stateParam));
+    const _bytes = Uint8Array.from(atob(_stateParam), c => c.charCodeAt(0));
+    const _restored = JSON.parse(new TextDecoder().decode(_bytes));
     const _existing = JSON.parse(localStorage.getItem('wk2026') || 'null');
     if (!_existing || _existing._restoreNonce !== _restored._restoreNonce) {
       localStorage.setItem('wk2026', JSON.stringify(_restored));
