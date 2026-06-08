@@ -484,12 +484,12 @@ function buildKO(){
           <span class="ko-round-title bg-white border-2 border-primary-container px-8 py-3 rounded-xl text-2xl font-bold text-primary shadow-sm">${title}</span>
           <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em] opacity-50">${date}</span>
         </div>
-        ${triggerFn?`<div class="flex items-center gap-4 no-print">
+        ${triggerFn?`<div class="no-print"><div class="auto-check-warning">⚠️ Controleer altijd zelf of de ingevulde landen kloppen!</div><div class="flex items-center gap-4">
           <button onclick="${triggerFn}" class="flex items-center gap-3 bg-white hover:bg-surface-container-low text-on-surface border border-outline-variant rounded-full px-6 py-2.5 text-[10px] font-bold tracking-widest transition-all hover:border-primary active:scale-95 shadow-sm">
             <span class="material-symbols-outlined text-sm">auto_fix_high</span> VUL AUTOMATISCH IN
           </button>
           <span class="auto-ok" id="ok-${btnId}"><span class="material-symbols-outlined text-sm">check_circle</span></span>
-        </div>`:''}
+        </div></div>`:''}
       </div>
       ${pboxHTML(pts,note)}
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${cols} gap-8">${matchesHtml}</div>`;

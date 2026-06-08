@@ -25,6 +25,8 @@ input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0
 .pbox-note{font-size:.75rem;color:#4d4635;margin-top:1rem;padding-top:1rem;border-top:1px solid #e1e3e4;line-height:1.5}
 .pbox-note strong{color:#735c00}
 
+.auto-check-warning{display:inline-block;font-size:.7rem;font-weight:700;color:#735c00;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.4);border-radius:.5rem;padding:.35rem .75rem;margin-bottom:.5rem}
+
 /* MOBILE */
 @media (max-width:640px){
   #site-header{padding-top:.6rem!important;padding-bottom:.6rem!important}
