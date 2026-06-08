@@ -110,7 +110,7 @@ const POINTS={
   af:    {stand:15,winnaar:11,gelijk:11,plek:7,kampioen:0},
   kf:    {stand:20,winnaar:16,gelijk:16,plek:13,kampioen:0},
   hf:    {stand:25,winnaar:19,gelijk:19,plek:16,kampioen:0},
-  finale:{stand:30,winnaar:35,gelijk:30,plek:28,kampioen:50},
+  finale:{stand:30,winnaar:35,gelijk:35,plek:28,kampioen:50},
 };
 
 const VERLENGING_NOTE=`<strong>Let op:</strong> De stand telt tot 90 minuten. Als je 1–1 voorspeld hebt en het wordt verlenging na 1–1, telt dit als een <em>juiste stand</em>. Wordt het verlenging na 2–2 en heb je 1–1 voorspeld, dan ontvang je punten voor <em>gelijkspel</em>. Een land mag niet meerdere keren worden ingevuld in dezelfde ronde.`;
