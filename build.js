@@ -141,6 +141,34 @@ function scoreBonus(sub, res) {
   return pts;
 }
 
+function scoreBonusToday(sub, res, today) {
+  const rb    = res.bonus      || {};
+  const dates = res.bonusDates || {};
+  const sb    = sub.bonus      || {};
+  let pts = 0;
+
+  ['b1','b2','b3','b5'].forEach(k => {
+    if (dates[k] === today && rb[k] != null && norm(sb[k]) === norm(rb[k])) pts += BONUS_PTS[k];
+  });
+
+  if (dates.b4 === today && rb.b4 != null) {
+    const na = parseFloat(sb.b4), nb = parseFloat(rb.b4);
+    if (!isNaN(na) && !isNaN(nb) && na === nb) pts += BONUS_PTS.b4;
+  }
+
+  if (dates.b6 === today && rb.b6 != null) {
+    const na = parseFloat(sb.b6), nb = parseFloat(rb.b6);
+    if (!isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 3) pts += BONUS_PTS.b6;
+  }
+
+  if (dates.b7 === today && rb.b7 != null) {
+    const na = parseFloat(sb.b7), nb = parseFloat(rb.b7);
+    if (!isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 5) pts += BONUS_PTS.b7;
+  }
+
+  return pts;
+}
+
 // ---------------------------------------------------------------------------
 // BUILD SCHEDULE LOOKUP  (matchId → date/teams)
 // ---------------------------------------------------------------------------
@@ -328,6 +356,7 @@ const rows = submissions.map(sub => {
   }
 
   const bonusPts = scoreBonus(sub, results);
+  todayPts += scoreBonusToday(sub, results, today);
   const totaal   = groepPts + standenPts + koPts + bonusPts;
 
   // Sort history chronologically
@@ -364,7 +393,7 @@ const output = {
   generatedAt:  new Date().toISOString(),
   phase:        results.phase        || 'pre',
   currentRound: results.currentRound || null,
-  lastUpdated:  results.lastUpdated  || null,
+  lastUpdated:  new Date().toISOString(),
   played,
   leaderboard:  rows,
 };

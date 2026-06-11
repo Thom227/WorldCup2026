@@ -5,7 +5,8 @@
   "currentRound": null,
   "groupScores": {
     "_comment": "Key = match index (0-71). Values are integers.",
-    "_example": { "0": {"h": 2, "a": 1}, "1": {"h": 0, "a": 0} }
+    "_example": { "0": {"h": 2, "a": 1}, "1": {"h": 0, "a": 0} },
+    "0": {"h": 2, "a": 0}
   },
   "groupStandings": {
     "_comment": "Fill in after group phase completes. Order: 1st to 4th.",
@@ -23,5 +24,9 @@
     "b5": null,
     "b6": null,
     "b7": null
+  },
+  "bonusDates": {
+    "_comment": "Datum (YYYY-MM-DD) waarop je het antwoord hebt goedgekeurd. Zet deze in wanneer je bonus[k] invult.",
+    "b3": "2026-06-11"
   }
 }
