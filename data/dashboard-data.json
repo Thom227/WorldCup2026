@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-11T08:02:41.713Z",
+  "generatedAt": "2026-06-11T17:07:57.471Z",
   "phase": "pre",
   "lastUpdated": "2026-05-25T00:00:00Z",
   "played": {},
@@ -50,6 +50,36 @@
       "history": []
     },
     {
+      "naam": "Bob",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
+      "naam": "BoJe",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
       "naam": "Branco Kunst",
       "scores": {
         "groep": 0,
@@ -66,6 +96,21 @@
     },
     {
       "naam": "Dion Kapitein",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
+      "naam": "Fur",
       "scores": {
         "groep": 0,
         "groepMatches": 0,
@@ -261,6 +306,21 @@
     },
     {
       "naam": "Valeria",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
+      "naam": "VAR",
       "scores": {
         "groep": 0,
         "groepMatches": 0,
