@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-11T17:58:53.709Z",
+  "generatedAt": "2026-06-11T18:43:03.844Z",
   "phase": "group",
   "currentRound": null,
   "lastUpdated": "2026-05-25T00:00:00Z",
@@ -186,7 +186,37 @@
       "history": []
     },
     {
+      "naam": "Maxim",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
       "naam": "Megan Benjamins",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
+      "naam": "Mike Bootsma",
       "scores": {
         "groep": 0,
         "groepMatches": 0,
