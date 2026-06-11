@@ -1,9 +1,24 @@
 {
-  "generatedAt": "2026-06-08T21:22:21.570Z",
+  "generatedAt": "2026-06-11T08:02:41.713Z",
   "phase": "pre",
   "lastUpdated": "2026-05-25T00:00:00Z",
   "played": {},
   "leaderboard": [
+    {
+      "naam": "Aananth",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
     {
       "naam": "Anna Noorman",
       "scores": {
@@ -80,6 +95,51 @@
       "history": []
     },
     {
+      "naam": "Jeffrey",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
+      "naam": "Joeri de V.",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
+      "naam": "Kevin Kater",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
       "naam": "Megan Benjamins",
       "scores": {
         "groep": 0,
@@ -125,7 +185,37 @@
       "history": []
     },
     {
+      "naam": "Pieter van der Kuijl",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
       "naam": "Roanne ",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
+      "naam": "Sem Lingerak",
       "scores": {
         "groep": 0,
         "groepMatches": 0,
@@ -155,7 +245,37 @@
       "history": []
     },
     {
+      "naam": "twaninho",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
       "naam": "Valeria",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 0,
+        "totaal": 0
+      },
+      "todayPts": 0,
+      "history": []
+    },
+    {
+      "naam": "Wesley Kaag",
       "scores": {
         "groep": 0,
         "groepMatches": 0,
