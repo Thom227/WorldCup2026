@@ -1,10 +1,25 @@
 {
-  "generatedAt": "2026-06-11T19:51:04.116Z",
+  "generatedAt": "2026-06-11T20:20:58.668Z",
   "phase": "group",
   "currentRound": null,
   "lastUpdated": "2026-05-25T00:00:00Z",
   "played": {},
   "leaderboard": [
+    {
+      "naam": "Mike Jong",
+      "scores": {
+        "groep": 0,
+        "groepMatches": 0,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 25,
+        "totaal": 25
+      },
+      "todayPts": 0,
+      "history": []
+    },
     {
       "naam": "Aananth",
       "scores": {
@@ -232,21 +247,6 @@
     },
     {
       "naam": "Mike Bootsma",
-      "scores": {
-        "groep": 0,
-        "groepMatches": 0,
-        "standen": 0,
-        "standenGroepen": 0,
-        "ko": 0,
-        "koMatches": 0,
-        "bonus": 0,
-        "totaal": 0
-      },
-      "todayPts": 0,
-      "history": []
-    },
-    {
-      "naam": "Mike Jong",
       "scores": {
         "groep": 0,
         "groepMatches": 0,
