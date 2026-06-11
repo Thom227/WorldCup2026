@@ -363,6 +363,7 @@ for (const [id, actual] of Object.entries(results.ko || {})) {
 const output = {
   generatedAt:  new Date().toISOString(),
   phase:        results.phase        || 'pre',
+  currentRound: results.currentRound || null,
   lastUpdated:  results.lastUpdated  || null,
   played,
   leaderboard:  rows,
