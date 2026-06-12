@@ -6,7 +6,8 @@
   "groupScores": {
     "_comment": "Key = match index (0-71). Values are integers.",
     "_example": { "0": {"h": 2, "a": 1}, "1": {"h": 0, "a": 0} },
-    "0": {"h": 2, "a": 0}
+    "0": {"h": 2, "a": 0},
+    "1": {"h": 2, "a": 1}
   },
   "groupStandings": {
     "_comment": "Fill in after group phase completes. Order: 1st to 4th.",
