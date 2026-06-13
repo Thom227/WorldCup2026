@@ -374,6 +374,47 @@ const rows = submissions.map(sub => {
 rows.sort((a, b) => b.scores.totaal - a.scores.totaal || a.naam.localeCompare(b.naam, 'nl'));
 
 // ---------------------------------------------------------------------------
+// BUILD BONUS SUMMARY (who got each answered question right)
+// ---------------------------------------------------------------------------
+const rb_bonus = results.bonus || {};
+const bonusDates = results.bonusDates || {};
+const BONUS_KEYS = ['b1','b2','b3','b4','b5','b6','b7'];
+
+const bonusSummary = BONUS_KEYS.map(k => {
+  const answer = rb_bonus[k] != null ? rb_bonus[k] : null;
+  const correct = [];
+
+  if (answer != null) {
+    submissions.forEach(sub => {
+      const sb = sub.bonus || {};
+      let isCorrect = false;
+      if (['b1','b2','b3','b5'].includes(k)) {
+        isCorrect = norm(sb[k]) === norm(answer);
+      } else if (k === 'b4') {
+        const na = parseFloat(sb[k]), nb = parseFloat(answer);
+        isCorrect = !isNaN(na) && !isNaN(nb) && na === nb;
+      } else if (k === 'b6') {
+        const na = parseFloat(sb[k]), nb = parseFloat(answer);
+        isCorrect = !isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 3;
+      } else if (k === 'b7') {
+        const na = parseFloat(sb[k]), nb = parseFloat(answer);
+        isCorrect = !isNaN(na) && !isNaN(nb) && Math.abs(na - nb) <= 5;
+      }
+      if (isCorrect) correct.push(sub.naam || sub._file.replace('.json', ''));
+    });
+  }
+
+  return {
+    key:          k,
+    question:     BONUS_LABELS[k],
+    pts:          BONUS_PTS[k],
+    answer,
+    answeredDate: bonusDates[k] != null ? bonusDates[k] : null,
+    correct,
+  };
+});
+
+// ---------------------------------------------------------------------------
 // BUILD PLAYED RESULTS (safe to expose — these are already played)
 // ---------------------------------------------------------------------------
 const played = {};
@@ -396,6 +437,7 @@ const output = {
   lastUpdated:  new Date().toISOString(),
   played,
   leaderboard:  rows,
+  bonusSummary,
 };
 
 fs.writeFileSync('data/dashboard-data.json', JSON.stringify(output, null, 2), 'utf8');

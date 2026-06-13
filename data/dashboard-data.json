@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-13T07:09:02.458Z",
+  "generatedAt": "2026-06-13T07:36:18.371Z",
   "phase": "group",
   "currentRound": null,
-  "lastUpdated": "2026-06-13T07:09:02.458Z",
+  "lastUpdated": "2026-06-13T07:36:18.371Z",
   "played": {
     "0": {
       "h": 2,
@@ -1685,6 +1685,66 @@
           "pts": 0
         }
       ]
+    }
+  ],
+  "bonusSummary": [
+    {
+      "key": "b1",
+      "question": "Welke Nederlandse speler scoort ons eerste doelpunt?",
+      "pts": 15,
+      "answer": null,
+      "answeredDate": null,
+      "correct": []
+    },
+    {
+      "key": "b2",
+      "question": "Welk land scoort de meeste doelpunten in de groepsfase?",
+      "pts": 15,
+      "answer": null,
+      "answeredDate": null,
+      "correct": []
+    },
+    {
+      "key": "b3",
+      "question": "Welk land ontvangt als eerste een rode kaart?",
+      "pts": 25,
+      "answer": "Zuid-Afrika",
+      "answeredDate": "2026-06-11",
+      "correct": [
+        "Mike Jong"
+      ]
+    },
+    {
+      "key": "b4",
+      "question": "In welke minuut valt het snelste doelpunt?",
+      "pts": 25,
+      "answer": null,
+      "answeredDate": null,
+      "correct": []
+    },
+    {
+      "key": "b5",
+      "question": "Wie wordt topscorer van het WK?",
+      "pts": 30,
+      "answer": null,
+      "answeredDate": null,
+      "correct": []
+    },
+    {
+      "key": "b6",
+      "question": "Hoeveel gele kaarten vallen er in het gehele toernooi? (±3 telt)",
+      "pts": 30,
+      "answer": null,
+      "answeredDate": null,
+      "correct": []
+    },
+    {
+      "key": "b7",
+      "question": "Hoeveel goals vallen er in het gehele toernooi? (±5 telt)",
+      "pts": 30,
+      "answer": null,
+      "answeredDate": null,
+      "correct": []
     }
   ]
 }

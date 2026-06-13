@@ -113,6 +113,39 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
   .guide-sep { height: 1px; background: #e8e4da; margin: 0.375rem 0; }
   .guide-max { font-size: 0.65rem; color: #b0a888; margin-top: 0.375rem; }
   .guide-card.active .guide-max { color: #a07800; }
+
+  /* Bonus question cards */
+  .bonus-card {
+    background: #fff;
+    border: 1px solid #d0c5af;
+    border-radius: 0.75rem;
+    padding: 1rem 1.125rem;
+  }
+  .bonus-card.answered {
+    border-left: 4px solid #d4af37;
+  }
+  .bonus-card.pending {
+    opacity: 0.65;
+  }
+  .bonus-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.5rem; height: 1.5rem; border-radius: 9999px;
+    background: #edeeef; color: #4d4635;
+    font-size: 0.7rem; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+  }
+  .bonus-card.answered .bonus-num { background: #d4af37; color: #fff; }
+  .bonus-pts-badge {
+    font-size: 0.7rem; font-weight: 700; color: #735c00;
+    background: #f5efc2; border-radius: 9999px;
+    padding: 0.125rem 0.5rem; white-space: nowrap; flex-shrink: 0;
+  }
+  .bonus-winner {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    background: #f0fff4; color: #276749; border: 1px solid #b2f5d8;
+    border-radius: 9999px; padding: 0.15rem 0.6rem;
+    font-size: 0.72rem; font-weight: 700;
+  }
+  .bonus-winner-pts { color: #2d6a2d; font-size: 0.65rem; }
 </style>
 </head>
 <body class="min-h-screen">
@@ -198,9 +231,24 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-background":"#191c1
     </div>
   </div>
 
-  <p class="text-xs text-on-surface-variant opacity-60 text-center pt-2">
-    Scores worden automatisch herberekend zodra de beheerder de resultaten bijwerkt
-  </p>
+  <!-- Bonus questions -->
+  <div id="bonus-section" class="hidden space-y-4">
+    <div class="border-l-4 border-primary-container pl-6">
+      <h2 class="text-2xl font-bold text-on-surface mb-1">Bonusvragen</h2>
+      <p class="text-on-surface-variant opacity-70 text-sm font-medium">Speciale vragen met extra punten — antwoord bekendgemaakt zodra het evenement plaatsvindt.</p>
+    </div>
+    <div id="bonus-cards" class="grid gap-3 sm:grid-cols-2"></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="space-y-2 pt-2">
+    <p class="text-xs text-on-surface-variant opacity-60 text-center">
+      Scores worden automatisch herberekend zodra de beheerder de resultaten bijwerkt.
+    </p>
+    <p class="text-xs text-on-surface-variant opacity-60 text-center">
+      Bij een gedeelde eerste plaats wordt gekeken wie het dichtst bij het totale aantal doelpunten in het toernooi zit. Mocht dat ook gelijk zijn, dan geven de gele kaarten de doorslag.
+    </p>
+  </div>
 
 </main>
 
@@ -534,6 +582,56 @@ function renderScoringGuide(phase, currentRound) {
 }
 
 // ---------------------------------------------------------------------------
+// BONUS SECTION
+// ---------------------------------------------------------------------------
+function renderBonusSection(bonusSummary) {
+  if (!bonusSummary || !bonusSummary.length) return;
+  const section = document.getElementById('bonus-section');
+  const cards   = document.getElementById('bonus-cards');
+  section.classList.remove('hidden');
+
+  cards.innerHTML = bonusSummary.map((b, i) => {
+    const isAnswered = b.answer != null;
+    const cardCls = isAnswered ? 'bonus-card answered' : 'bonus-card pending';
+
+    const answerBlock = isAnswered
+      ? `<div class="font-bold text-on-surface" style="font-size:0.95rem">${escHtml(String(b.answer))}</div>`
+      : `<div class="text-on-surface-variant text-sm" style="opacity:0.45">—</div>`;
+
+    const dateLabel = (isAnswered && b.answeredDate)
+      ? `<span style="font-size:0.65rem;color:#b0a888;font-weight:400;margin-left:0.25rem">${fmtDate(b.answeredDate)}</span>`
+      : '';
+
+    let winnersHtml = '';
+    if (isAnswered) {
+      if (b.correct.length) {
+        const badges = b.correct.map(naam =>
+          `<span class="bonus-winner">${escHtml(naam)}<span class="bonus-winner-pts">+${b.pts}</span></span>`
+        ).join('');
+        winnersHtml = `<div class="flex flex-wrap gap-1.5 mt-2">${badges}</div>`;
+      } else {
+        winnersHtml = `<div class="mt-2" style="font-size:0.72rem;color:#b0a888;font-style:italic">Niemand goed</div>`;
+      }
+    }
+
+    return `<div class="${cardCls}">
+      <div class="flex items-start justify-between gap-2 mb-2">
+        <div class="flex items-start gap-2">
+          <span class="bonus-num">${i + 1}</span>
+          <span class="text-on-surface font-medium leading-snug" style="font-size:0.82rem">${escHtml(b.question)}</span>
+        </div>
+        <span class="bonus-pts-badge">+${b.pts} pt</span>
+      </div>
+      <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#7f7663;margin-bottom:0.2rem">
+        Antwoord${dateLabel}
+      </div>
+      ${answerBlock}
+      ${winnersHtml}
+    </div>`;
+  }).join('');
+}
+
+// ---------------------------------------------------------------------------
 // ERRORS
 // ---------------------------------------------------------------------------
 function showErrors(errorList) {
@@ -578,6 +676,7 @@ async function main() {
   renderTodaysMatches(schedule, data.played || {});
   showErrors(errors);
   renderLeaderboard(data.leaderboard);
+  renderBonusSection(data.bonusSummary);
 }
 
 main();
