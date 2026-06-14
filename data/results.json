@@ -25,7 +25,7 @@
     "_example": { "r32_0": {"h": "Mexico", "a": "Tsjechië", "sh": 2, "sa": 0} }
   },
   "bonus": {
-    "b1": null,
+    "b1": "Van dijk",
     "b2": null,
     "b3": "Zuid-Afrika",
     "b4": null,
@@ -35,6 +35,7 @@
   },
   "bonusDates": {
     "_comment": "Datum (YYYY-MM-DD) waarop je het antwoord hebt goedgekeurd. Zet deze in wanneer je bonus[k] invult.",
+    "b1": "2026-06-14",
     "b3": "2026-06-11"
   }
 }

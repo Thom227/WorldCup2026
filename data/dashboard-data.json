@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-14T18:59:32.840Z",
+  "generatedAt": "2026-06-14T21:11:10.399Z",
   "phase": "group",
   "currentRound": null,
-  "lastUpdated": "2026-06-14T18:59:32.840Z",
+  "lastUpdated": "2026-06-14T21:11:10.399Z",
   "played": {
     "0": {
       "h": 2,
@@ -42,6 +42,130 @@
     }
   },
   "leaderboard": [
+    {
+      "naam": "Mol",
+      "scores": {
+        "groep": 44,
+        "groepMatches": 9,
+        "standen": 0,
+        "standenGroepen": 0,
+        "ko": 0,
+        "koMatches": 0,
+        "bonus": 15,
+        "totaal": 59
+      },
+      "todayPts": 35,
+      "history": [
+        {
+          "matchId": "0",
+          "date": "2026-06-11",
+          "home": "Mexico",
+          "away": "Zuid-Afrika",
+          "round": "group",
+          "predictedH": 1,
+          "predictedA": 1,
+          "actualH": 2,
+          "actualA": 0,
+          "pts": 0
+        },
+        {
+          "matchId": "1",
+          "date": "2026-06-12",
+          "home": "Zuid-Korea",
+          "away": "Tsjechië",
+          "round": "group",
+          "predictedH": 1,
+          "predictedA": 0,
+          "actualH": 2,
+          "actualA": 1,
+          "pts": 4
+        },
+        {
+          "matchId": "2",
+          "date": "2026-06-12",
+          "home": "Canada",
+          "away": "Bosnië-Herzegovina",
+          "round": "group",
+          "predictedH": 0,
+          "predictedA": 0,
+          "actualH": 1,
+          "actualA": 1,
+          "pts": 4
+        },
+        {
+          "matchId": "3",
+          "date": "2026-06-13",
+          "home": "VS",
+          "away": "Paraguay",
+          "round": "group",
+          "predictedH": 1,
+          "predictedA": 0,
+          "actualH": 4,
+          "actualA": 1,
+          "pts": 4
+        },
+        {
+          "matchId": "4",
+          "date": "2026-06-13",
+          "home": "Qatar",
+          "away": "Zwitserland",
+          "round": "group",
+          "predictedH": 1,
+          "predictedA": 1,
+          "actualH": 1,
+          "actualA": 1,
+          "pts": 12
+        },
+        {
+          "matchId": "5",
+          "date": "2026-06-14",
+          "home": "Brazilië",
+          "away": "Marokko",
+          "round": "group",
+          "predictedH": 0,
+          "predictedA": 0,
+          "actualH": 1,
+          "actualA": 1,
+          "pts": 4
+        },
+        {
+          "matchId": "6",
+          "date": "2026-06-14",
+          "home": "Haïti",
+          "away": "Schotland",
+          "round": "group",
+          "predictedH": 0,
+          "predictedA": 1,
+          "actualH": 0,
+          "actualA": 1,
+          "pts": 12
+        },
+        {
+          "matchId": "7",
+          "date": "2026-06-14",
+          "home": "Australië",
+          "away": "Turkije",
+          "round": "group",
+          "predictedH": 0,
+          "predictedA": 0,
+          "actualH": 2,
+          "actualA": 0,
+          "pts": 0
+        },
+        {
+          "matchId": "8",
+          "date": "2026-06-14",
+          "home": "Duitsland",
+          "away": "Curaçao",
+          "round": "group",
+          "predictedH": 3,
+          "predictedA": 0,
+          "actualH": 7,
+          "actualA": 1,
+          "pts": 4
+        }
+      ]
+    },
     {
       "naam": "Jeffrey",
       "scores": {
@@ -396,130 +520,6 @@
           "round": "group",
           "predictedH": 0,
           "predictedA": 2,
-          "actualH": 2,
-          "actualA": 0,
-          "pts": 0
-        },
-        {
-          "matchId": "8",
-          "date": "2026-06-14",
-          "home": "Duitsland",
-          "away": "Curaçao",
-          "round": "group",
-          "predictedH": 3,
-          "predictedA": 0,
-          "actualH": 7,
-          "actualA": 1,
-          "pts": 4
-        }
-      ]
-    },
-    {
-      "naam": "Mol",
-      "scores": {
-        "groep": 44,
-        "groepMatches": 9,
-        "standen": 0,
-        "standenGroepen": 0,
-        "ko": 0,
-        "koMatches": 0,
-        "bonus": 0,
-        "totaal": 44
-      },
-      "todayPts": 20,
-      "history": [
-        {
-          "matchId": "0",
-          "date": "2026-06-11",
-          "home": "Mexico",
-          "away": "Zuid-Afrika",
-          "round": "group",
-          "predictedH": 1,
-          "predictedA": 1,
-          "actualH": 2,
-          "actualA": 0,
-          "pts": 0
-        },
-        {
-          "matchId": "1",
-          "date": "2026-06-12",
-          "home": "Zuid-Korea",
-          "away": "Tsjechië",
-          "round": "group",
-          "predictedH": 1,
-          "predictedA": 0,
-          "actualH": 2,
-          "actualA": 1,
-          "pts": 4
-        },
-        {
-          "matchId": "2",
-          "date": "2026-06-12",
-          "home": "Canada",
-          "away": "Bosnië-Herzegovina",
-          "round": "group",
-          "predictedH": 0,
-          "predictedA": 0,
-          "actualH": 1,
-          "actualA": 1,
-          "pts": 4
-        },
-        {
-          "matchId": "3",
-          "date": "2026-06-13",
-          "home": "VS",
-          "away": "Paraguay",
-          "round": "group",
-          "predictedH": 1,
-          "predictedA": 0,
-          "actualH": 4,
-          "actualA": 1,
-          "pts": 4
-        },
-        {
-          "matchId": "4",
-          "date": "2026-06-13",
-          "home": "Qatar",
-          "away": "Zwitserland",
-          "round": "group",
-          "predictedH": 1,
-          "predictedA": 1,
-          "actualH": 1,
-          "actualA": 1,
-          "pts": 12
-        },
-        {
-          "matchId": "5",
-          "date": "2026-06-14",
-          "home": "Brazilië",
-          "away": "Marokko",
-          "round": "group",
-          "predictedH": 0,
-          "predictedA": 0,
-          "actualH": 1,
-          "actualA": 1,
-          "pts": 4
-        },
-        {
-          "matchId": "6",
-          "date": "2026-06-14",
-          "home": "Haïti",
-          "away": "Schotland",
-          "round": "group",
-          "predictedH": 0,
-          "predictedA": 1,
-          "actualH": 0,
-          "actualA": 1,
-          "pts": 12
-        },
-        {
-          "matchId": "7",
-          "date": "2026-06-14",
-          "home": "Australië",
-          "away": "Turkije",
-          "round": "group",
-          "predictedH": 0,
-          "predictedA": 0,
           "actualH": 2,
           "actualA": 0,
           "pts": 0
@@ -3272,9 +3272,11 @@
       "key": "b1",
       "question": "Welke Nederlandse speler scoort ons eerste doelpunt?",
       "pts": 15,
-      "answer": null,
-      "answeredDate": null,
-      "correct": []
+      "answer": "Van dijk",
+      "answeredDate": "2026-06-14",
+      "correct": [
+        "Mol"
+      ]
     },
     {
       "key": "b2",
