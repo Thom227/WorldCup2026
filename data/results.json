@@ -15,7 +15,9 @@
     "6": {"h": 0, "a": 1},
     "7": {"h": 2, "a": 0},
     "8": {"h": 7, "a": 1},
-    "9": {"h": 2, "a": 2}
+    "9": {"h": 2, "a": 2},
+    "10": {"h": 1, "a": 0},
+    "11": {"h": 5, "a": 1}
   },
   "groupStandings": {
     "_comment": "Fill in after group phase completes. Order: 1st to 4th.",
