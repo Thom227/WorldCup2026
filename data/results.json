@@ -65,7 +65,9 @@
     "56": {"h": 1, "a": 1},
     "57": {"h": 1, "a": 3},
     "58": {"h": 0, "a": 0},
-    "59": {"h": 3, "a": 2}
+    "59": {"h": 3, "a": 2},
+    "60": {"h": 1, "a": 4},
+    "61": {"h": 5, "a": 0}
   },
   "groupStandings": {
     "_comment": "Fill in after group phase completes. Order: 1st to 4th.",
