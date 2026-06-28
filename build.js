@@ -93,13 +93,13 @@ function scoreKoMatch(pSH, pSA, rSH, rSA, pHTeam, pATeam, rHTeam, rATeam, round)
   if (homeMatch) total += pts.plek;
   if (awayMatch) total += pts.plek;
 
-  // +winnaar/gelijk only when the correct winning team was predicted
+  // +winnaar/gelijk for predicting the correct outcome direction (home/away/draw),
+  // regardless of which specific teams were predicted in each slot.
   const predOut = outcome(pH, pA);
   const realOut = outcome(rSH, rSA);
   if (predOut === realOut) {
-    if      (predOut === 'h' && homeMatch) total += pts.winnaar;
-    else if (predOut === 'a' && awayMatch) total += pts.winnaar;
-    else if (predOut === 'd' && homeMatch && awayMatch) total += pts.gelijk;
+    if (predOut === 'h' || predOut === 'a') total += pts.winnaar;
+    else if (predOut === 'd') total += pts.gelijk;
   }
 
   // +stand for exact score (score numbers only, teams irrelevant)
