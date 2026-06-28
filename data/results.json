@@ -1,8 +1,8 @@
 {
   "_comment": "Update this file as the tournament progresses. phase: pre | group | knockout | done. currentRound: group | r32 | af | kf | hf | finale",
-  "lastUpdated": "2026-05-25T00:00:00Z",
-  "phase": "group",
-  "currentRound": null,
+  "lastUpdated": "2026-06-28T20:00:00Z",
+  "phase": "knockout",
+  "currentRound": "r32",
   "groupScores": {
     "_comment": "Key = match index (0-71). Values are integers.",
     "_example": { "0": {"h": 2, "a": 1}, "1": {"h": 0, "a": 0} },
@@ -81,15 +81,43 @@
   },
   "groupStandings": {
     "_comment": "Fill in after group phase completes. Order: 1st to 4th.",
-    "_example": { "A": ["Mexico", "Tsjechië", "Zuid-Afrika", "Zuid-Korea"] }
+    "_example": { "A": ["Mexico", "Tsjechië", "Zuid-Afrika", "Zuid-Korea"] },
+    "A": ["Mexico", "Zuid-Afrika", "Zuid-Korea", "Tsjechië"],
+    "B": ["Zwitserland", "Canada", "Bosnië-Herzegovina", "Qatar"],
+    "C": ["Brazilië", "Marokko", "Schotland", "Haïti"],
+    "D": ["VS", "Australië", "Paraguay", "Turkije"],
+    "E": ["Duitsland", "Ivoorkust", "Ecuador", "Curaçao"],
+    "F": ["Nederland", "Japan", "Zweden", "Tunesië"],
+    "G": ["België", "Egypte", "Iran", "Nieuw-Zeeland"],
+    "H": ["Spanje", "Kaapverdië", "Uruguay", "Saoedi-Arabië"],
+    "I": ["Frankrijk", "Noorwegen", "Senegal", "Irak"],
+    "J": ["Argentinië", "Oostenrijk", "Algerije", "Jordanië"],
+    "K": ["Colombia", "Portugal", "DR Congo", "Oezbekistan"],
+    "L": ["Engeland", "Kroatië", "Ghana", "Panama"]
   },
   "ko": {
     "_comment": "Key = match id (r32_0 … r32_15, af_0 … af_7, kf_0 … kf_3, hf_0, hf_1, tf, fin). h/a = actual teams, sh/sa = actual scores (integers).",
-    "_example": { "r32_0": {"h": "Mexico", "a": "Tsjechië", "sh": 2, "sa": 0} }
+    "_example": { "r32_0": {"h": "Mexico", "a": "Tsjechië", "sh": 2, "sa": 0} },
+    "r32_0":  {"h": "Zuid-Afrika",       "a": "Canada"},
+    "r32_1":  {"h": "Brazilië",          "a": "Japan"},
+    "r32_2":  {"h": "Duitsland",         "a": "Paraguay"},
+    "r32_3":  {"h": "Nederland",         "a": "Marokko"},
+    "r32_4":  {"h": "Ivoorkust",         "a": "Noorwegen"},
+    "r32_5":  {"h": "Frankrijk",         "a": "Zweden"},
+    "r32_6":  {"h": "Mexico",            "a": "Ecuador"},
+    "r32_7":  {"h": "Engeland",          "a": "DR Congo"},
+    "r32_8":  {"h": "België",            "a": "Senegal"},
+    "r32_9":  {"h": "VS",                "a": "Bosnië-Herzegovina"},
+    "r32_10": {"h": "Spanje",            "a": "Oostenrijk"},
+    "r32_11": {"h": "Portugal",          "a": "Kroatië"},
+    "r32_12": {"h": "Zwitserland",       "a": "Algerije"},
+    "r32_13": {"h": "Australië",         "a": "Egypte"},
+    "r32_14": {"h": "Argentinië",        "a": "Kaapverdië"},
+    "r32_15": {"h": "Colombia",          "a": "Ghana"}
   },
   "bonus": {
     "b1": "Van dijk",
-    "b2": null,
+    "b2": ["Duitsland", "Nederland", "Frankrijk"],
     "b3": "Zuid-Afrika",
     "b4": null,
     "b5": null,
@@ -99,6 +127,7 @@
   "bonusDates": {
     "_comment": "Datum (YYYY-MM-DD) waarop je het antwoord hebt goedgekeurd. Zet deze in wanneer je bonus[k] invult.",
     "b1": "2026-06-14",
+    "b2": "2026-06-28",
     "b3": "2026-06-11"
   }
 }

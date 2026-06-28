@@ -494,10 +494,10 @@ const ROUND_SCORING = {
   r32: {
     title: 'Ronde van 32',
     items: [
-      ['8',  'Land op winst'],
-      ['12', 'Juiste stand (incl. winnaar)'],
+      ['8',  'Juiste land op winst'],
+      ['12', 'Juiste stand'],
       ['8',  'Gelijkspel na 90 min.'],
-      ['4',  'Plek juist (winnaar klopt, stand niet)'],
+      ['4',  'Per land op juiste plek'],
     ],
     note: '16 wedstrijden',
   },
@@ -594,8 +594,9 @@ function renderBonusSection(bonusSummary) {
     const isAnswered = b.answer != null;
     const cardCls = isAnswered ? 'bonus-card answered' : 'bonus-card pending';
 
+    const answerDisplay = Array.isArray(b.answer) ? b.answer.join(' · ') : String(b.answer);
     const answerBlock = isAnswered
-      ? `<div class="font-bold text-on-surface" style="font-size:0.95rem">${escHtml(String(b.answer))}</div>`
+      ? `<div class="font-bold text-on-surface" style="font-size:0.95rem">${escHtml(answerDisplay)}</div>`
       : `<div class="text-on-surface-variant text-sm" style="opacity:0.45">—</div>`;
 
     const dateLabel = (isAnswered && b.answeredDate)

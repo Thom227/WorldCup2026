@@ -115,9 +115,13 @@ function scoreBonus(sub, res) {
   const sb = sub.bonus || {};
   let pts = 0;
 
-  // b1 player name, b2/b3 country, b5 player name — text exact match
+  // b1 player name, b2/b3 country, b5 player name — text exact match (b2 may be an array of correct answers)
   ['b1','b2','b3','b5'].forEach(k => {
-    if (rb[k] != null && norm(sb[k]) === norm(rb[k])) pts += BONUS_PTS[k];
+    if (rb[k] == null) return;
+    const correct = Array.isArray(rb[k])
+      ? rb[k].some(v => norm(sb[k]) === norm(v))
+      : norm(sb[k]) === norm(rb[k]);
+    if (correct) pts += BONUS_PTS[k];
   });
 
   // b4: minute of fastest goal — exact
@@ -148,7 +152,11 @@ function scoreBonusToday(sub, res, today) {
   let pts = 0;
 
   ['b1','b2','b3','b5'].forEach(k => {
-    if (dates[k] === today && rb[k] != null && norm(sb[k]) === norm(rb[k])) pts += BONUS_PTS[k];
+    if (dates[k] !== today || rb[k] == null) return;
+    const correct = Array.isArray(rb[k])
+      ? rb[k].some(v => norm(sb[k]) === norm(v))
+      : norm(sb[k]) === norm(rb[k]);
+    if (correct) pts += BONUS_PTS[k];
   });
 
   if (dates.b4 === today && rb.b4 != null) {
@@ -389,7 +397,9 @@ const bonusSummary = BONUS_KEYS.map(k => {
       const sb = sub.bonus || {};
       let isCorrect = false;
       if (['b1','b2','b3','b5'].includes(k)) {
-        isCorrect = norm(sb[k]) === norm(answer);
+        isCorrect = Array.isArray(answer)
+          ? answer.some(v => norm(sb[k]) === norm(v))
+          : norm(sb[k]) === norm(answer);
       } else if (k === 'b4') {
         const na = parseFloat(sb[k]), nb = parseFloat(answer);
         isCorrect = !isNaN(na) && !isNaN(nb) && na === nb;
