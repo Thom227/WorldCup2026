@@ -98,7 +98,7 @@
   "ko": {
     "_comment": "Key = match id (r32_0 … r32_15, af_0 … af_7, kf_0 … kf_3, hf_0, hf_1, tf, fin). h/a = actual teams, sh/sa = actual scores (integers).",
     "_example": { "r32_0": {"h": "Mexico", "a": "Tsjechië", "sh": 2, "sa": 0} },
-    "r32_0":  {"h": "Zuid-Afrika",       "a": "Canada"},
+    "r32_0":  {"h": "Zuid-Afrika",       "a": "Canada", "sh": 0, "sa": 1 },
     "r32_1":  {"h": "Brazilië",          "a": "Japan"},
     "r32_2":  {"h": "Duitsland",         "a": "Paraguay"},
     "r32_3":  {"h": "Nederland",         "a": "Marokko"},
