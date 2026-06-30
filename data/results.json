@@ -100,7 +100,7 @@
     "_example": { "r32_0": {"h": "Mexico", "a": "Tsjechië", "sh": 2, "sa": 0} },
     "r32_0":  {"h": "Zuid-Afrika",       "a": "Canada", "sh": 0, "sa": 1 },
     "r32_1":  {"h": "Duitsland",         "a": "Paraguay", "sh": 1, "sa": 1 },
-    "r32_2":  {"h": "Nederland",         "a": "Marokko"},
+    "r32_2":  {"h": "Nederland",         "a": "Marokko", "sh": 1, "sa": 1 },
     "r32_3":  {"h": "Brazilië",          "a": "Japan", "sh": 2, "sa": 1 },
     "r32_4":  {"h": "Frankrijk",         "a": "Zweden"},
     "r32_5":  {"h": "Ivoorkust",         "a": "Noorwegen"},
