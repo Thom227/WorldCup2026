@@ -103,7 +103,7 @@
     "r32_2":  {"h": "Nederland",         "a": "Marokko", "sh": 1, "sa": 1 },
     "r32_3":  {"h": "Brazilië",          "a": "Japan", "sh": 2, "sa": 1 },
     "r32_4":  {"h": "Frankrijk",         "a": "Zweden"},
-    "r32_5":  {"h": "Ivoorkust",         "a": "Noorwegen"},
+    "r32_5":  {"h": "Ivoorkust",         "a": "Noorwegen", "sh": 1, "sa": 2 },
     "r32_6":  {"h": "Mexico",            "a": "Ecuador"},
     "r32_7":  {"h": "Engeland",          "a": "DR Congo"},
     "r32_8":  {"h": "VS",                "a": "Bosnië-Herzegovina"},
