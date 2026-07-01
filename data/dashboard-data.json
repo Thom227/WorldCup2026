@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-01T18:23:01.370Z",
+  "generatedAt": "2026-07-01T18:40:32.992Z",
   "phase": "knockout",
   "currentRound": "r32",
-  "lastUpdated": "2026-07-01T18:23:01.370Z",
+  "lastUpdated": "2026-07-01T18:40:32.992Z",
   "played": {
     "0": {
       "h": 2,
@@ -12253,12 +12253,12 @@
         "groepMatches": 72,
         "standen": 135,
         "standenGroepen": 12,
-        "ko": 92,
+        "ko": 100,
         "koMatches": 8,
         "bonus": 0,
-        "totaal": 483
+        "totaal": 491
       },
-      "todayPts": 20,
+      "todayPts": 24,
       "history": [
         {
           "matchId": "0",
@@ -13142,7 +13142,7 @@
           "matchId": "r32_1",
           "date": "2026-06-29",
           "home": "Duitsland",
-          "away": "",
+          "away": "Australië",
           "actualHome": "Duitsland",
           "actualAway": "Paraguay",
           "round": "r32",
@@ -13184,7 +13184,7 @@
           "matchId": "r32_4",
           "date": "2026-06-30",
           "home": "Frankrijk",
-          "away": "",
+          "away": "Zweden",
           "actualHome": "Frankrijk",
           "actualAway": "Zweden",
           "round": "r32",
@@ -13192,7 +13192,7 @@
           "predictedA": 0,
           "actualH": 3,
           "actualA": 0,
-          "pts": 12
+          "pts": 16
         },
         {
           "matchId": "r32_5",
@@ -13211,8 +13211,8 @@
         {
           "matchId": "r32_6",
           "date": "2026-07-01",
-          "home": "Zuid-Korea",
-          "away": "",
+          "home": "Mexico",
+          "away": "Haïti",
           "actualHome": "Mexico",
           "actualAway": "Ecuador",
           "round": "r32",
@@ -13220,13 +13220,13 @@
           "predictedA": 0,
           "actualH": 2,
           "actualA": 0,
-          "pts": 8
+          "pts": 12
         },
         {
           "matchId": "r32_7",
           "date": "2026-07-01",
           "home": "Engeland",
-          "away": "",
+          "away": "Irak",
           "actualHome": "Engeland",
           "actualAway": "DR Congo",
           "round": "r32",
