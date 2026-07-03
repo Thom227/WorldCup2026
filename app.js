@@ -1,4 +1,4 @@
-// Shrink header on scroll
+// Shrink header on scrolll
 window.addEventListener('scroll', () => {
   const h = document.getElementById('site-header');
   const h1 = document.getElementById('header-h1');
