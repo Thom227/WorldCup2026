@@ -113,7 +113,7 @@
     "r32_12": {"h": "Zwitserland",       "a": "Algerije", "sh": 2, "sa": 0 },
     "r32_13": {"h": "Argentinië",        "a": "Kaapverdië"},
     "r32_14": {"h": "Colombia",          "a": "Ghana"},
-    "r32_15": {"h": "Australië",         "a": "Egypte"}
+    "r32_15": {"h": "Australië",         "a": "Egypte", "sh": 1, "sa": 1 }
   },
   "bonus": {
     "b1": "Van dijk",
