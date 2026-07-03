@@ -108,9 +108,9 @@
     "r32_7":  {"h": "Engeland",          "a": "DR Congo", "sh": 2, "sa": 1 },
     "r32_8":  {"h": "VS",                "a": "Bosnië-Herzegovina", "sh": 2, "sa": 0 },
     "r32_9":  {"h": "België",            "a": "Senegal", "sh": 2, "sa": 2 },
-    "r32_10": {"h": "Portugal",          "a": "Kroatië"},
+    "r32_10": {"h": "Portugal",          "a": "Kroatië", "sh": 2, "sa": 1 },
     "r32_11": {"h": "Spanje",            "a": "Oostenrijk", "sh": 3, "sa": 0 },
-    "r32_12": {"h": "Zwitserland",       "a": "Algerije"},
+    "r32_12": {"h": "Zwitserland",       "a": "Algerije", "sh": 2, "sa": 0 },
     "r32_13": {"h": "Argentinië",        "a": "Kaapverdië"},
     "r32_14": {"h": "Colombia",          "a": "Ghana"},
     "r32_15": {"h": "Australië",         "a": "Egypte"}
