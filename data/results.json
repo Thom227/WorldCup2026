@@ -117,7 +117,7 @@
     "af_0":  {"h": "Canada",             "a": "Marokko", "sh": 0, "sa": 3 },
     "af_1":  {"h": "Paraguay",           "a": "Frankrijk", "sh": 0, "sa": 1 },
     "af_2":  {"h": "Brazilië",           "a": "Noorwegen", "sh": 1, "sa": 2 },
-    "af_3":  {"h": "Mexico",             "a": "Engeland", "sh": null, "sa": null },
+    "af_3":  {"h": "Mexico",             "a": "Engeland", "sh": 2, "sa": 3 },
     "af_4":  {"h": "Portugal",           "a": "Spanje", "sh": null, "sa": null },
     "af_5":  {"h": "VS",                 "a": "België", "sh": null, "sa": null },
     "af_6":  {"h": "Argentinië",         "a": "Egypte", "sh": null, "sa": null },
