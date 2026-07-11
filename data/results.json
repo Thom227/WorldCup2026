@@ -124,7 +124,7 @@
     "af_7":  {"h": "Zwitserland",        "a": "Colombia", "sh": 0, "sa": 0 },
     "kf_0":  {"h": "Frankrijk",          "a": "Marokko", "sh": 2, "sa": 0 },
     "kf_1":  {"h": "Spanje",             "a": "België", "sh": 2, "sa": 1 },
-    "kf_2":  {"h": "Noorwegen",          "a": "Engeland", "sh": null, "sa": null },
+    "kf_2":  {"h": "Noorwegen",          "a": "Engeland", "sh": 1, "sa": 1 },
     "kf_3":  {"h": "Argentinië",         "a": "Colombia", "sh": null, "sa": null }
   },
   "bonus": {
