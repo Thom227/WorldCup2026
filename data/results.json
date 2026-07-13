@@ -1,8 +1,8 @@
 {
   "_comment": "Update this file as the tournament progresses. phase: pre | group | knockout | done. currentRound: group | r32 | af | kf | hf | finale",
-  "lastUpdated": "2026-07-09T00:00:00Z",
+  "lastUpdated": "2026-07-13T00:00:00Z",
   "phase": "knockout",
-  "currentRound": "kf",
+  "currentRound": "hf",
   "groupScores": {
     "_comment": "Key = match index (0-71). Values are integers.",
     "_example": { "0": {"h": 2, "a": 1}, "1": {"h": 0, "a": 0} },
@@ -125,7 +125,9 @@
     "kf_0":  {"h": "Frankrijk",          "a": "Marokko", "sh": 2, "sa": 0 },
     "kf_1":  {"h": "Spanje",             "a": "België", "sh": 2, "sa": 1 },
     "kf_2":  {"h": "Noorwegen",          "a": "Engeland", "sh": 1, "sa": 1 },
-    "kf_3":  {"h": "Argentinië",         "a": "Colombia", "sh": null, "sa": null }
+    "kf_3":  {"h": "Argentinië",         "a": "Zwitserland", "sh": 3, "sa": 1 },
+    "hf_0":  {"h": "Frankrijk",          "a": "Spanje", "sh": null, "sa": null },
+    "hf_1":  {"h": "Engeland",           "a": "Argentinië", "sh": null, "sa": null }
   },
   "bonus": {
     "b1": "Van dijk",
