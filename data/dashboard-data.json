@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-15T21:03:27.396Z",
+  "generatedAt": "2026-07-17T14:13:33.342Z",
   "phase": "knockout",
-  "currentRound": "hf",
-  "lastUpdated": "2026-07-15T21:03:27.396Z",
+  "currentRound": "finale",
+  "lastUpdated": "2026-07-17T14:13:33.342Z",
   "played": {
     "0": {
       "h": 2,
@@ -486,7 +486,7 @@
         "bonus": 15,
         "totaal": 1022
       },
-      "todayPts": 35,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -1786,7 +1786,7 @@
         "bonus": 15,
         "totaal": 974
       },
-      "todayPts": 51,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -3086,7 +3086,7 @@
         "bonus": 0,
         "totaal": 972
       },
-      "todayPts": 16,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -4386,7 +4386,7 @@
         "bonus": 0,
         "totaal": 938
       },
-      "todayPts": 16,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -5686,7 +5686,7 @@
         "bonus": 0,
         "totaal": 924
       },
-      "todayPts": 32,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -6986,7 +6986,7 @@
         "bonus": 0,
         "totaal": 913
       },
-      "todayPts": 16,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -8286,7 +8286,7 @@
         "bonus": 15,
         "totaal": 899
       },
-      "todayPts": 19,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -9586,7 +9586,7 @@
         "bonus": 25,
         "totaal": 895
       },
-      "todayPts": 60,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -14786,7 +14786,7 @@
         "bonus": 0,
         "totaal": 872
       },
-      "todayPts": 19,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -16086,7 +16086,7 @@
         "bonus": 15,
         "totaal": 827
       },
-      "todayPts": 60,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -17386,7 +17386,7 @@
         "bonus": 0,
         "totaal": 822
       },
-      "todayPts": 44,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -18686,7 +18686,7 @@
         "bonus": 0,
         "totaal": 781
       },
-      "todayPts": 44,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -19986,7 +19986,7 @@
         "bonus": 0,
         "totaal": 773
       },
-      "todayPts": 44,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -22586,7 +22586,7 @@
         "bonus": 0,
         "totaal": 766
       },
-      "todayPts": 19,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -23886,7 +23886,7 @@
         "bonus": 0,
         "totaal": 737
       },
-      "todayPts": 16,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -26486,7 +26486,7 @@
         "bonus": 0,
         "totaal": 706
       },
-      "todayPts": 19,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -27786,7 +27786,7 @@
         "bonus": 15,
         "totaal": 700
       },
-      "todayPts": 16,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -29086,7 +29086,7 @@
         "bonus": 0,
         "totaal": 680
       },
-      "todayPts": 16,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",
@@ -31686,7 +31686,7 @@
         "bonus": 0,
         "totaal": 597
       },
-      "todayPts": 19,
+      "todayPts": 0,
       "history": [
         {
           "matchId": "0",

@@ -101,6 +101,6 @@
   {"id":"kf_3",  "date":"2026-07-12","time":"03:00","round":"kf",   "label":"Kwartfinale 4", "home":"Argentinië", "away":"Colombia"},
   {"id":"hf_0",  "date":"2026-07-14","time":"21:00","round":"hf",   "label":"Halve Finale 1", "home":"Frankrijk", "away":"Spanje"},
   {"id":"hf_1",  "date":"2026-07-15","time":"21:00","round":"hf",   "label":"Halve Finale 2", "home":"Engeland",  "away":"Argentinië"},
-  {"id":"tf",    "date":"2026-07-18","time":"21:00","round":"tf",   "label":"3e / 4e Plaats"},
-  {"id":"fin",   "date":"2026-07-19","time":"21:00","round":"finale","label":"Finale"}
+  {"id":"tf",    "date":"2026-07-18","time":"21:00","round":"tf",   "label":"3e / 4e Plaats", "home":"Frankrijk", "away":"Engeland"},
+  {"id":"fin",   "date":"2026-07-19","time":"21:00","round":"finale","label":"Finale", "home":"Spanje", "away":"Argentinië"}
 ]
