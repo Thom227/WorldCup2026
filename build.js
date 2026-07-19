@@ -353,17 +353,21 @@ const rows = submissions.map(sub => {
     if (matchInfo && matchInfo.date === today) todayPts += pts;
   }
 
-  // Kampioen bonus (50 pts) — scored but never exposed in the output
+  // Kampioen bonus (50 pts). Prefer the explicit results.champion answer key
+  // (decoupled from the final score, so a draw-after-90-min + shootout still
+  // has a champion); fall back to deriving it from the final score.
   const finResult = koResults.fin;
-  if (finResult && finResult.sh != null && sub.kampioen) {
-    const champion = finResult.sh > finResult.sa ? finResult.h : finResult.a;
-    if (champion && norm(sub.kampioen) === norm(champion)) {
-      koPts    += 50;
-      todayPts += 50; // only matters if the final is today
-    }
+  let champion = results.champion || null;
+  if (!champion && finResult && finResult.sh != null) {
+    champion = finResult.sh > finResult.sa ? finResult.h : finResult.a;
+  }
+  let championPts = 0;
+  if (champion && sub.kampioen && norm(sub.kampioen) === norm(champion)) {
+    championPts = 50;
+    if (results.championDate === today) todayPts += 50;
   }
 
-  const bonusPts = scoreBonus(sub, results);
+  const bonusPts = scoreBonus(sub, results) + championPts;
   todayPts += scoreBonusToday(sub, results, today);
   const totaal   = groepPts + standenPts + koPts + bonusPts;
 
@@ -423,6 +427,22 @@ const bonusSummary = BONUS_KEYS.map(k => {
     correct,
   };
 });
+
+// Kampioen (50 pt) — shown as an extra bonus card. Prediction lives in the
+// top-level sub.kampioen field, answer key in results.champion.
+if (results.champion != null) {
+  const correct = submissions
+    .filter(sub => norm(sub.kampioen) === norm(results.champion))
+    .map(sub => sub.naam || sub._file.replace('.json', ''));
+  bonusSummary.push({
+    key:          'champion',
+    question:     'Wie wordt wereldkampioen?',
+    pts:          50,
+    answer:       results.champion,
+    answeredDate: results.championDate != null ? results.championDate : null,
+    correct,
+  });
+}
 
 // ---------------------------------------------------------------------------
 // BUILD PLAYED RESULTS (safe to expose — these are already played)

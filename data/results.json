@@ -129,21 +129,27 @@
     "hf_0":  {"h": "Frankrijk",          "a": "Spanje", "sh": 0, "sa": 2 },
     "hf_1":  {"h": "Engeland",           "a": "Argentinië", "sh": 1, "sa": 2 },
     "tf":    {"h": "Frankrijk",          "a": "Engeland", "sh": 4, "sa": 6 },
-    "fin":   {"h": "Spanje",             "a": "Argentinië", "sh": null, "sa": null }
+    "fin":   {"h": "Spanje",             "a": "Argentinië", "sh": 0, "sa": 0 }
   },
+  "champion": "Spanje",
+  "championDate": "2026-07-19",
   "bonus": {
     "b1": "Van dijk",
     "b2": ["Duitsland", "Nederland", "Frankrijk"],
     "b3": "Zuid-Afrika",
-    "b4": null,
-    "b5": null,
-    "b6": null,
-    "b7": null
+    "b4": 2,
+    "b5": "Kylian Mbappé",
+    "b6": 273,
+    "b7": 308
   },
   "bonusDates": {
     "_comment": "Datum (YYYY-MM-DD) waarop je het antwoord hebt goedgekeurd. Zet deze in wanneer je bonus[k] invult.",
     "b1": "2026-06-14",
     "b2": "2026-06-28",
-    "b3": "2026-06-11"
+    "b3": "2026-06-11",
+    "b4": "2026-07-19",
+    "b5": "2026-07-19",
+    "b6": "2026-07-19",
+    "b7": "2026-07-19"
   }
 }
