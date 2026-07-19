@@ -535,12 +535,11 @@ const ROUND_SCORING = {
     title: 'Troostfinale & Finale',
     items: [
       ['35', 'Land op winst'],
-      ['30', 'Juiste stand (incl. winnaar)'],
-      ['30', 'Gelijkspel na 90 min.'],
+      ['42', 'Juiste stand (incl. winnaar)'],
+      ['35', 'Gelijkspel na 90 min.'],
       ['28', 'Plek juist (winnaar klopt, stand niet)'],
       ['50', 'Kampioen correct voorspeld'],
     ],
-    note: '2 wedstrijden — finale telt het zwaarst',
   },
 };
 
@@ -577,7 +576,7 @@ function renderScoringGuide(phase, currentRound) {
       </div>
       <div class="guide-items">${itemRows(cfg.items)}</div>
       ${extraHtml}
-      <div class="guide-max">${cfg.note}</div>
+      ${cfg.note ? `<div class="guide-max">${cfg.note}</div>` : ''}
     </div>`;
 }
 

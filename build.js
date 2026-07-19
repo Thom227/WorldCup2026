@@ -42,7 +42,7 @@ const KO_POINTS = {
   af:     {stand:15, winnaar:11, gelijk:11, plek:7},
   kf:     {stand:20, winnaar:16, gelijk:16, plek:13},
   hf:     {stand:25, winnaar:19, gelijk:19, plek:16},
-  finale: {stand:30, winnaar:35, gelijk:30, plek:28},
+  finale: {stand:42, winnaar:35, gelijk:35, plek:28},
 };
 
 // ---------------------------------------------------------------------------
